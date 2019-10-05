@@ -16,6 +16,12 @@
 
 Light curves are data collected by observing the brightness of an object illuminated by the sun as it passes over an observer. This data has been used in astronomy to determine the motion and geometry of celestial bodies. The particular focus of this paper is the application of light curve analysis to earth orbiting spacecraft. Potential applications for this application include spacecraft health monitoring, determining the mission of an unknown satellite from its attitude and geometry, and selecting targets for space debris removal.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{lightcurve_AMOS}
+	\caption{Lightcurve of the IMAGE spacecraft \cite{AMOS}.}
+\end{figure}
+
 Light curve analysis has been applied to natural celestial bodies such as planets and asteroids long before it was applied to artificial satellites. Many of the methods and techniques developed to extrude information from satellite light curves have been shanghaied from methods previously applied to asteroids with general success. Mostly, these techniques have to do with determining the spin axis of objects rotating about their major axis, and shape determination. The notable differences between asteroids and artificial satellites are geometry, albedo and perturbations. Spacecraft, unlike asteroids are characteristically non-convex, have large variations of albedo across their surfaces, and are more affected by perturbations from their environment. Additionally, functioning spacecraft are usually controlled. This requires more complex models to determine a spin axis.
 
 While the techniques derived from astronomy have had some success, they do not answer all of the possible spacecraft related questions we might want answered. These questions have do do with orbit, mass, and attitude determination among others. For these, fomulations of the Kalman Filter have been proposed which combine a models of how the spacecraft should behave and the way it should reflect light, and compare them to actual measured data. 
@@ -25,51 +31,103 @@ This paper presents a synthesized review of the literature on the topic of light
 \section{Literature Review}
 
 \subsection{Period Estimation}
-\subsubsection{Synodic Period}
-The most fundamental form of light curve analysis is determining the period of a body rotating about its major axis. One of the most influential publications on this topic was written by Hall et al.\cite{AMOS} where the spin rate and spin axis were able to be determined for the defunct AMOS spacecraft. 
+
+The most fundamental form of light curve analysis is determining the period of a body rotating about its major axis. One of the most influential publications on this topic was written by Hall et al.\cite{AMOS} where the spin rate and spin axis were able to be determined for the defunct AMOS spacecraft. The state of being in rotation about its major axis is important because this state is in stable equilibrium, and the angular velocity can be assumed to be constant in inertial space. 
 
 Period estimation can be broken up into two principal steps: Determining synodic, then the sidereal period. The synodic period refers to the period of the spacecraft as viewed from earth. Due to the earths rotation, the synodic period is the \textit{relative} period between the spacecraft and the observer. The sidereal period is the absolute period in inertial space and is the more useful of the two measurements. 
 
-The most common way to calculate the synodic period is to conduct spectral analysis using the Fourier transform or Lomb-Scargle methods. One common assumption is that the spacecraft is tumbling about its major axis. This assumption has served the astronomical community well considering that most celestial bodies have had eons to settle into their minimum energy states. Spacecraft, however, have not had eons, and are potentially tumbling chaotically. \cite{AMOS} Analysis using two-dimensional Fourier transforms for spacecraft exhibiting multi-axis rotation has been investigated by Hall et al. \cite{Hall2014OpticalCO}
+\subsubsection{Synodic Period}
 
-A drawback of the Fourier method is that it requires evenly spaced data which is not easily attained. This can be solved by interpolating between datapoints, at the cost of performance. Because of this, the Lomb-Scargle periodogram method is commonly applied to unevenly spaced light curve data. Recently, investigations into neural networks for spectral analysis have been conducted by Tagliaferri et al. \cite{Tagliaferri} and have demonstrated their ability to outperform the Lomb-Scargle periodogram.
+The most common way to calculate the synodic period is to conduct spectral analysis using the Fourier transform or Lomb-Scargle periodogram. For these methods to work, it needs to be assumed that the object is spinning about its major axis. This assumption has served the astronomical community well considering that most celestial bodies have had eons to settle into their minimum energy states. Spacecraft, however, have not had eons, and are potentially tumbling chaotically \cite{AMOS}. Alternate methods such as using two-dimensional Fourier transforms for spacecraft exhibiting multi-axis rotation has been investigated by Hall et al. \cite{Hall2014OpticalCO} and a Kalman filter approach by \cite{AttitudeEstimationFromLightCurve} demonstrated the ability to converge to similar results without assuming major axis rotation.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{synodic_period_AMOS}
+	\caption{Measured synodic period of the IMAGE spacecraft \cite{AMOS}.}
+\end{figure}
+
+A large component of typical synodic period analysis is transforming the light curve into the frequency domain. Typically, a Fourier transform is applied and the peak frequency is interpreted to be the synodic period. However, a known drawback of the Fourier method is that it requires evenly spaced data which is not easily attained in practical applications. This can be solved by interpolating between data points, at the cost of adding significant noise to the measurements \cite{Tagliaferri}. Because of this, the Lomb-Scargle periodogram method is commonly applied to unevenly spaced light curve data. Recently, investigations into neural networks for spectral analysis have been conducted by Tagliaferri et al. \cite{Tagliaferri} and have demonstrated their ability to outperform the Fourier transform and lomb-scargle method using data sets that are unevenly spaced.
+
+Another serious drawback to frequency analysis of light curves is the sampling frequency limitation. It is only possible to detect a frequency that is less than half of the sampling frequency dye to the Nyquist sampling criterion \cite{SILHA2018844}. This poses a fundamental limitation to all frequency based analysis and is dependent on the measurement hardware. 
+
+Oftentimes, a one-dimensional Fourier transform fails to describe the motion of a spacecraft, this can potentially indicate that the spacecraft is tumbling chaotically or is rotating about two axes in a coning motion \cite{Hall2014OpticalCO}. In the case that a spacecraft is rotating along two axes in a coning motion, a two-dimensional Fourier transform has been proposed as a method to determine the rotation state.
+
 \subsubsection{Sidereal Period}
-After the synodic period is determined, there exist multiple methods for calclating the siderial period. By far the most popular seems to be the Epoch Method. This method does not rely on knowing the geometry of a spacecraft and can determine the spin axis of the spacecraft. 
+After the synodic period is determined, there exist multiple methods for calclating the siderial period. By far the most popular seems to be the Epoch Method. This method does not rely on knowing the geometry of a spacecraft and can determine the spin axis of the spacecraft assuming that it is spinning about its major axis. 
 
-The first assumption of the epoch method is that the synodic period is related to the motion of the principal axis bisector (PAB) about the spin axis of the spacecraft. The PAB is defined to be the normalized mean vector between the sun and observation vectors. The second assumption is that the spacecraft is spinning about its major axis.
+The fundamental assumption of the epoch method is that the synodic period is related to the motion of the Principal Axis Bisector (PAB) about the spin axis of the spacecraft. The PAB is defined to be the normalized mean vector between the sun and observation vectors. The second assumption is that the spacecraft is spinning about its major axis. Again, the major axis assumption is so that the angular velocity vector can be assumed to be constant in inertial space.
 
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{PAB}
+	\caption{Principal Axis Bisector (PAB).}
+\end{figure}
 
 The fundamental principle of the epoch method is that for any given spin axis, there is a corresponding siderial period that minimizes the difference between the measured synodic period from the data and the theoretical synodic period for the dataset. The algorythm then, is to conduct a grid search through the space of possible spin axes and return the spin axis whose set of theoretical synodic periods best fits the measured data.
-It is important to notice that it is precisely the \textit{modulation} of the synodic frequency across an observation that allows the epoch method to converge on an optimal solution. \cite{Wallace} For this modulation to occur, the PAB must change sufficiently quickly during the observation. This condition is satisfied well for spacecraft in low earth orbit. However, this can be problematic for deep space and geostationary spacecraft.
-Wallace et al. \cite{Wallace} have presented an algorithm that uses the glints (brief flashes) caused by flat surfaces on a spacecraft as they present themselves normal to the PAB. This method requires sufficient knowledge of the spacecrafts geometry that a simplified model can be created. For identified and documented spacecraft this can be acquired, however for pieces of space debris and unidentified spacecraft this information cannot be found. It would therefore be useful to be able to determine the geometry of a spacecraft from light curve observations as it would allow for greater accuracy in its spin axis and period estimation.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{spin_axis_OPTICAL_CHARACTERIZATION}
+	\caption{spin axis distribution for the D4S2 rocket-body \cite{Hall2014OpticalCO}.}
+\end{figure}
+
+It is important to notice that it is change in the synodic frequency across an observation that allows the epoch method to converge on an optimal solution \cite{Wallace}. For this modulation to occur, the PAB must change sufficiently quickly during the observation. This condition is satisfied well for spacecraft in low earth orbit. However, this can be problematic for deep space and geostationary spacecraft.
+
+Another method used by astronomers to determine sidereal period and pole orientation is the Amplitude-Magnitude method, works on the idea that variations in brightness are caused by a changing projected surface area \cite{Magnusson1989DeterminationOP}. This technique has been applied to asteroids which can be assumed to be tri-axial ellipsoids spinning about their smallest axis (major axis) because it is possible to determine the relative size of each axis from amplitude-longitude and magnitude-amplitude plots which are generated by observing the asteroid at different oppositions \cite{Magnusson1989DeterminationOP}. After the relative geometry has been determined, it is possible to calculate the angle between the observers line of sight and spin axis (aspect angle), creating a circle of possible spin vectors. By combining the "aspect circles" from multiple measurements it is possible to converge on two spin vectors based on the circles intersection \cite{Magnusson1989DeterminationOP}. This technique could be applied to the analysis of rocket bodies or other spacecraft that are generally ellipsoidal in shape, however this technique has not yet been applied to spacecraft.
+
+One minor problem with the above techniques that determine spin axis is that it is impossible to determine whether the spacecraft is rotating clockwise or counterclockwise around the spin vector \cite{Magnusson1989DeterminationOP}.
+
+A third method proposed by Wallace et al. \cite{Wallace} is an algorithm that uses the glints (brief flashes) caused by flat surfaces on a spacecraft as they present themselves normal to the PAB. The way this algorithm works is by assuming sidereal frequency and spin axis which are fed into a model that predicts glint times. The algorithm then finds the combination of sidereal spin rate and spin axes that minimize the difference between the observed and measured glint times. For this method to work, again the object must be assumed to be spinning about its major axis.
+
+Unfortunately, this method requires sufficient knowledge of the spacecrafts geometry that a simplified model can be created. For identified and documented spacecraft this can be acquired, however for pieces of space debris and unidentified spacecraft it is not possible to apply this method.
 
 \subsection{Light Curve Inversion}
 
-Light Curve Inversion, heretofore referred to as LCI, is a technique developed by M. Kaasalainen, J. Torppa, and J. Piironen \cite{KAASALAINEN2002369} to estimate the shape of asteroids. Essentially, this process generates a set of facet normal directions and then optimizes the set of areas so as to best match the measured light curve \cite{Kaasalainen}. Once a set of facet normals and corresponding areas has been converged upon, one must solve to Minkowski Minimization problem \cite{Minkowski1989} which will yield a unique convex polyhedron.
+Light Curve Inversion (LCI) is a technique developed by M. Kaasalainen, J. Torppa, and J. Piironen \cite{KAASALAINEN2002369} to estimate the shape of asteroids. Essentially, this process generates a set of facet normal directions and assigns each an albedo-area, the product of albedo and area. Using these normals and albedo-areas, a lightcurve can be simulated. Using the difference between the simulated lightcurve and the acutal data, the albedo-areas for each facet normal can be optimized to best fit the data \cite{Kaasalainen}. Once a set of facet normals and corresponding albedo-areas has been converged upon and if the albedo values are known or assumed, one must solve to Minkowski Minimization problem \cite{Minkowski1989} which will yield a unique convex polyhedron.
 
-In order to generate a light curve from the estimated geometry, the orientation of the body has to be known \cite{PSI}. While an arbitrary body frame can be assigned to the body, the angular velocity of the body must be known in order to propagate the orientation of this frame through the simulation. This generally limits the application of this technique to objects spinning about their major axis \cite{Separating} whose angular velocity magnitude and direction can be calculated using the aforementioned Epoch Method. 
+In order to generate a light curve from the estimated geometry, the orientation of the body has to be known \cite{PSI}. While an arbitrary body frame can be assigned to the body, the angular velocity of the body must be known in order to propagate the orientation of this frame through the simulation. This generally limits the application of this technique to objects spinning about their major axis and whose angular velocity magnitude and direction can be calculated using the aforementioned Epoch Method. However, as long as the angular velocity is known there is no reason why this method cannot be known.
 
-Another limitation is that any light curve can be explained by any combination of geometry and albedo \cite{Magnusson1989DeterminationOP}. For asteroids this can be dealt with by assuming a constant albedo across the entire surface. This assumption that does not hold for an unknown spacecraft which may be composed of composed of dozens of materials with different albedos. However work by Calef et al. demonstrates that by combining data from reflections as well as thermal emissions, it is possible to separate the effects of geometry, albedo, and emmisivity \cite{PSI}. 
+Another limitation is that any light curve can be explained by any combination of geometry and albedo \cite{Magnusson1989DeterminationOP}. For asteroids this can be dealt with by assuming a constant albedo across the entire surface. This assumption that does not hold for an unknown spacecraft which may be composed of dozens of materials with different albedos. However work by Calef et al. \cite{Separating} demonstrates that by combining data from reflections as well as thermal emissions, it is possible to separate the effects of geometry, albedo, and emmisivity \cite{PSI}. For shape determination of spacecraft albedo values need to either be known or assumed. It is worth mentioning that, while insufficient to determine shape on its own, the albedo-area distribution is a complete description of the body parameters of a convex shape linking attitude to radiant intensity \cite{Separating}.
 
 The final biggest limitation of LCI is that it can only generate convex hulls, which most asteroids are but most spacecraft are not. Still, there are many spacecraft whose shape overall is convex, and the convex hull of a concave spacecraft still offers useful information about its general shape. Estimating non-convex geometries has had limited success \cite{Kaasalainen}, the issues being that many local minimums exists which pose an issue for error minimizing techniques.
 
-Despite these limitations there has been limited success in determining the shapes of rocketbodies and cubesats in simulation by Bradley at al \cite{Bradley2014LIGHTCURVEIF}.
+Despite these limitations there has been limited success in determining the shapes of rocketbodies and cubesats in simulation by Bradley et al \cite{Bradley2014LIGHTCURVEIF}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{lci_LIGHTCURVE_INVERSION}
+	\caption{Light Curve Inversion of a box-wing satellite \cite{Bradley2014LIGHTCURVEIF}.}
+\end{figure}
 
 \subsection{Phase-Angle Brightness Comparisons}
 
 Another method of estimating a spacecrafts shape is to compare the Phase-Angle Brightness plots of the measured spacecraft with that of a known geometry \cite{Separating}. A Phase-Angle Brightness graph simply shows the distribution of reflected intensity against the phase-angle of the measurement. By comparing with either simulated data from a known geometry or with data from observations of a known spacecraft, one can infer the similarity between geometries.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{phase_angle_brightness_SEPARATING_ATTITUDE}
+	\caption{Simulated Phase Angle Brightness plots \cite{Separating}.}
+\end{figure}
 
 \subsection{Applications of the Kalman Filter}
 
 Kalman Filters excel at estimating parameters when a model and data can be corroborated. Since the models for orbital dynamics, spacecraft rotation, and reflection are all well known, and since there is high fidelity data of spacecraft brightness, it is no surprise that the Kalman Filter has been applied extensively in this area.
 
 \subsubsection{Attitude Estimation}
-One of the most common applications of Kalman filtering is to estimate the attitude and rotation of a spacecraft given a known geometry \cite{AttitudeEstimationFromLightCurve} \cite{LINARES20141} \cite{SpaceObjectCharacterization}. These filters work by generating an initial attitude and generating a reflectance value based on the known obit and material properties of the spacecraft model. The Kalman filter performs this operation across the entire dataset, comparing the predicted reflectance intensities with the measured data and updating its estimate of the spacecrafts attitude and angular velocity. Eventually this method should converge to the spacecrafts true attitude and angular velocity.
+One of the most common applications of Kalman filtering when applied to light curve data is to estimate the attitude and rotation of a spacecraft given a known geometry \cite{AttitudeEstimationFromLightCurve} \cite{LINARES20141} \cite{SpaceObjectCharacterization}. These filters work by generating an initial attitude and generating a reflectance value based on the known obit and material properties of the spacecraft model. The Kalman filter performs this operation across the entire dataset, comparing the predicted reflectance intensities with the measured data and updating its estimate of the spacecrafts attitude and angular velocity. Eventually this method should converge to an state representation of the spacecraft that matches the measured data as closely as possible.
 
-C. Wetterer et. al. \cite{AttitudeEstimationFromLightCurve} demonstrated with simulations of discarded rocket bodies that it is possible to converge on highly accurate values for attitude and angular velocity. When their method was applied to real data, they cited difficulties due to their simplified reflectance model and simplified model of the rocket body.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{Kalman_convergence}
+	\caption{Convergence of angular velocity estimate using Kalman filters \cite{SpaceObjectCharacterization}.}
+\end{figure}
 
-An anisotropic Phong BRDF model is suggested by M. Jah et. al. as a very high fidelity reflectance model as it obeys energy conservation, reciprocity laws, accounts for fresnel behavior and more accurately accounts for the effects of incidence angle \cite{StateAndParameter}. This model is also beneficial because it is easily utilized in ray tracing algorythms \cite{Ashikhmin} which become necessary when using non-convex and self-shading spacecraft geometries \cite{Kaasalainen}.
+Several formulations have been proposed, each estimating different quantities but all estimating attitude and angular velocity. It is interesting to note that while the Kalman filter formulation by Wetterer et at. assumed a constant angular velocity \cite{AttitudeEstimationFromLightCurve}, Linares et al. and Linares et al. both used a fomulation that allowed for a changing angular velocity. However, in all of their test cases they used spacecraft that were spinning about their major axis \cite{LINARES20141} \cite{SpaceObjectCharacterization}.
+
+In order to account for a variable spin axis, information about the inertia of the spacecraft is required. If the geometry is known, assumptions of the distribution of mass can be made, and a crude estimate of the spacecrafts inertia can be made \cite{LINARES20141}.
+
+It has been demonstrated that by using Kalman filters it is possible to converge on highly accurate values for attitude and angular velocity as well as other parameters. Of the papers read of this review, only Wetterer et al. attempted to apply their techniques to real data. Their attempt proved unsuccessful and cited difficulties due to their simplified reflectance model and simplified model of the rocket body \cite{AttitudeEstimationFromLightCurve}.
+
 
 \subsubsection{Shape Characterization}
 
@@ -87,9 +145,27 @@ In order to determine the spin axis and spin rate of an object spinning about it
 
 Simulating a light curve requires three components: a scattering law, also referred to as a bi-directional reflectance distribution function (BRDF), a model of the spacecraft, and a ray tracing algorithm. The third is only necessary if the spacecraft model is non-convex, as it is only used to deal with the issue of self-shading geometry \cite{Kaasalainen}. The scattering law is the simplest component, which is simply a function of the observation and illumination vectors as well as the optical parameters of the facet being illuminated. The observation vector is the direction from which the object is viewed and the illumination vector is the direction of the sun.
 
-Some of the simplest scattering laws are the Lamberts and Lommel-Seegler laws. These are little more than cosine laws, decreasing the surface brightness with the cosine of the angles between the observation and illumination vectors and only accounds for albedo \cite{Kaasalainen} \cite{Bradley2014LIGHTCURVEIF}. This is useful for quick simulation, but more commonly the Phong BRDF model is used for spacecraft light curves \cite{StateAndParameter} \cite{SpaceObjectCharacterization} \cite{LINARES20141}. The Phong model is advantageous because it allows for the modelling of diffuse and specular reflection, which allows for differentiation between materials, obeys conservation of energy, and accounts for the changing effects of diffuse and specular reflections as the angle of incidence changes \cite{Ashikhmin}.
+Some of the simplest scattering laws are the Lamberts and Lommel-Seeliger laws. These are little more than cosine laws, decreasing the surface brightness with the cosine of the angles between the observation and illumination vectors and only accounds for albedo \cite{Kaasalainen} \cite{Bradley2014LIGHTCURVEIF}. This is useful for quick simulation, but more commonly the Phong BRDF model is used for spacecraft light curves \cite{StateAndParameter} \cite{SpaceObjectCharacterization} \cite{LINARES20141}. The Phong model is advantageous because it allows for the modelling of diffuse and specular reflection, which allows for differentiation between materials, obeys conservation of energy, and accounts for the changing effects of diffuse and specular reflections as the angle of incidence changes \cite{Ashikhmin}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{lightcurve_simulation}
+	\caption{Comparisons between "true" and simulated light curves of shape estimates using a combination of Lamberts and Lommel-Seeliger laws \cite{Kaasalainen}.}
+\end{figure}
 
 In terms of spacecraft modelling, most researchers choose to use simplified models that represent the spacecraft as a convex shape in order to avoid the need for ray tracing. Since most researchers mostly validate their studies in simulation, their "truth" data is also generated from a simulation of a convex geometry. Real spacecraft, however, are generally non-convex and can only be approximated by a convex geometry. For applications of Kalman Filters, whose perormance is highly dependant on an accurate measurement function, simulating non-convex geometries with a ray tracing algorithm would improve performance.
+
+
+\section{Takeaways and Conclusions}
+
+Overwhelmingly, the trend in the research is to perform analysis on spacecraft that are spinning about their major axis. This assumption is valid for many simple, well known, and well studied objects, but limits the utility of analysis to a small subset.
+
+With the applications of Kalman filtering to light curve data, the ability has arisen to determine the spin axis of unresolved spacecraft without assuming a spin about the major axis. This is possible because with a model of the spacecraft it is possible to remove ambiguities in the reflectance data and converge on a changing angular velocity that most closely matches real measurements.
+
+While the more simple analysis techniques like the Epoch and Amplitude-Magnitude methods have been applied successfully to real data, it is not the case for the more complex analyses. For the majority of proposed Kalman filtering and shape estimation algrithms out there, very few have been applied to real data. Wetterer et al. attempted to do so but with no success \cite{AttitudeEstimationFromLightCurve}. This is significant because many researchers so far have validated their results using simulated data which was generated using simplified spacecraft and reluctance models that are not significantly more complex than the approximations used in their analysis. This proves their concepts in theory, but there is a gap in the research in the analysis of real data.
+
+The inability to determine a changing angular velocity and the few attempts to apply techniques to real data are the two largest areas of work identified by this research. The ability to both would open up new and interesting opportunities for practical applicaition of this research, as well as open up entire new avenues of investigation.
+
 
 
 
