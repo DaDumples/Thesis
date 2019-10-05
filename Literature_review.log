@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  5 OCT 2019 15:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  5 OCT 2019 15:33
 entering extended mode
 **./Literature_review.tex
 (Literature_review.tex
@@ -183,25 +183,25 @@ Package pdftex.def Info: PAB.png  used on input line 62.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./synodic_period_AMOS.png>]
-<spin_axis_OPTICAL_CHARACTERIZATION.png, id=23, 355.3275pt x 319.1925pt>
+<spin_axis_OPTICAL_CHARACTERIZATION.png, id=19, 355.3275pt x 319.1925pt>
 File: spin_axis_OPTICAL_CHARACTERIZATION.png Graphic file (type png)
 <use spin_axis_OPTICAL_CHARACTERIZATION.png>
 Package pdftex.def Info: spin_axis_OPTICAL_CHARACTERIZATION.png  used on input 
 line 70.
 (pdftex.def)             Requested size: 172.5pt x 154.95915pt.
- [4 <./PAB.png> <./spin_axis_OPTICAL_CHARACTERIZATION.png>] [5]
+[3 <./synodic_period_AMOS.png>] [4 <./PAB.png> <./spin_axis_OPTICAL_CHARACTERIZ
+ATION.png>] [5]
 <lci_LIGHTCURVE_INVERSION.png, id=31, 548.0475pt x 210.18526pt>
 File: lci_LIGHTCURVE_INVERSION.png Graphic file (type png)
 <use lci_LIGHTCURVE_INVERSION.png>
-Package pdftex.def Info: lci_LIGHTCURVE_INVERSION.png  used on input line 98.
+Package pdftex.def Info: lci_LIGHTCURVE_INVERSION.png  used on input line 106.
 (pdftex.def)             Requested size: 345.0pt x 132.31477pt.
 <phase_angle_brightness_SEPARATING_ATTITUDE.png, id=32, 641.9985pt x 214.401pt>
 
 File: phase_angle_brightness_SEPARATING_ATTITUDE.png Graphic file (type png)
 <use phase_angle_brightness_SEPARATING_ATTITUDE.png>
 Package pdftex.def Info: phase_angle_brightness_SEPARATING_ATTITUDE.png  used o
-n input line 108.
+n input line 116.
 (pdftex.def)             Requested size: 345.0pt x 115.21866pt.
 
 
@@ -211,25 +211,25 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <Kalman_convergence.png, id=37, 313.77225pt x 243.309pt>
 File: Kalman_convergence.png Graphic file (type png)
 <use Kalman_convergence.png>
-Package pdftex.def Info: Kalman_convergence.png  used on input line 121.
+Package pdftex.def Info: Kalman_convergence.png  used on input line 129.
 (pdftex.def)             Requested size: 172.5pt x 133.76096pt.
  [7 <./phase_angle_brightness_SEPARATING_ATTITUDE.png> <./Kalman_convergence.pn
 g>] [8]
 <lightcurve_simulation.png, id=47, 433.01775pt x 251.13824pt>
 File: lightcurve_simulation.png Graphic file (type png)
 <use lightcurve_simulation.png>
-Package pdftex.def Info: lightcurve_simulation.png  used on input line 152.
+Package pdftex.def Info: lightcurve_simulation.png  used on input line 160.
 (pdftex.def)             Requested size: 172.5pt x 100.04349pt.
  [9 <./lightcurve_simulation.png>]
 (Literature_review.bbl [10]) [11] (Literature_review.aux) ) 
 Here is how much of TeX's memory you used:
  1880 strings out of 492946
  28345 string characters out of 3126388
- 93141 words of memory out of 3000000
+ 92141 words of memory out of 3000000
  5770 multiletter control sequences out of 15000+200000
  8241 words of font info for 29 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,6n,27p,1245b,229s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,6n,27p,992b,223s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/theha/AppD
 ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Use
 rs/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx1
@@ -238,7 +238,7 @@ onts/cm/cmr10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmr12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/theha/AppData/Local/Program
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on Literature_review.pdf (11 pages, 436708 bytes).
+Output written on Literature_review.pdf (11 pages, 436713 bytes).
 PDF statistics:
  78 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
