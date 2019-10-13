@@ -4,6 +4,35 @@ import matplotlib.pyplot as plt
 from scipy.integrate import ode
 from scipy.spatial.transform import Rotation as R
 
+#facets of a cube
+FACETS = [array([ 1, 0, 0]),
+          array([-1, 0, 0]),
+          array([ 0, 1, 0]),
+          array([ 0,-1, 0]),
+          array([ 0, 0, 1]),
+          array([ 0, 0,-1])]
+
+
+ALBEDO = .6
+
+AREAS = array([2,2,2,2,1,1])
+OBS_VEC = array([2,1,3])/norm(array([2,1,3]))
+SUN_VEC = array([1,0,0])
+ALPHA = arccos(dot(OBS_VEC, SUN_VEC))
+
+ROTATION = 'zyx'
+
+#Propagate rotation
+
+# INERTIA = array([[1,   .02, .5],
+#                  [.02,  1,  .1],
+#                  [.5,  .1,   1]])
+
+INERTIA = array([[1,  0,   0],
+                 [0,  1,   0],
+                 [0,  0,   1]])
+
+
 def crux(A):
     return array([[0, -A[2], A[1]],
                   [A[2], 0, -A[0]],
@@ -18,18 +47,23 @@ def quat2dcm(E,n):
     return dcm
 
 
-# def propagate(t, state, inertia):
-#     eta = state[0]
-#     eps = state[1:4]
-#     omega = state[4:]
+def propagate_quats(t, state, inertia, noise = False):
+    eta = state[0]
+    eps = state[1:4]
+    omega = state[4:]
 
-#     deps = .5*(eta*identity(3) + crux(eps))@omega
-#     deta = -.5*dot(eps, omega)
-#     domega = -inv(inertia)@crux(omega)@inertia@omega + random.normal(0, .00001)
+    deps = .5*(eta*identity(3) + crux(eps))@omega
+    deta = -.5*dot(eps, omega)
+    domega = -inv(inertia)@crux(omega)@inertia@omega
 
-#     return hstack([deta, deps, domega])
+    if noise:
+        domega += random.normal(0, .000001)
 
-def propagate(t, state, inertia):
+    derivatives = hstack([deta, deps, domega])
+
+    return derivatives
+
+def propagate(t, state, inertia, noise = False):
     phi = state[0]
     theta = state[1]
     #zeta = state[2]
@@ -37,13 +71,41 @@ def propagate(t, state, inertia):
 
     A = array([[1, sin(phi)*tan(theta)  , cos(phi)*tan(theta) ],
                [0, cos(phi)             , -sin(phi)           ],
-               [0, -sin(phi)*1/cos(theta) , cos(phi)*1/cos(theta) ]])
+               [0, sin(phi)*(1/cos(theta)) , cos(phi)*(1/cos(theta)) ]])
 
     deulers = A@omega
 
-    domega = -inv(inertia)@crux(omega)@inertia@omega + random.normal(0, .00001)
+    domega = -inv(inertia)@crux(omega)@inertia@omega
+    if noise:
+        domega += random.normal(0, .000001)
 
     return hstack([deulers, domega])
+
+def states_to_lightcurve(states, quats = False):
+
+    lightcurve = []
+
+    for state in states:
+
+        if quats:
+            eta = state[0]
+            eps = state[1:4]
+            dcm_body2eci = R.from_quat(hstack([eps, eta])).as_dcm().T
+        else:
+            eulers = state[:3]
+            dcm_body2eci = R.from_euler(ROTATION, eulers).as_dcm().T
+
+        power = 0
+        for facet, area in zip(FACETS, AREAS):
+            normal = dcm_body2eci@facet
+            power += facet_brightness(OBS_VEC, SUN_VEC, ALBEDO, normal, area)
+
+        lightcurve.append(power)
+
+    lightcurve = hstack(lightcurve)
+
+    return lightcurve
+
 
 
 def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
@@ -76,40 +138,15 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
 
 if __name__ == '__main__':
 
-
-    #facets of a cube
-    FACETS = [array([ 1, 0, 0]),
-              array([-1, 0, 0]),
-              array([ 0, 1, 0]),
-              array([ 0,-1, 0]),
-              array([ 0, 0, 1]),
-              array([ 0, 0,-1])]
-
-
-    ALBEDO = .6
-
-    AREAS = array([2,2,2,2,1,1])
-    OBS_VEC = array([2,1,3])/norm(array([2,1,3]))
-    SUN_VEC = array([1,0,0])
-    ALPHA = arccos(dot(OBS_VEC, SUN_VEC))
-
-    ROTATION = 'zyx'
-
-    #Propagate rotation
-
-    INERTIA = array([[1,   .02, .5],
-                     [.02,  1,  .1],
-                     [.5,  .1,   1]])
-
-    angular_velocity0 = array([1,2,-3])*1e-1
+    angular_velocity0 = array([1,2,-3])*1e-2
     eta0 = 1
     eps0 = array([0,0,0])
 
     eulers = array([0,0,0])
 
-    state0 = hstack([eulers, angular_velocity0])
+    state0 = hstack([eta0, eps0, angular_velocity0])
 
-    solver = ode(propagate)
+    solver = ode(propagate_quats)
     solver.set_integrator('lsoda')
     solver.set_initial_value(state0, 0)
     solver.set_f_params(INERTIA)
@@ -117,7 +154,7 @@ if __name__ == '__main__':
     newstate = []
     time = []
 
-    tspan = 3*60
+    tspan = 60*60
     timestep = .1
 
     while solver.successful() and solver.t < tspan:
@@ -133,21 +170,7 @@ if __name__ == '__main__':
 
     #Generate lightcurve
 
-    lightcurve = []
-
-    for state in newstate:
-        eulers = state[:3]
-
-        dcm_body2eci = R.from_euler(ROTATION, eulers).as_dcm().T
-
-        power = 0
-        for facet, area in zip(FACETS, AREAS):
-            normal = dcm_body2eci@facet
-            power += facet_brightness(OBS_VEC, SUN_VEC, ALBEDO, normal, area)
-
-        lightcurve.append(power)
-
-    lightcurve = hstack(lightcurve)
+    lightcurve = states_to_lightcurve(newstate, quats = True)
 
 
 
@@ -156,7 +179,8 @@ if __name__ == '__main__':
 
     #Save Data
 
-    save('lightcurve', lightcurve)
+    save('true_lightcurve', lightcurve)
+    save('true_states', newstate)
     save('time', time)
 
     plt.plot(time, lightcurve)

@@ -16,9 +16,13 @@ FACETS = [array([ 1, 0, 0]),
               array([ 0, 0, 1]),
               array([ 0, 0,-1])]
 
-INERTIA = array([[1,   .02, .5],
-                 [.02,  1,  .1],
-                 [.5,  .1,   1]])
+# INERTIA = array([[1,   .02, .5],
+#                  [.02,  1,  .1],
+#                  [.5,  .1,   1]])
+
+INERTIA = array([[1,  0,   0],
+                 [0,  1,   0],
+                 [0,  0,   1]])
 
 ROTATION = 'zyx'
 
@@ -50,12 +54,15 @@ def state_transition_function(state, dt):
     solver.set_initial_value(state, 0)
     solver.set_f_params(INERTIA)
 
-    steps = 10
-    for i in range(steps):
-        solver.integrate(solver.t + dt/steps)
+    solver.integrate(solver.t + dt)
 
 
     return solver.y
+
+def linear_state_transition_function(state, dt):
+    for i in range(10):
+        state += propagate(0,state, INERTIA)*dt
+    return state
 
 def minmize_quaternion(q_guess, q_samples, weights):
     eta_guess = q_guess[0]
@@ -86,24 +93,32 @@ def quaternion_mean_function(sigmas, weights):
 
     return hstack([q_ave, ave_omega])
 
+def radian_residual(x, y):
+    z = x - y
+
+    for ang in z[:3]:
+        ang = ang%(2*pi)
+
+    return z
+
 
 if __name__ == "__main__":
 
-    G = vstack([zeros((4,3)), inv(INERTIA)])
+    G = vstack([zeros((3,3)), inv(INERTIA)])
 
     DIM_X = 6
     DIM_Z = 1
     dt = .1
     points = MerweScaledSigmaPoints(6, alpha = .3, beta = 2, kappa = .1)
 
-    angular_velocity0 = array([1,2,-3])*1e-1
+    angular_velocity0 = array([1,2,-3])*1e-2
     eulers = array([0,0,0])
 
     state0 = hstack([eulers, angular_velocity0])
 
     #state_guess = array([1,0,0,0,0,0,0])
 
-    lightcurve = load('lightcurve.npy')
+    lightcurve = load('true_lightcurve.npy')
     time = load('time.npy')
 
     kf = UnscentedKalmanFilter(dim_x = DIM_X, dim_z = DIM_Z, dt = dt,
@@ -114,20 +129,27 @@ if __name__ == "__main__":
     
     kf.x = state0
     kf.P = .1
-    z_std = .00001
+    z_std = .0001
     kf.R = z_std**2
 
     Qrate = Q_discrete_white_noise(dim = 3, dt = dt, block_size = 1)
     Qquat = Q_discrete_white_noise(dim = 3, dt = dt, block_size = 1)
 
-    kf.Q = vstack([hstack([Qquat, zeros((3,3))]),
-                   hstack([zeros((3,3)), Qrate])])
+    # kf.Q = vstack([hstack([Qquat, zeros((3,3))]),
+    #                hstack([zeros((3,3)), Qrate])])
 
 
-    #kf.Q = G@G.T*.01
+    kf.Q = G@G.T*.00001
 
     Xs, Ps = kf.batch_filter(lightcurve)
 
-    plt.plot(time, Xs)
+
+    save('estimated_states', Xs)
+    save('estimated_covariances', Ps)
+
+    est_curve = states_to_lightcurve(Xs)
+
+    plt.plot(time, est_curve)
+    plt.plot(time, lightcurve)
     plt.show()
 
