@@ -16,15 +16,15 @@ FACETS = [array([ 1, 0, 0]),
               array([ 0, 0, 1]),
               array([ 0, 0,-1])]
 
-# INERTIA = array([[1,   .02, .5],
-#                  [.02,  1,  .1],
-#                  [.5,  .1,   1]])
+INERTIA = array([[1,   .02, .5],
+                 [.02,  1,  .1],
+                 [.5,  .1,   1]])
 
-INERTIA = array([[1,  0,   0],
-                 [0,  1,   0],
-                 [0,  0,   1]])
+# INERTIA = array([[1,  0,   0],
+#                  [0,  1,   0],
+#                  [0,  0,   1]])
 
-ROTATION = 'zyx'
+ROTATION = 'xyz'
 
 
 def measurement_function(state):
@@ -111,8 +111,8 @@ if __name__ == "__main__":
     dt = .1
     points = MerweScaledSigmaPoints(6, alpha = .3, beta = 2, kappa = .1)
 
-    angular_velocity0 = array([1,2,-3])*1e-2
-    eulers = array([0,0,0])
+    angular_velocity0 = array([0,0,0])
+    eulers = array([pi,pi,pi])
 
     state0 = hstack([eulers, angular_velocity0])
 
@@ -142,6 +142,21 @@ if __name__ == "__main__":
     kf.Q = G@G.T*.00001
 
     Xs, Ps = kf.batch_filter(lightcurve)
+
+    # Xs = []
+    # num_pts = len(lightcurve)
+    # percentage = 10
+    # for i, z in enumerate(lightcurve):
+    #     kf.predict()
+    #     kf.update(z)
+    #     Xs.append(kf.x)
+
+    #     if i*100/num_pts > percentage:
+    #         print('%',percentage)
+    #         percentage += 10
+
+    # Xs = vstack(Xs)
+
 
 
     save('estimated_states', Xs)

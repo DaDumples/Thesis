@@ -24,13 +24,13 @@ ROTATION = 'xyz'
 
 #Propagate rotation
 
-INERTIA = array([[1,   .02, .5],
-                 [.02,  1,  .1],
-                 [.5,  .1,   1]])
+# INERTIA = array([[1,   .02, .5],
+#                  [.02,  1,  .1],
+#                  [.5,  .1,   1]])
 
-# INERTIA = array([[1,  0,   0],
-#                  [0,  1,   0],
-#                  [0,  0,   1]])
+INERTIA = array([[1,  0,   0],
+                 [0,  1,   0],
+                 [0,  0,   1]])
 
 
 def crux(A):
@@ -139,51 +139,66 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
 if __name__ == '__main__':
 
     angular_velocity0 = array([1,2,-3])*1e-1
+
     eta0 = 1
     eps0 = array([0,0,0])
-
     eulers = array([0,0,0])
+    tspan = 2*60
+    timestep = .1
 
     state0 = hstack([eta0, eps0, angular_velocity0])
-
     solver = ode(propagate_quats)
     solver.set_integrator('lsoda')
     solver.set_initial_value(state0, 0)
     solver.set_f_params(INERTIA)
 
-    newstate = []
-    time = []
-
-    tspan = 10*60
-    timestep = .1
-
+    quat_newstate = []
+    quat_time = []
     while solver.successful() and solver.t < tspan:
 
-        newstate.append(solver.y)
-        time.append(solver.t)
+        quat_newstate.append(solver.y)
+        quat_time.append(solver.t)
 
         solver.integrate(solver.t + timestep)
 
-    newstate = vstack(newstate)
-    time = hstack(time)
+    quat_newstate = vstack(quat_newstate)
+    quat_time = hstack(quat_time)
 
 
     #Generate lightcurve
 
-    lightcurve = states_to_lightcurve(newstate, quats = True)
+    quat_lightcurve = states_to_lightcurve(quat_newstate, quats = True)
 
 
+    state0 = hstack([eulers, angular_velocity0])
+    solver = ode(propagate)
+    solver.set_integrator('lsoda')
+    solver.set_initial_value(state0, 0)
+    solver.set_f_params(INERTIA)
 
-    lightcurve += random.normal(0, .0001, size = lightcurve.shape)
+    euler_newstate = []
+    euler_time = []
+    while solver.successful() and solver.t < tspan:
+
+        euler_newstate.append(solver.y)
+        euler_time.append(solver.t)
+
+        solver.integrate(solver.t + timestep)
+
+    euler_newstate = vstack(euler_newstate)
+    euler_time = hstack(euler_time)
 
 
-    #Save Data
+    #Generate lightcurve
 
-    save('true_lightcurve', lightcurve)
-    save('true_states', newstate)
-    save('time', time)
+    euler_lightcurve = states_to_lightcurve(euler_newstate)
 
-    plt.plot(time, lightcurve)
+    euler_quats = []
+    for state in euler_newstate:
+        euler_quats.append(R.from_euler(ROTATION, state[0:3]).as_quat())
+    euler_quats = vstack(euler_quats)
+        
+
+    plt.plot(quat_time, quat_lightcurve)
+    plt.plot(euler_time, euler_lightcurve)
     plt.show()
-
-
