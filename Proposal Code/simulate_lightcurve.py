@@ -149,7 +149,7 @@ if __name__ == '__main__':
     solver = ode(propagate_quats)
     solver.set_integrator('lsoda')
     solver.set_initial_value(state0, 0)
-    solver.set_f_params(INERTIA)
+    solver.set_f_params(INERTIA, True)
 
     newstate = []
     time = []
@@ -174,7 +174,7 @@ if __name__ == '__main__':
 
 
 
-    lightcurve += random.normal(0, .0001, size = lightcurve.shape)
+    lightcurve += random.normal(0, .001, size = lightcurve.shape)
 
 
     #Save Data
