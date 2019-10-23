@@ -4,33 +4,22 @@ import matplotlib.pyplot as plt
 from scipy.integrate import ode
 from scipy.spatial.transform import Rotation as R
 
-#facets of a cube
-FACETS = [array([ 1, 0, 0]),
-          array([-1, 0, 0]),
-          array([ 0, 1, 0]),
-          array([ 0,-1, 0]),
-          array([ 0, 0, 1]),
-          array([ 0, 0,-1])]
+import simulation_config as config
 
+TRUTH = config.TRUTH()
+VARIABLES = config.VARIABLES()
 
-ALBEDO = .6
+FACETS = TRUTH.FACETS
+ALBEDO = TRUTH.ALBEDO
+AREAS = TRUTH.AREAS
+OBS_VEC = TRUTH.OBS_VEC
+SUN_VEC = TRUTH.SUN_VEC
+INERTIA = TRUTH.INERTIA
+MEASUREMENT_VARIANCE = TRUTH.MEASUREMENT_VARIANCE
 
-AREAS = array([2,2,2,2,1,1])
-OBS_VEC = array([2,1,3])/norm(array([2,1,3]))
-SUN_VEC = array([1,0,0])
-ALPHA = arccos(dot(OBS_VEC, SUN_VEC))
+ROTATION = VARIABLES.ROTATION
+DT = VARIABLES.DT
 
-ROTATION = 'xyz'
-
-#Propagate rotation
-
-INERTIA = array([[1,   .02, .5],
-                 [.02,  1,  .1],
-                 [.5,  .1,   1]])
-
-# INERTIA = array([[1,  0,   0],
-#                  [0,  1,   0],
-#                  [0,  0,   1]])
 
 
 def crux(A):
@@ -67,7 +56,7 @@ def propagate(t, state, inertia, noise = False):
     phi = state[0]
     theta = state[1]
     #zeta = state[2]
-    omega = state[3:]
+    omega = state[3:6]
 
     A = array([[1, sin(phi)*tan(theta)  , cos(phi)*tan(theta) ],
                [0, cos(phi)             , -sin(phi)           ],
@@ -138,7 +127,9 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
 
 if __name__ == '__main__':
 
-    angular_velocity0 = array([1,2,-3])*1e-1
+    print(INERTIA)
+
+    angular_velocity0 = array([1,.5,-3])*1e-1
     eta0 = 1
     eps0 = array([0,0,0])
 
@@ -149,20 +140,19 @@ if __name__ == '__main__':
     solver = ode(propagate_quats)
     solver.set_integrator('lsoda')
     solver.set_initial_value(state0, 0)
-    solver.set_f_params(INERTIA, True)
+    solver.set_f_params(INERTIA, False)
 
     newstate = []
     time = []
 
     tspan = 10*60
-    timestep = .1
 
     while solver.successful() and solver.t < tspan:
 
         newstate.append(solver.y)
         time.append(solver.t)
 
-        solver.integrate(solver.t + timestep)
+        solver.integrate(solver.t + DT)
 
     newstate = vstack(newstate)
     time = hstack(time)
@@ -174,7 +164,7 @@ if __name__ == '__main__':
 
 
 
-    lightcurve += random.normal(0, .001, size = lightcurve.shape)
+    lightcurve += random.normal(0, MEASUREMENT_VARIANCE, size = lightcurve.shape)
 
 
     #Save Data
