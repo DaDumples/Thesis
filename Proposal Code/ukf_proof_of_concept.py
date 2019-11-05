@@ -6,6 +6,7 @@ from scipy.integrate import ode
 from filterpy.kalman import UnscentedKalmanFilter, MerweScaledSigmaPoints
 from filterpy.common import Q_discrete_white_noise
 from scipy.optimize import minimize
+from scipy.spatial.transform import Rotation as R
 import sys
 
 from simulate_lightcurve import *
@@ -30,18 +31,24 @@ def main():
 
     case = 0
     for indx, arg in enumerate(sys.argv):
-        if arg == '-inertia':
+        if arg == '--2inertia':
             case = 1
             print('Including Inertia into state')
-        elif arg == '-fullinertia':
+        elif arg == '--fullinertia':
             case = 2
+        elif arg == '--inertialoffset':
+            case = 3
+            print('Estimating inertial offset')
+        elif arg == '--constomega':
+            case = 4
+            print('Assuming constant omega')
         elif arg == 'ukf_proof_of_concept.py':
             pass
         else:
             print('Unknown Argument')
 
 
-    angular_velocity0 = array([0,0,0])
+    angular_velocity0 = array([1,1,1])
     eulers = array([pi,pi,pi])
 
     if case == 1:
@@ -58,6 +65,17 @@ def main():
         stf = state_transition_function_full_inertia
         flat_inertia0 = array([0,0,1,0,1])
         state0 = hstack([eulers, angular_velocity0, flat_inertia0])
+    elif case == 3:
+        DIM_X = 11
+        stf = state_transition_function_eigens_and_eulers
+        flat_inertia0 = array([1,1])
+        euler_offsets = array([0,0,0])
+        state0 = hstack([eulers, angular_velocity0, flat_inertia0, euler_offsets])
+    elif case == 4:
+        DIM_X = 6
+        stf = state_transition_function_const_omega
+        state0 = hstack([eulers, angular_velocity0])
+
 
     
     DIM_Z = 1
@@ -75,14 +93,26 @@ def main():
     kf.x = state0
     kf.P = 1
     z_std = MEASUREMENT_VARIANCE
-    kf.R = z_std**2
+    R = z_std**2
+    kf.R = R
 
     #When filtering inertia
     Q = zeros((DIM_X,DIM_X))
     Q[3:6, 3:6]  = Q_discrete_white_noise(dim = 3, dt = DT, block_size = 1)
-    kf.Q = Q*.0001
+    kf.Q = Q*.00001
 
-    Xs, Ps = kf.batch_filter(lightcurve)
+    means = zeros((len(lightcurve), DIM_X))
+    # state covariances from Kalman Filter
+    covariances = zeros((len(lightcurve), DIM_X, DIM_X))
+
+    for i, (z, t) in enumerate(zip(lightcurve, time)):
+        kf.predict(dt=DT)
+        kf.update(z, R, time = t)
+        means[i, :] = kf.x
+        covariances[i, :, :] = kf.P
+
+
+    (Xs, Ps, Ks) = kf.rts_smoother(means, covariances)
 
     save('estimated_states', Xs)
     save('estimated_covariances', Ps)
@@ -91,10 +121,22 @@ def main():
     plt.plot(states_to_lightcurve(Xs))
     plt.show()
 
-def measurement_function(state):
+def propagate_eulers_only(t, state):
+    phi = state[0]
+    theta = state[1]
+    omega = state[3:]
+
+
+    A = array([[1, sin(phi)*tan(theta)  , cos(phi)*tan(theta) ],
+               [0, cos(phi)             , -sin(phi)           ],
+               [0, sin(phi)*(1/cos(theta)) , cos(phi)*(1/cos(theta)) ]])
+
+    deulers = A@omega
+    return hstack([deulers, 0,0,0])
+
+def measurement_function(state, time):
     eulers = state[:3]
     dcm_body2eci = R.from_euler(ROTATION, eulers).as_dcm().T
-
     power = 0
     for facet, area in zip(FACETS, AREAS):
         normal = dcm_body2eci@facet
@@ -133,7 +175,6 @@ def inflate_inertia(inertia_values):
 def state_transition_function_inertia(state, dt):
 
     #print(state)
-
     propagated_state = state[0:6]
 
     inertia_values = state[6:]
@@ -147,6 +188,18 @@ def state_transition_function_inertia(state, dt):
         solver.integrate(solver.t + dt/10)
 
     return hstack([solver.y, inertia_values])
+
+def state_transition_function_const_omega(state, dt):
+
+    #print(state)
+    solver = ode(propagate_eulers_only)
+    solver.set_integrator('lsoda')
+    solver.set_initial_value(state, 0)
+
+    for i in range(10):
+        solver.integrate(solver.t + dt/10)
+
+    return hstack([solver.y])
 
 def state_transition_function_full_inertia(state, dt):
 
@@ -165,6 +218,28 @@ def state_transition_function_full_inertia(state, dt):
         solver.integrate(solver.t + dt/10)
 
     return hstack([solver.y, inertia_values])
+
+def state_transition_function_eigens_and_eulers(state, dt):
+
+    #print(state)
+
+    propagated_state = state[0:6]
+    inertia_values = state[6:8]
+    offset_eulers = state[8:11]
+
+    inertial_offset = R.from_euler(ROTATION,offset_eulers).as_dcm()
+
+    inertia = inertial_offset@diag(hstack([1, inertia_values]))@inertial_offset.T
+
+    solver = ode(propagate)
+    solver.set_integrator('lsoda')
+    solver.set_initial_value(propagated_state, 0)
+    solver.set_f_params(inertia)
+
+    for i in range(10):
+        solver.integrate(solver.t + dt/10)
+
+    return hstack([solver.y, inertia_values, offset_eulers])
 
 def reverse_state_transition_function_inertia(state, dt):
     return -state_transition_function_inertia(state, dt)

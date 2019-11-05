@@ -95,9 +95,9 @@ if save:
 w_err = truth[:,4:7] - est[:,3:6]
 
 fig, axes = plt.subplots(nrows = 3, ncols = 1, sharex = True)
-axes[0].plot(time, w_err[:,0])
-axes[1].plot(time, w_err[:,1])
-axes[2].plot(time, w_err[:,2])
+axes[0].plot(time, abs(w_err[:,0]))
+axes[1].plot(time, abs(w_err[:,1]))
+axes[2].plot(time, abs(w_err[:,2]))
 
 axes[2].set_xlabel('Time [s]')
 axes[0].set_ylabel('X-rate err [rad/s]')
@@ -117,9 +117,9 @@ if norm(tru_eci_w - est_eci_w) > norm(tru_eci_w + est_eci_w):
 w_err = tru_eci_w[:,0:3] - ang_sign*est_eci_w[:,0:3]
 
 fig, axes = plt.subplots(nrows = 3, ncols = 1, sharex = True)
-axes[0].plot(time, w_err[:,0])
-axes[1].plot(time, w_err[:,1])
-axes[2].plot(time, w_err[:,2])
+axes[0].plot(time, abs(w_err[:,0]))
+axes[1].plot(time, abs(w_err[:,1]))
+axes[2].plot(time, abs(w_err[:,2]))
 
 axes[2].set_xlabel('Time [s]')
 axes[0].set_ylabel('X-rate err [rad/s]')
@@ -153,6 +153,28 @@ plt.ylabel("Error")
 
 if save:
     plt.savefig(path+now+'Light_Curve_Error_'+tag+'.png', bbox_inches = 'tight')
+
+fig, axes = plt.subplots(nrows = 3, ncols = 1, sharex = True)
+axes[0].plot(time, truth[:,4])
+axes[1].plot(time, truth[:,5])
+axes[2].plot(time, truth[:,6])
+
+axes[0].plot(time, est[:,3])
+axes[1].plot(time, est[:,4])
+axes[2].plot(time, est[:,5])
+
+axes[2].set_xlabel('Time [s]')
+axes[0].set_ylabel('X-Axis [Rads/s]')
+axes[0].legend(['True', 'Estimate'])
+axes[1].set_ylabel('Y-Axis [Rads/s]')
+axes[2].set_ylabel('Z-Axis [Rads/s]')
+fig.suptitle('Angular Velocity Comparisons in Body')
+
+if save:
+    plt.savefig(path+now+'Angular_Velocity_Comparisons_'+tag+'.png', bbox_inches = 'tight')
+
+
+
 
 # plt.figure()
 # plt.plot(time[:2000], true_curve[:2000])
