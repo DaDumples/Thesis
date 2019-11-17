@@ -8,9 +8,14 @@ from filterpy.common import Q_discrete_white_noise
 from scipy.optimize import minimize
 from scipy.spatial.transform import Rotation as R
 import sys
+import datetime
+from sgp4.earth_gravity import wgs84
+from sgp4.io import twoline2rv
 
 from simulate_lightcurve import *
 import simulation_config as config
+import Aero_Funcs as AF
+import Aero_Plots as AP
 
 ESTIMATE = config.ESTIMATE()
 VARIABLES = config.VARIABLES()
@@ -25,6 +30,14 @@ MEASUREMENT_VARIANCE = ESTIMATE.MEASUREMENT_VARIANCE
 
 ROTATION = VARIABLES.ROTATION
 DT = VARIABLES.DT
+LAT = VARIABLES.LATITUDE
+LON = VARIABLES.LONGITUDE
+ALT = VARIABLES.ALTITUDE
+PASS = VARIABLES.PASS
+
+SPACECRAFT = twoline2rv(PASS['TLE'][0], PASS['TLE'][1], wgs84)
+UTC0 = PASS['EPOCH']
+TELESCOPE_ECEF = AF.lla_to_ecef(LAT, LON, ALT, geodetic = True)
 
 
 def main():
@@ -48,8 +61,8 @@ def main():
             print('Unknown Argument')
 
 
-    angular_velocity0 = array([1,1,1])
-    eulers = array([pi,pi,pi])
+    angular_velocity0 = array([.1,.1,.1])
+    eulers = array([0,0,0])
 
     if case == 1:
         DIM_X = 8
@@ -135,12 +148,25 @@ def propagate_eulers_only(t, state):
     return hstack([deulers, 0,0,0])
 
 def measurement_function(state, time):
+
+    print(state)
     eulers = state[:3]
     dcm_body2eci = R.from_euler(ROTATION, eulers).as_dcm().T
     power = 0
+
+    now = UTC0 + datetime.timedelta(seconds = time)
+    sc_eci, _ = SPACECRAFT.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
+    sc_eci = asarray(sc_eci)
+
+    lst = AF.local_sidereal_time(now, LON)
+    telescope_eci = AF.Cz(lst)@TELESCOPE_ECEF       
+    obs_vec = telescope_eci - sc_eci
+
+    sun_vec = AF.vect_earth_to_sun(now)
+
     for facet, area in zip(FACETS, AREAS):
         normal = dcm_body2eci@facet
-        power += facet_brightness(OBS_VEC, SUN_VEC, ALBEDO, normal, area)
+        power += phong_brdf(OBS_VEC, SUN_VEC, normal, area)
 
     return array([power])
 

@@ -37,6 +37,10 @@ PASS = VARIABLES.PASS
 LAT = VARIABLES.LATITUDE
 LON = VARIABLES.LONGITUDE
 ALT = VARIABLES.ALTITUDE
+R_SPECULAR = VARIABLES.R_SPECULAR
+R_DIFFUSION = VARIABLES.R_DIFFUSION
+N_PHONG = VARIABLES.N_PHONG
+C_SUN = VARIABLES.C_SUN
 
 def main():
 
@@ -173,11 +177,11 @@ def states_to_lightcurve(times, states, pass_obj, quats = False):
     telescope_ecef = AF.lla_to_ecef(LAT, LON, ALT, geodetic = True)
     utc0 = pass_obj['EPOCH']
 
-    sun_vec = AF.vect_earth_to_sun(utc0)
-
     for time, state in zip(times, states):
 
         now = utc0 + datetime.timedelta(seconds = time)
+
+        sun_vec = AF.vect_earth_to_sun(now)
 
         sc_eci, _ = spacecraft.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
         sc_eci = asarray(sc_eci)
@@ -204,7 +208,9 @@ def states_to_lightcurve(times, states, pass_obj, quats = False):
         power = 0
         for facet, area in zip(FACETS, AREAS):
             normal = dcm_body2eci@facet
-            power += facet_brightness(obs_vec, sun_vec, ALBEDO, normal, area)
+
+            if dot(normal, sun_vec) > 0 and dot(normal, obs_vec) > 0:
+                power += phong_brdf(obs_vec, sun_vec, normal, area)
 
         lightcurve.append(power)
 
@@ -244,7 +250,7 @@ def get_positions(times, pass_obj):
     return vstack(spacecraft_ecis), vstack(telescope_ecis), vstack(sun_ecis)
 
 
-def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
+def lommel_seeliger(obs_vec, sun_vec, albedo, normal, area):
     #determines the brightness of a facet at 1 meter distance
     #obs_dot is the dot product of the facet normal and observation vector
     #sun_dot is the dot product of the facet normal and sun vector
@@ -279,6 +285,41 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
 
 
     return brightness
+
+
+
+
+def phong_brdf(obs_vec, sun_vec, normal, area):
+    #As implemented in INACTIVE SPACE OBJECT SHAPE ESTIMATION
+    #VIA ASTROMETRIC AND PHOTOMETRIC DATA FUSION
+
+    #Assumes specular lobe is even in all directions, nu = nv = N_PHONG
+
+    obs_norm = obs_vec/norm(obs_vec)
+    sun_norm = sun_vec/norm(sun_vec)
+    h_vec = (obs_norm + sun_norm)
+    h_vec = h_vec/norm(h_vec)
+
+    dot_ns = dot(normal, sun_norm)
+    dot_no = dot(normal, obs_norm)
+    dot_nh = dot(normal, h_vec)
+
+    F_reflect = R_SPECULAR + (1-R_SPECULAR)*(1 - dot(sun_norm, h_vec))
+    exponent = N_PHONG
+    denominator = dot_ns + dot_no - dot_ns*dot_no
+
+    specular = (N_PHONG+1)/(8*pi)*(dot_nh**exponent)/denominator*F_reflect
+
+    diffuse = 28*R_DIFFUSION/(23*pi)*(1 - R_SPECULAR)*(1 - (1 - dot_ns/2)**5)*(1 - (1 - dot_no/2)**5)
+
+    Fsun = C_SUN*(specular + diffuse)*dot_ns
+    Fobs = Fsun*area*dot_no/norm(obs_vec)**2
+
+    return Fobs
+
+
+
+
 
 if __name__ == '__main__':
     main()
