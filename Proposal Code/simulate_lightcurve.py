@@ -260,7 +260,11 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
     obs_dot = dot(normal, obs_norm)
     sun_dot = dot(normal, sun_norm)
 
-    solar_phase_angle = degrees(arccos(dot(obs_norm, sun_norm)))
+    if obs_dot <= 0 or sun_dot <= 0:
+        return 0
+
+    solar_phase_angle = arccos(dot(obs_norm, sun_norm))
+
     #constants from above paper
     c = .1
     A0 = .5
@@ -269,10 +273,7 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
 
 
     phase = A0*exp(-solar_phase_angle/D) + k*solar_phase_angle + 1
-    if phase < 0:
-        return 0
-    if obs_dot == 0 and sun_dot == 0:
-        return 0
+
     scattering = phase*obs_dot*sun_dot*(1/(obs_dot + sun_dot) + c)
     brightness = scattering*albedo*area
 
