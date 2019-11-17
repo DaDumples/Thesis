@@ -1,6 +1,7 @@
 from numpy import *
 from numpy.linalg import *
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from scipy.integrate import ode
 from scipy.spatial.transform import Rotation as R
 import pymap3d as pm
@@ -9,11 +10,13 @@ from sgp4.io import twoline2rv
 import datetime
 import sys
 
+
 sys.path.insert(0, '../../Aero_Funcs')
 
 import read_lightcurve_data as rlc
 import simulation_config as config
 import Aero_Funcs as AF
+import Aero_Plots as AP
 
 
 
@@ -68,11 +71,11 @@ def main():
 
     #Generate lightcurve
 
-    lightcurve = states_to_lightcurve(time, newstate, PASS['EPOCH'], quats = True)
+    lightcurve = states_to_lightcurve(time, newstate, PASS, quats = True)
 
 
 
-    lightcurve += random.normal(0, MEASUREMENT_VARIANCE, size = lightcurve.shape)
+    #lightcurve += random.normal(0, MEASUREMENT_VARIANCE, size = lightcurve.shape)
 
 
     #Save Data
@@ -81,15 +84,38 @@ def main():
     save('true_states', newstate)
     save('time', time)
 
+    sc_pos, tel_pos, sun_pos = get_positions(time, PASS)
+
+    colors = []
+    for x, y in zip(sc_pos, sun_pos):
+        if AF.shadow(x, y) == 0:
+            colors.append('k')
+        else:
+            colors.append('b')
+
+
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    AP.plot_earth(ax)
+    ax.scatter(sc_pos[:,0], sc_pos[:,1], sc_pos[:,2], c = colors)
+    AP.plot_orbit(ax, tel_pos)
+    AP.scale_plot(ax)
+
+
+    azimuth, elevation = AF.pass_az_el(tel_pos, sc_pos)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection = 'polar')
+    #matplotlib takes azimuth in radians and elevation in degrees for some reason :/
+    ax.scatter(radians(azimuth), 90-elevation, c = colors)
+    ax.set_ylim([0,90])
+
+
+
+    plt.figure()
     plt.plot(time, lightcurve)
     plt.show()
 
-
-def lla2eci(lat,lon,alt,date):
-
-    x,y,z = pm.geodetic2ecef(lat,lon,alt)
-    r = pm.ecef2eci((x,y,z),date)/1000
-    return r
 
 
 def crux(A):
@@ -140,26 +166,32 @@ def propagate(t, state, inertia, noise = False):
 
     return hstack([deulers, domega])
 
-def states_to_lightcurve(times, states, utc0, quats = False):
+def states_to_lightcurve(times, states, pass_obj, quats = False):
 
     lightcurve = []
-    spacecraft = twoline2rv(PASS['TLE'][0], PASS['TLE'][1], wgs84)
-    telescope_ecef = pm.geodetic2ecef(LAT, LON, ALT)
+    spacecraft = twoline2rv(pass_obj['TLE'][0], pass_obj['TLE'][1], wgs84)
+    telescope_ecef = AF.lla_to_ecef(LAT, LON, ALT, geodetic = True)
+    utc0 = pass_obj['EPOCH']
 
     sun_vec = AF.vect_earth_to_sun(utc0)
-    sun_vec = sun_vec/norm(sun_vec)
 
     for time, state in zip(times, states):
 
         now = utc0 + datetime.timedelta(seconds = time)
 
-        
-        tel_x, tel_y, tel_z = pm.ecef2eci(*telescope_ecef, now) #km
-        telescope_eci = array([tel_x[0], tel_y[0], tel_z[0]])/1000
         sc_eci, _ = spacecraft.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
         sc_eci = asarray(sc_eci)
+
+        # if AF.shadow(sc_eci,sun_vec):
+        #     #if the spacecraft is in shadow its brightness is zero
+        #     print("IN SHADOW")
+        #     lightcurve.append(0)
+        #     continue
+
+        lst = AF.local_sidereal_time(now, LON)
+        
+        telescope_eci = AF.Cz(lst)@telescope_ecef        
         obs_vec = telescope_eci - sc_eci
-        obs_vec = obs_vec/norm(obs_vec)
 
         if quats:
             eta = state[0]
@@ -181,6 +213,37 @@ def states_to_lightcurve(times, states, utc0, quats = False):
     return lightcurve
 
 
+def get_positions(times, pass_obj):
+
+    spacecraft = twoline2rv(pass_obj['TLE'][0], pass_obj['TLE'][1], wgs84)
+    telescope_ecef = AF.lla_to_ecef(LAT, LON, ALT, geodetic = True)
+    utc0 = pass_obj['EPOCH']
+
+    telescope_ecis = []
+    spacecraft_ecis = []
+    sun_ecis = []
+
+    for time in times:
+
+        now = utc0 + datetime.timedelta(seconds = time)
+
+        sun_vec = AF.vect_earth_to_sun(now)
+
+        sc_eci, _ = spacecraft.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
+        sc_eci = asarray(sc_eci)
+
+        lst = AF.local_sidereal_time(now, LON)
+        
+        telescope_eci = AF.Cz(lst)@telescope_ecef        
+        obs_vec = telescope_eci - sc_eci
+
+        telescope_ecis.append(telescope_eci)
+        spacecraft_ecis.append(sc_eci)
+        sun_ecis.append(sun_vec)
+
+    return vstack(spacecraft_ecis), vstack(telescope_ecis), vstack(sun_ecis)
+
+
 def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
     #determines the brightness of a facet at 1 meter distance
     #obs_dot is the dot product of the facet normal and observation vector
@@ -191,14 +254,17 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
     #from LIGHTCURVE INVERSION FOR SHAPE ESTIMATION OF GEO OBJECTS FROM
     #SPACE-BASED SENSORS
 
-    obs_dot = dot(normal, obs_vec)
-    sun_dot = dot(normal, sun_vec)
-    solar_phase_angle = dot(obs_vec, sun_vec)
+    obs_norm = obs_vec/norm(obs_vec)
+    sun_norm = sun_vec/norm(sun_vec)
 
+    obs_dot = dot(normal, obs_norm)
+    sun_dot = dot(normal, sun_norm)
+
+    solar_phase_angle = degrees(arccos(dot(obs_norm, sun_norm)))
     #constants from above paper
     c = .1
     A0 = .5
-    D = radians(.1)
+    D = .1
     k = -.5
 
 
@@ -209,6 +275,8 @@ def facet_brightness(obs_vec, sun_vec, albedo, normal, area):
         return 0
     scattering = phase*obs_dot*sun_dot*(1/(obs_dot + sun_dot) + c)
     brightness = scattering*albedo*area
+
+
     return brightness
 
 if __name__ == '__main__':
