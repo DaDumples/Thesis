@@ -1,0 +1,246 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  4 NOV 2019 22:22
+entering extended mode
+**./Literature_review.tex
+(Literature_review.tex
+LaTeX2e <2018-12-01>
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\article.cls"
+Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\size10.clo"
+File: size10.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
+)
+\c@part=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\inputenc.st
+y"
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/natbib\natbib.sty"
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip43
+\bibsep=\skip44
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count88
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphicx.
+sty"
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\keyval.st
+y"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphics.
+sty"
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\trig.sty"
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-cfg\graph
+ics.cfg"
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-def\pdfte
+x.def"
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+) (Literature_review.aux)
+\openout1 = `Literature_review.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
+df.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count89
+\scratchdimen=\dimen105
+\scratchbox=\box27
+\nofMPsegments=\count90
+\nofMParguments=\count91
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count92
+\MPscratchDim=\dimen106
+\MPnumerator=\count93
+\makeMPintoPDFobject=\count94
+\everyMPtoPDFconversion=\toks18
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf-
+base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\infware
+rr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\grfext.st
+y"
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\kvdefin
+ekeys.sty"
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ltxcmds
+.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\kvoptions
+.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\kvsetke
+ys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\etexcmd
+s.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifluate
+x.sty"
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+))))
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\pdftexc
+mds.sty"
+Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifpdf.s
+ty"
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 13.
+<lightcurve_AMOS.png, id=1, 387.24675pt x 244.5135pt>
+File: lightcurve_AMOS.png Graphic file (type png)
+<use lightcurve_AMOS.png>
+Package pdftex.def Info: lightcurve_AMOS.png  used on input line 21.
+(pdftex.def)             Requested size: 172.5pt x 108.92195pt.
+ [1
+
+{C:/Users/theha/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./lightcurv
+e_AMOS.png>]
+<synodic_period_AMOS.png, id=12, 392.06474pt x 246.32025pt>
+File: synodic_period_AMOS.png Graphic file (type png)
+<use synodic_period_AMOS.png>
+Package pdftex.def Info: synodic_period_AMOS.png  used on input line 46.
+(pdftex.def)             Requested size: 172.5pt x 108.37372pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2]
+<PAB.png, id=17, 693.792pt x 390.258pt>
+File: PAB.png Graphic file (type png)
+<use PAB.png>
+Package pdftex.def Info: PAB.png  used on input line 64.
+(pdftex.def)             Requested size: 172.5pt x 97.02832pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3 <./synodic_period_AMOS.png>]
+<spin_axis_OPTICAL_CHARACTERIZATION.png, id=22, 355.3275pt x 319.1925pt>
+File: spin_axis_OPTICAL_CHARACTERIZATION.png Graphic file (type png)
+<use spin_axis_OPTICAL_CHARACTERIZATION.png>
+Package pdftex.def Info: spin_axis_OPTICAL_CHARACTERIZATION.png  used on input 
+line 73.
+(pdftex.def)             Requested size: 172.5pt x 154.95915pt.
+ [4 <./PAB.png> <./spin_axis_OPTICAL_CHARACTERIZATION.png>] [5]
+<lci_LIGHTCURVE_INVERSION.png, id=30, 548.0475pt x 210.18526pt>
+File: lci_LIGHTCURVE_INVERSION.png Graphic file (type png)
+<use lci_LIGHTCURVE_INVERSION.png>
+Package pdftex.def Info: lci_LIGHTCURVE_INVERSION.png  used on input line 110.
+(pdftex.def)             Requested size: 345.0pt x 132.31477pt.
+<phase_angle_brightness_SEPARATING_ATTITUDE.png, id=31, 641.9985pt x 214.401pt>
+
+File: phase_angle_brightness_SEPARATING_ATTITUDE.png Graphic file (type png)
+<use phase_angle_brightness_SEPARATING_ATTITUDE.png>
+Package pdftex.def Info: phase_angle_brightness_SEPARATING_ATTITUDE.png  used o
+n input line 121.
+(pdftex.def)             Requested size: 345.0pt x 115.21866pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6 <./lci_LIGHTCURVE_INVERSION.png>]
+<Kalman_convergence.png, id=36, 313.77225pt x 243.309pt>
+File: Kalman_convergence.png Graphic file (type png)
+<use Kalman_convergence.png>
+Package pdftex.def Info: Kalman_convergence.png  used on input line 135.
+(pdftex.def)             Requested size: 172.5pt x 133.76096pt.
+ [7 <./phase_angle_brightness_SEPARATING_ATTITUDE.png> <./Kalman_convergence.pn
+g>] [8]
+<lightcurve_simulation.png, id=46, 433.01775pt x 251.13824pt>
+File: lightcurve_simulation.png Graphic file (type png)
+<use lightcurve_simulation.png>
+Package pdftex.def Info: lightcurve_simulation.png  used on input line 167.
+(pdftex.def)             Requested size: 172.5pt x 100.04349pt.
+ [9 <./lightcurve_simulation.png>]
+(Literature_review.bbl [10]) [11] (Literature_review.aux) ) 
+Here is how much of TeX's memory you used:
+ 1888 strings out of 492946
+ 28476 string characters out of 3126388
+ 92209 words of memory out of 3000000
+ 5778 multiletter control sequences out of 15000+200000
+ 8241 words of font info for 29 fonts, out of 3000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 41i,6n,27p,1020b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/theha/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Use
+rs/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx1
+2.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmr10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/theha/AppData/Local/Program
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on Literature_review.pdf (11 pages, 437563 bytes).
+PDF statistics:
+ 78 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+

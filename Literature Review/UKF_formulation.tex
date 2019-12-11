@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{equation}
+	\begin{bmatrix} \Theta \\  w \\  I \\ k\\
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	Euler Angles \\ Angular Velocity \\ Inertia \\ Constants
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+	\dot{\Theta} =
+	\begin{bmatrix}
+	\dot{\phi} \\ \dot{\theta} \\ \dot{\gamma} \\
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	1 & sin(\phi)tan(\theta) & cos(\phi)tan(\theta) \\
+	0 & cos(\phi) & -sin(\phi) \\
+	0 & sin(\phi)sec(\theta) & cos(\phi)sec(\theta) \\
+	\end{bmatrix}
+	\begin{bmatrix}
+	w_{x} \\ w_{y} \\ w_{z}
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\dot{\omega} = -I^{-1}\omega^{X}I\omega
+\end{equation}
+
+\begin{equation}
+	Reflected Intensity = 
+	\sum_{j = 1}^{n} S(\mu, \mu_{0}, \alpha) \rho_{j} a_{j}
+\end{equation}
+
+\begin{equation}
+	\begin{matrix}
+	n \\ \mu \\ \mu_{0} \\ \alpha \\ \rho_{j} \\ a_{j} \\
+	\end{matrix}
+	\;\;\;\;
+	\begin{matrix}
+	\text{number of facets} \\
+	\vec{u}_{facet\:normal}\cdotp\vec{u}_{obs} \\
+	\vec{u}_{facet\:normal}\cdotp\vec{u}_{sun} \\
+	\vec{u}_{obs}\cdotp\vec{u}_{sun} \\
+	\text{albedo of j-th facet} \\
+	\text{area of j-th facet}\\
+	\end{matrix}
+\end{equation}
+
+\end{document}
