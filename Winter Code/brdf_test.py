@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 
 from matplotlib.animation import FuncAnimation
 
+import sys
+sys.path.insert(0, '../../Aero_Funcs')
+
+import Aero_Funcs as AF
+import Aero_Plots as AP
+import Controls_Funcs as CF
+
 R_DIFFUSION = .5 #metal has zero diffusion
 R_SPECULAR = .05 #gueess
 N_PHONG = 10 #guess for now, see PHONG BRDF
@@ -142,7 +149,7 @@ if __name__ == '__main__':
     for state, sc_pos, tel_pos, sun_pos, i in zip(states, sc_positions, tel_positions, sun_positions, range(len(states))):
         eta = state[0]
         eps = state[1:4]
-        C_eci2body = R.from_quat(hstack([eps, eta])).as_dcm()
+        C_eci2body = CF.quat2dcm(eps, eta)
         obs_vec_eci = sc_pos - tel_pos
         obs_vec_eci = obs_vec_eci/norm(obs_vec_eci)
         sun_vec_eci = sc_pos - sun_pos
