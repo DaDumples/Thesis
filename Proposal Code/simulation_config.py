@@ -31,14 +31,18 @@ class TRUTH():
     
     DCM_OFFSET = R.from_euler('xyz', array([0.01, 0.01, 0.01])).as_dcm()
 
-    INERTIA = DCM_OFFSET@diag(array([Ixx, Iyy, Izz]))@DCM_OFFSET.T
+    #INERTIA = DCM_OFFSET@diag(array([Ixx, Iyy, Izz]))@DCM_OFFSET.T
+    INERTIA = identity(3)*MASS/12
+
+    # FACETS = [array([ 1, 0, 0]),
+    #           array([-1, 0, 0]),
+    #           array([ 0, 1, 0]),
+    #           array([ 0,-1, 0]),
+    #           array([ 0, 0, 1]),
+    #           array([ 0, 0,-1])]
 
     FACETS = [array([ 1, 0, 0]),
-              array([-1, 0, 0]),
-              array([ 0, 1, 0]),
-              array([ 0,-1, 0]),
-              array([ 0, 0, 1]),
-              array([ 0, 0,-1])]
+              array([-1, 0, 0])]
 
     MEASUREMENT_VARIANCE = .001
     ALBEDO = .6
@@ -53,12 +57,15 @@ class TRUTH():
 
 
 class ESTIMATE():
+    # FACETS = [array([ 1, 0, 0]),
+    #           array([-1, 0, 0]),
+    #           array([ 0, 1, 0]),
+    #           array([ 0,-1, 0]),
+    #           array([ 0, 0, 1]),
+    #           array([ 0, 0,-1])]
+
     FACETS = [array([ 1, 0, 0]),
-              array([-1, 0, 0]),
-              array([ 0, 1, 0]),
-              array([ 0,-1, 0]),
-              array([ 0, 0, 1]),
-              array([ 0, 0,-1])]
+              array([-1, 0, 0])]
 
     X_LEN = TRUTH.X_LEN #Zaxis
     Y_LEN = TRUTH.X_LEN #Yaxis

@@ -61,7 +61,7 @@ def main():
             print('Unknown Argument')
 
 
-    angular_velocity0 = array([.1,.1,.1])
+    angular_velocity0 = array([.1,0,0])
     eulers = array([0,0,0])
 
     if case == 1:
@@ -131,7 +131,7 @@ def main():
     save('estimated_covariances', Ps)
 
     plt.plot(lightcurve)
-    plt.plot(states_to_lightcurve(Xs))
+    plt.plot(states_to_lightcurve(time, Xs, PASS))
     plt.show()
 
 def propagate_eulers_only(t, state):

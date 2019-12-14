@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.integrate import ode
 from scipy.spatial.transform import Rotation as R
-import pymap3d as pm
+#import pymap3d as pm
 from sgp4.earth_gravity import wgs84
 from sgp4.io import twoline2rv
 import datetime
@@ -44,9 +44,13 @@ C_SUN = VARIABLES.C_SUN
 
 def main():
 
-    angular_velocity0 = array([0.1,0.1,.1])
-    eta0 = 1
-    eps0 = array([0,0,0])
+    angular_velocity0 = array([0,0.1,0])
+    # eta0 = 1
+    # eps0 = array([0,0,0])
+
+    q0 = R.random(random_state = 1111).as_quat()
+    eta0 = q0[3]
+    eps0 = q0[0:3]
 
     eulers = array([0,0,0])
 
@@ -89,6 +93,9 @@ def main():
     save('time', time)
 
     sc_pos, tel_pos, sun_pos = get_positions(time, PASS)
+    save('sc_pos', sc_pos)
+    save('tel_pos', tel_pos)
+    save('sun_pos', sun_pos)
 
     colors = []
     for x, y in zip(sc_pos, sun_pos):
