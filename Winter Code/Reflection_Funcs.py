@@ -273,42 +273,43 @@ class Spacecraft_Geometry():
 
 
 
-    # def calc_reflected_power(self, obs_vec_body, sun_vec_body):
+    def calc_reflected_power(self, obs_vec_body, sun_vec_body):
 
-    #     power = 0
-    #     for facet in zip(self.faces):
+        power = 0
+        for facet in zip(self.faces):
 
-    #         if dot(normal, sun_vec) > 0 and dot(normal, obs_vec) > 0:
+            if dot(normal, sun_vec) > 0 and dot(normal, obs_vec) > 0:
 
-    #             if len(self.obscuring_faces[facet]) == 0:
-    #                 power += phong_brdf(obs_vec, sun_vec, normal, area - blocked_area)
+                if len(self.obscuring_faces[facet]) == 0:
+                    power += phong_brdf(obs_vec, sun_vec, facet.normal, facet.area)
 
-    #             else:
+                else:
 
-    #                 polygons = []
-    #                 for obscuring_face in self.obscuring_faces[facet]:
-    #                     behind_vertices = []
-    #                     shadow_vertices = []
-    #                     for obscuring_vertex in obscuring_face.vertices:
-    #                         behind_vertices.append(facet.intersects(obscuring_vertex, obs_vec_body, check_bounds = False)*obs_vec_body + source)
-    #                         shadow_vertices.append(facet.intersects(obscuring_vertex, sun_vec_body, check_bounds = False)*sun_vec_body + source)
-    #                     polygons.append(Polygon(behind_vertices).convex_hull)
-    #                     polygons.append(Polygon(shadow_vertices).convex_hull)
+                    num_visible = 0
+                    for pt in self.sample_points[facet]:
+                        for obscurer in self.obscuring_faces[facet]:
+                            if (obscurer.intersects(pt, obs_vec_body) == inf) and (obscurer.intersects(pt, sun_vec_body) == inf):
+                                num_visible += 1
+                                break
 
-    #                 blocked_area = facet.intersection(cascaded_union(polygons)).area
+                    reflecting_area = facet.area*num_visible/self.sample_nums[facet]
 
-    #                 power += phong_brdf(obs_vec, sun_vec, normal, area - blocked_area)
+                    power += phong_brdf(obs_vec, sun_vec, facet.normal, reflecting_area)
 
     def calc_reflecting_area(self, obs_vec_body, sun_vec_body, facet):
 
         num_visible = 0
         for pt in self.sample_points[facet]:
-            for obscurer in self.obscuring_faces[facet]:
-                if (obscurer.intersects(pt, obs_vec_body) == inf) and (obscurer.intersects(pt, sun_vec_body) == inf):
-                    num_visible += 1
-                    break
+            if len(self.obscuring_faces[facet]) == 0:
+                area = facet.area
+            else:
+                for obscurer in self.obscuring_faces[facet]:
+                    if (obscurer.intersects(pt, obs_vec_body) == inf) and (obscurer.intersects(pt, sun_vec_body) == inf):
+                        num_visible += 1
+                        break
+                area = facet.area*num_visible/self.sample_nums[facet]
 
-        return facet.area*num_visible/self.sample_nums[facet]
+        return area
 
 
 if __name__ == '__main__':
@@ -322,7 +323,7 @@ if __name__ == '__main__':
     sun_vec = array([-1,-1,1])/norm(array([-1,-1,1]))
 
     print(face2.intersects(array([.5,0,0]), sun_vec))
-    print(tbone.calc_reflecting_area(obs_vec, sun_vec, tbone.faces[0]))
+    print(tbone.calc_reflecting_area(obs_vec, sun_vec, tbone.faces[1]))
 
                 
 
