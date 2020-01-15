@@ -12,80 +12,81 @@ sys.path.insert(0, '../../Aero_Funcs')
 import Aero_Funcs as AF
 import Aero_Plots as AP
 import Controls_Funcs as CF
+import Reflection_Funcs as RF
 
 R_DIFFUSION = .5 #metal has zero diffusion
 R_SPECULAR = .05 #gueess
 N_PHONG = 10 #guess for now, see PHONG BRDF
 C_SUN = 455 #w/m^2, power of visible spectrum
 
-class Facet():
+# class Facet():
 
-    def __init__(self, x_dim, y_dim, unit_normal, center_pos):
-        self.center = center_pos
-        self.unit_normal = unit_normal/norm(unit_normal)
-        self.x_dim = x_dim
-        self.y_dim = y_dim
-        self.area = x_dim*y_dim
+#     def __init__(self, x_dim, y_dim, unit_normal, center_pos):
+#         self.center = center_pos
+#         self.unit_normal = unit_normal/norm(unit_normal)
+#         self.x_dim = x_dim
+#         self.y_dim = y_dim
+#         self.area = x_dim*y_dim
 
-        angle = arccos(dot(self.unit_normal, array([0,0,1])))
-        axis = cross(array([0,0,1]), self.unit_normal)
-        self.rotation = R.from_rotvec(angle*axis)
-
-
-    def intersects(self, source, direction):
+#         angle = arccos(dot(self.unit_normal, array([0,0,1])))
+#         axis = cross(array([0,0,1]), self.unit_normal)
+#         self.rotation = R.from_rotvec(angle*axis)
 
 
-        direction = direction/norm(direction)
-
-        if dot(direction, self.unit_normal) == 0:
-            return inf
-        elif dot((self.center - source), self.unit_normal) == 0:
-            return 0
-
-        else:
-            distance_from_source = dot((self.center - source), self.unit_normal)/dot(direction, self.unit_normal)
+#     def intersects(self, source, direction):
 
 
+#         direction = direction/norm(direction)
 
-            intersection = source + direction*distance_from_source
+#         if dot(direction, self.unit_normal) == 0:
+#             return inf
+#         elif dot((self.center - source), self.unit_normal) == 0:
+#             return 0
 
-            intersection_in_plane = self.rotation.as_dcm().T@(intersection - self.center)
+#         else:
+#             distance_from_source = dot((self.center - source), self.unit_normal)/dot(direction, self.unit_normal)
 
-            within_x = (intersection_in_plane[0] <= self.x_dim) and (intersection_in_plane[0] >= -self.x_dim)
-            within_y = (intersection_in_plane[1] <= self.y_dim) and (intersection_in_plane[1] >= -self.y_dim)
 
-            if within_x and within_y:
-                return distance_from_source
-            else:
-                return inf
 
-def phong_brdf(obs_vec, sun_vec, normal, area):
-    #As implemented in INACTIVE SPACE OBJECT SHAPE ESTIMATION
-    #VIA ASTROMETRIC AND PHOTOMETRIC DATA FUSION
+#             intersection = source + direction*distance_from_source
 
-    #Assumes specular lobe is even in all directions, nu = nv = N_PHONG
+#             intersection_in_plane = self.rotation.as_dcm().T@(intersection - self.center)
 
-    obs_norm = obs_vec/norm(obs_vec)
-    sun_norm = sun_vec/norm(sun_vec)
-    h_vec = (obs_norm + sun_norm)
-    h_vec = h_vec/norm(h_vec)
+#             within_x = (intersection_in_plane[0] <= self.x_dim) and (intersection_in_plane[0] >= -self.x_dim)
+#             within_y = (intersection_in_plane[1] <= self.y_dim) and (intersection_in_plane[1] >= -self.y_dim)
 
-    dot_ns = dot(normal, sun_norm)
-    dot_no = dot(normal, obs_norm)
-    dot_nh = dot(normal, h_vec)
+#             if within_x and within_y:
+#                 return distance_from_source
+#             else:
+#                 return inf
 
-    F_reflect = R_SPECULAR + (1-R_SPECULAR)*(1 - dot(sun_norm, h_vec))
-    exponent = N_PHONG
-    denominator = dot_ns + dot_no - dot_ns*dot_no
+# def phong_brdf(obs_vec, sun_vec, normal, area):
+#     #As implemented in INACTIVE SPACE OBJECT SHAPE ESTIMATION
+#     #VIA ASTROMETRIC AND PHOTOMETRIC DATA FUSION
 
-    specular = (N_PHONG+1)/(8*pi)*(dot_nh**exponent)/denominator*F_reflect
+#     #Assumes specular lobe is even in all directions, nu = nv = N_PHONG
 
-    diffuse = 28*R_DIFFUSION/(23*pi)*(1 - R_SPECULAR)*(1 - (1 - dot_ns/2)**5)*(1 - (1 - dot_no/2)**5)
+#     obs_norm = obs_vec/norm(obs_vec)
+#     sun_norm = sun_vec/norm(sun_vec)
+#     h_vec = (obs_norm + sun_norm)
+#     h_vec = h_vec/norm(h_vec)
 
-    Fsun = C_SUN*(specular + diffuse)*dot_ns
-    Fobs = Fsun*area*dot_no/norm(obs_vec)**2
+#     dot_ns = dot(normal, sun_norm)
+#     dot_no = dot(normal, obs_norm)
+#     dot_nh = dot(normal, h_vec)
 
-    return Fobs
+#     F_reflect = R_SPECULAR + (1-R_SPECULAR)*(1 - dot(sun_norm, h_vec))
+#     exponent = N_PHONG
+#     denominator = dot_ns + dot_no - dot_ns*dot_no
+
+#     specular = (N_PHONG+1)/(8*pi)*(dot_nh**exponent)/denominator*F_reflect
+
+#     diffuse = 28*R_DIFFUSION/(23*pi)*(1 - R_SPECULAR)*(1 - (1 - dot_ns/2)**5)*(1 - (1 - dot_no/2)**5)
+
+#     Fsun = C_SUN*(specular + diffuse)*dot_ns
+#     Fobs = Fsun*area*dot_no/norm(obs_vec)**2
+
+#     return Fobs
 
 def generate_image(facets, camera_axis, sun_axis, win_dim = (4,4), dpm = 50):
     win_pix = (win_dim[0]*dpm, win_dim[1]*dpm)
@@ -149,7 +150,7 @@ if __name__ == '__main__':
     for state, sc_pos, tel_pos, sun_pos, i in zip(states, sc_positions, tel_positions, sun_positions, range(len(states))):
         eta = state[0]
         eps = state[1:4]
-        C_eci2body = CF.quat2dcm(eps, eta)
+        C_eci2body = CF.quat2dcm(eps, eta).T
         obs_vec_eci = sc_pos - tel_pos
         obs_vec_eci = obs_vec_eci/norm(obs_vec_eci)
         sun_vec_eci = sc_pos - sun_pos

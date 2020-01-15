@@ -24,11 +24,7 @@ from mpl_toolkits.mplot3d import Axes3D
 TRUTH = config.TRUTH()
 VARIABLES = config.VARIABLES()
 
-FACETS = TRUTH.FACETS
 ALBEDO = TRUTH.ALBEDO
-AREAS = TRUTH.AREAS
-OBS_VEC = TRUTH.OBS_VEC
-SUN_VEC = TRUTH.SUN_VEC
 INERTIA = TRUTH.INERTIA
 MEASUREMENT_VARIANCE = TRUTH.MEASUREMENT_VARIANCE
 
@@ -109,67 +105,14 @@ def phong_brdf(obs_vec, sun_vec, normal, area):
     return Fobs
 
 
-def states_to_lightcurve(times, states, pass_obj, quats = False):
-
-    lightcurve = []
-    spacecraft = twoline2rv(pass_obj['TLE'][0], pass_obj['TLE'][1], wgs84)
-    telescope_ecef = AF.lla_to_ecef(LAT, LON, ALT, geodetic = True)
-    utc0 = pass_obj['EPOCH']
-
-    sc_posses = []
-
-    for time, state in zip(times, states):
-
-        now = utc0 + datetime.timedelta(seconds = time)
-
-        sun_vec = AF.vect_earth_to_sun(now)
-
-
-        sc_eci, _ = spacecraft.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
-        sc_eci = asarray(sc_eci)
-
-        # if AF.shadow(sc_eci,sun_vec):
-        #     #if the spacecraft is in shadow its brightness is zero
-        #     print("IN SHADOW")
-        #     lightcurve.append(0)
-        #     continue
-
-        lst = AF.local_sidereal_time(now, LON)
-        
-        telescope_eci = AF.Cz(lst)@telescope_ecef        
-        obs_vec = telescope_eci - sc_eci
-
-        if quats:
-            eta = state[0]
-            eps = state[1:4]
-            dcm_body2eci = CF.quat2dcm(eps, eta)
-        else:
-            eulers = state[:3]
-            dcm_body2eci = CF.euler2dcm(ROTATION, eulers)
-
-        power = 0
-        for facet, area in zip(FACETS, AREAS):
-            normal = dcm_body2eci@facet
-
-            if dot(normal, sun_vec) > 0 and dot(normal, obs_vec) > 0:
-                power += phong_brdf(obs_vec, sun_vec, normal, area)
-
-        lightcurve.append(power)
-        sc_posses.append(sc_eci)
-
-    lightcurve = hstack(lightcurve)
-    sc_posses = vstack(sc_posses)
-
-    return lightcurve, sc_posses
-
-
 class Facet():
 
-    def __init__(self, x_dim, y_dim, center_pos, name = '', albedo = .6, facet2body = None):
+    def __init__(self, x_dim, y_dim, center_pos, name = '', albedo = .6, facet2body = None, double_sided = False):
         self.center = center_pos
         self.x_dim = x_dim
         self.y_dim = y_dim
         self.area = x_dim*y_dim
+        self.double_sided = double_sided
 
         self.name = name
         self.albedo = albedo
@@ -227,10 +170,10 @@ class Facet():
 
 class Spacecraft_Geometry():
 
-    def __init__(self, faces, sample_dim = .01):
+    def __init__(self, facets, sample_dim = .01):
 
-        self.faces = faces
-        self.obscuring_faces = {}
+        self.facets = facets
+        self.obscuring_facets = {}
         self.sample_points = {}
         self.sample_nums = {}
         self.sample_dim = sample_dim
@@ -244,86 +187,188 @@ class Spacecraft_Geometry():
 
         for vertex in A.vertices:
             v_test = vertex - B.center
-            if dot(v_test, B.unit_normal) > 0:
+            if dot(v_test, B.unit_normal) > 0.001:
                 return True
 
     def calc_obscuring_faces(self):
-        for B in self.faces:
-            self.obscuring_faces[B] = []
-            for A in self.faces:
+        for B in self.facets:
+            self.obscuring_facets[B] = []
+            for A in self.facets:
                 if (A != B) and self.A_obscures_B(A, B):
-                    self.obscuring_faces[B].append(A)
+                    self.obscuring_facets[B].append(A)
 
     def calc_sample_pts(self):
 
-        for face in self.faces:
+        for facet in self.facets:
 
-            self.sample_points[face] = []
-            x_num = int(face.x_dim/self.sample_dim)
-            y_num = int(face.y_dim/self.sample_dim)
+            self.sample_points[facet] = []
+            x_num = int(facet.x_dim/self.sample_dim)
+            y_num = int(facet.y_dim/self.sample_dim)
 
-            self.sample_nums[face] = x_num*y_num
+            self.sample_nums[facet] = x_num*y_num
 
-            x_buff = face.x_dim/x_num/2
-            y_buff = face.y_dim/y_num/2
+            x_buff = facet.x_dim/x_num/2
+            y_buff = facet.y_dim/y_num/2
 
-            for x in linspace(-face.x_dim/2 + x_buff, face.x_dim/2 - x_buff, x_num):
-                for y in linspace(-face.y_dim/2 + y_buff, face.y_dim/2 - y_buff, y_num):
-                    self.sample_points[face].append(face.facet2body.T@array([x,y,0]))
+            for x in linspace(-facet.x_dim/2 + x_buff, facet.x_dim/2 - x_buff, x_num):
+                for y in linspace(-facet.y_dim/2 + y_buff, facet.y_dim/2 - y_buff, y_num):
+                    self.sample_points[facet].append(facet.facet2body.T@array([x,y,0]))
 
 
 
     def calc_reflected_power(self, obs_vec_body, sun_vec_body):
 
         power = 0
-        for facet in zip(self.faces):
+        for facet in self.facets:
+            if dot(facet.unit_normal, sun_vec_body) > 0 and dot(facet.unit_normal, obs_vec_body) > 0:
+                    reflecting_area = self.calc_reflecting_area(obs_vec_body, sun_vec_body, facet)
+                    if reflecting_area != 0:
+                        power += phong_brdf(obs_vec_body, sun_vec_body, facet.unit_normal, reflecting_area)
 
-            if dot(normal, sun_vec) > 0 and dot(normal, obs_vec) > 0:
-
-                if len(self.obscuring_faces[facet]) == 0:
-                    power += phong_brdf(obs_vec, sun_vec, facet.normal, facet.area)
-
-                else:
-
-                    num_visible = 0
-                    for pt in self.sample_points[facet]:
-                        for obscurer in self.obscuring_faces[facet]:
-                            if (obscurer.intersects(pt, obs_vec_body) == inf) and (obscurer.intersects(pt, sun_vec_body) == inf):
-                                num_visible += 1
-                                break
-
-                    reflecting_area = facet.area*num_visible/self.sample_nums[facet]
-
-                    power += phong_brdf(obs_vec, sun_vec, facet.normal, reflecting_area)
+        return power
 
     def calc_reflecting_area(self, obs_vec_body, sun_vec_body, facet):
 
-        num_visible = 0
+        num_invisible = 0
         for pt in self.sample_points[facet]:
-            if len(self.obscuring_faces[facet]) == 0:
+            if len(self.obscuring_facets[facet]) == 0:
                 area = facet.area
             else:
-                for obscurer in self.obscuring_faces[facet]:
-                    if (obscurer.intersects(pt, obs_vec_body) == inf) and (obscurer.intersects(pt, sun_vec_body) == inf):
-                        num_visible += 1
+                for obscurer in self.obscuring_facets[facet]:
+                    if (obscurer.intersects(pt, obs_vec_body) != inf) or (obscurer.intersects(pt, sun_vec_body) != inf):
+                        num_invisible += 1
                         break
-                area = facet.area*num_visible/self.sample_nums[facet]
+                area = facet.area*(1 - num_invisible/self.sample_nums[facet])
 
         return area
+
+    def trace_ray(self, source, ray, sun_vec):
+
+        obs_vec = -ray
+        distances = asarray([f.intersects(source, ray) for f in self.facets])
+        index = where(distances == amin(distances))[0][0]
+
+        distance = distances[index]
+        facet = self.facets[index]
+
+        if facet.double_sided and dot(facet.unit_normal, obs_vec) < 0:
+            unit_normal = -facet.unit_normal
+        else:
+            unit_normal = facet.unit_normal
+            
+
+        if distance == inf:
+            return 0
+
+        elif dot(unit_normal, sun_vec) < 0 or dot(unit_normal, obs_vec) < 0:
+            return 0
+
+        else:
+
+            surface_pt = source + ray*distance
+            for obscurer in self.obscuring_facets[facet]:
+                    dist = obscurer.intersects(surface_pt, sun_vec)
+                    if (dist != inf) and (dist > 0):
+                        return 0
+                        break
+
+            return phong_brdf(obs_vec, sun_vec, unit_normal, 1)
+
+        
+
+def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, win_dim = (2,2), dpm = 50):
+    """
+    camera_axis is the direction that the camera is pointing
+    sun axis is the direction that the light is moving (sun to spacecraft)
+    """
+
+    win_pix = (win_dim[0]*dpm, win_dim[1]*dpm)
+    image = zeros(win_pix)
+    perspective_distance = 5
+
+    obs_vec_body = obs_vec_body/norm(obs_vec_body)
+    camera_pos = obs_vec_body*5
+    ray_direction = -obs_vec_body
+
+    
+    camera_angle = arccos(dot(ray_direction, array([0,0,1])))
+    camera_rotation = CF.axis_angle2dcm(cross(array([0,0,1]), ray_direction), camera_angle)
+
+    print(camera_rotation@array([0,0,1]))
+
+
+    for y, row in enumerate(image):
+        for x, pix in enumerate(row):
+            x_pos = (x - win_pix[0]/2)/dpm
+            y_pos = (win_pix[1]/2 - y)/dpm
+            pix_pos = camera_rotation@array([x_pos, y_pos, 0]) + camera_pos
+            
+            image[x,y] = spacecraft_geometry.trace_ray(pix_pos, ray_direction, sun_vec_body)
+
+    m = amax(image)
+    if m != 0:
+        image = image/m*255
+
+    return image
+
+
+class Premade_Spacecraft():
+
+    def __init__(self):
+        pZ = Facet(1, 1, array([0,0, .5]), facet2body = identity(3) , name = '+Z')
+        nZ = Facet(1, 1, array([0,0,-.5]), facet2body = CF.Cy(pi) , name = '-Z')
+        pX = Facet(1, 1, array([ .5,0,0]), facet2body = CF.Cy(pi/2), name = '+X')
+        nX = Facet(1, 1, array([-.5,0,0]), facet2body = CF.Cy(-pi/2), name = '-X')
+        pY = Facet(1, 1, array([0, .5,0]), facet2body = CF.Cx(-pi/2), name = '+Y')
+        nY = Facet(1, 1, array([0,-.5,0]), facet2body = CF.Cx(pi/2), name = '-Y')
+        wingnX = Facet(1, .5, array([-1, 0,0]), facet2body = CF.Cx(pi/2), name = '-X wing', double_sided = True)
+        wingpX = Facet(1, .5, array([ 1, 0,0]), facet2body = CF.Cx(pi/2), name = '+X wing', double_sided = True)
+        
+        self.BOX_WING = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ,wingnX, wingpX], sample_dim = .1)
+
+        plate = Facet(1,1, array([0,0,0]), facet2body = identity(3), name = 'plate')
+        self.PLATE = Spacecraft_Geometry([plate])
+
 
 
 if __name__ == '__main__':
 
-    face1 = Facet(1, 1, array([0,0,0]), facet2body = identity(3))
-    face2 = Facet(1, 1, array([-.5,0,0]), facet2body = CF.Cy(-pi/2))
+    pZ = Facet(1, 1, array([0,0, .5]), facet2body = identity(3) , name = '+Z')
+    nZ = Facet(1, 1, array([0,0,-.5]), facet2body = CF.Cy(pi) , name = '-Z')
+    pX = Facet(1, 1, array([ .5,0,0]), facet2body = CF.Cy(pi/2), name = '+X')
+    nX = Facet(1, 1, array([-.5,0,0]), facet2body = CF.Cy(-pi/2), name = '-X')
+    pY = Facet(1, 1, array([0, .5,0]), facet2body = CF.Cx(-pi/2), name = '+Y')
+    nY = Facet(1, 1, array([0,-.5,0]), facet2body = CF.Cx(pi/2), name = '-Y')
+    wingnX = Facet(1, .5, array([-1, 0,0]), facet2body = CF.Cx(pi/2), name = '-X wing', double_sided = True)
+    wingpX = Facet(1, .5, array([ 1, 0,0]), facet2body = CF.Cx(pi/2), name = '+X wing', double_sided = True)
 
-    tbone = Spacecraft_Geometry([face1, face2])
+    print(wingnX.center)
 
-    obs_vec = array([-1,1,1])/norm(array([-1,1,1]))
-    sun_vec = array([-1,-1,1])/norm(array([-1,-1,1]))
+    
 
-    print(face2.intersects(array([.5,0,0]), sun_vec))
-    print(tbone.calc_reflecting_area(obs_vec, sun_vec, tbone.faces[1]))
+    tbone = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ,wingnX, wingpX])
+
+    for facet in tbone.facets:
+        print(facet.name, [f.name for f in tbone.obscuring_facets[facet]])
+
+    
+    # for vertex in pX.vertices:
+    #         v_test = vertex - nZ.center
+    #         if dot(v_test, nZ.unit_normal) > 0:
+    #             print(v_test, dot(v_test, nZ.unit_normal))
+
+    obs_vec = array([.5,1,.3])
+    obs_vec = obs_vec/norm(obs_vec)
+    sun_vec = array([-.5,1,.5])
+    sun_vec = sun_vec/norm(sun_vec)
+
+    # print(face2.intersects(array([-.4,0,0]), sun_vec))
+    # print(tbone.calc_reflecting_area(obs_vec, sun_vec, tbone.faces[0]))
+    #print(tbone.trace_ray(-obs_vec*5 + array([0, 0, -.7]), obs_vec, sun_vec))
+
+    image = generate_image(tbone, obs_vec, sun_vec, win_dim = (4,4), dpm = 20)
+    plt.imshow(image, cmap = 'gray')
+    plt.show()
 
                 
 
