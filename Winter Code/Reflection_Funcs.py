@@ -20,6 +20,8 @@ import Controls_Funcs as CF
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+import imageio
+
 
 TRUTH = config.TRUTH()
 VARIABLES = config.VARIABLES()
@@ -30,7 +32,6 @@ MEASUREMENT_VARIANCE = TRUTH.MEASUREMENT_VARIANCE
 
 ROTATION = VARIABLES.ROTATION
 DT = VARIABLES.DT
-PASS = VARIABLES.PASS
 LAT = VARIABLES.LATITUDE
 LON = VARIABLES.LONGITUDE
 ALT = VARIABLES.ALTITUDE
@@ -168,6 +169,9 @@ class Facet():
         self.vertices = vstack(self.vertices)
 
 
+
+
+
 class Spacecraft_Geometry():
 
     def __init__(self, facets, sample_dim = .01):
@@ -187,7 +191,8 @@ class Spacecraft_Geometry():
 
         for vertex in A.vertices:
             v_test = vertex - B.center
-            if dot(v_test, B.unit_normal) > 0.001:
+            if dot(v_test, B.unit_normal) > 0.03:
+                #print(dot(v_test, B.unit_normal), A.name, B.name)
                 return True
 
     def calc_obscuring_faces(self):
@@ -202,16 +207,16 @@ class Spacecraft_Geometry():
         for facet in self.facets:
 
             self.sample_points[facet] = []
-            x_num = int(facet.x_dim/self.sample_dim)
-            y_num = int(facet.y_dim/self.sample_dim)
+            x_num = ceil(facet.x_dim/self.sample_dim)
+            y_num = ceil(facet.y_dim/self.sample_dim)
 
             self.sample_nums[facet] = x_num*y_num
 
-            x_buff = facet.x_dim/x_num/2
-            y_buff = facet.y_dim/y_num/2
+            x_buff = facet.x_dim/x_num/2.0
+            y_buff = facet.y_dim/y_num/2.0
 
-            for x in linspace(-facet.x_dim/2 + x_buff, facet.x_dim/2 - x_buff, x_num):
-                for y in linspace(-facet.y_dim/2 + y_buff, facet.y_dim/2 - y_buff, y_num):
+            for x in linspace(-facet.x_dim/2.0 + x_buff, facet.x_dim/2.0 - x_buff, x_num):
+                for y in linspace(-facet.y_dim/2.0 + y_buff, facet.y_dim/2.0 - y_buff, y_num):
                     self.sample_points[facet].append(facet.facet2body.T@array([x,y,0]))
 
 
@@ -219,11 +224,21 @@ class Spacecraft_Geometry():
     def calc_reflected_power(self, obs_vec_body, sun_vec_body):
 
         power = 0
+        #poop = []
         for facet in self.facets:
+
             if dot(facet.unit_normal, sun_vec_body) > 0 and dot(facet.unit_normal, obs_vec_body) > 0:
+
+                if len(self.obscuring_facets[facet]) == 0:
+                    reflecting_area = facet.area
+                else:
                     reflecting_area = self.calc_reflecting_area(obs_vec_body, sun_vec_body, facet)
-                    if reflecting_area != 0:
-                        power += phong_brdf(obs_vec_body, sun_vec_body, facet.unit_normal, reflecting_area)
+
+                power += phong_brdf(obs_vec_body, sun_vec_body, facet.unit_normal, reflecting_area)
+                #poop.append(facet.name)
+
+        #print(poop)
+
 
         return power
 
@@ -251,11 +266,20 @@ class Spacecraft_Geometry():
         distance = distances[index]
         facet = self.facets[index]
 
+
+
         if facet.double_sided and dot(facet.unit_normal, obs_vec) < 0:
             unit_normal = -facet.unit_normal
         else:
             unit_normal = facet.unit_normal
             
+        # if facet.name == '+X wing':
+        #     print(dot(unit_normal, sun_vec) < 0, dot(unit_normal, obs_vec) < 0)
+
+        # if distance != inf:
+        #     print(facet.name, dot(unit_normal, sun_vec) < 0, dot(unit_normal, obs_vec) < 0)
+        #     print(facet.name, facet.unit_normal)
+
 
         if distance == inf:
             return 0
@@ -266,12 +290,13 @@ class Spacecraft_Geometry():
         else:
 
             surface_pt = source + ray*distance
-            for obscurer in self.obscuring_facets[facet]:
-                    dist = obscurer.intersects(surface_pt, sun_vec)
-                    if (dist != inf) and (dist > 0):
-                        return 0
-                        break
-
+            if len(self.obscuring_facets[facet]) != 0:
+                for obscurer in self.obscuring_facets[facet]:
+                        dist = obscurer.intersects(surface_pt, sun_vec)
+                        if (dist != inf) and (dist > 0):
+                            #print(facet.name)
+                            return 0
+                            break
             return phong_brdf(obs_vec, sun_vec, unit_normal, 1)
 
         
@@ -294,9 +319,6 @@ def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, win_dim = (2
     camera_angle = arccos(dot(ray_direction, array([0,0,1])))
     camera_rotation = CF.axis_angle2dcm(cross(array([0,0,1]), ray_direction), camera_angle)
 
-    print(camera_rotation@array([0,0,1]))
-
-
     for y, row in enumerate(image):
         for x, pix in enumerate(row):
             x_pos = (x - win_pix[0]/2)/dpm
@@ -306,8 +328,10 @@ def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, win_dim = (2
             image[x,y] = spacecraft_geometry.trace_ray(pix_pos, ray_direction, sun_vec_body)
 
     m = amax(image)
+    # if m == 0:
+    #     print('m = 0',obs_vec_body, sun_vec_body)
     if m != 0:
-        image = image/m*255
+        image = image/m
 
     return image
 
@@ -326,49 +350,96 @@ class Premade_Spacecraft():
         
         self.BOX_WING = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ,wingnX, wingpX], sample_dim = .1)
 
-        plate = Facet(1,1, array([0,0,0]), facet2body = identity(3), name = 'plate')
+        self.BOX = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ], sample_dim = .1)
+
+        plate = Facet(1,1, array([0,0,0]), facet2body = identity(3), name = 'plate', double_sided = True)
         self.PLATE = Spacecraft_Geometry([plate])
 
 
+        segments = 20
+        angle = 2*pi/segments
+        radius = 1.5
+        side_length = 1.8*sin(angle/2)*radius
+        lenght = 9
+        cylinder_facets = []
+        for theta in linspace(0, 2*pi, segments)[:-1]:
+            pos = CF.Cz(theta)@array([1,0,0])
+            facet2body = CF.Cz(theta)@CF.Cy(pi/2)
+            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder'))
+
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3))
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi))
+        cylinder_facets.append(pZ)
+        cylinder_facets.append(nZ)
+
+        self.CYLINDER = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
+
+        pZ = Facet(3.0, 1.0, array([0,0, 1.0]), facet2body = identity(3) , name = '+Z')
+        nZ = Facet(3.0, 1.0, array([0,0,-1.0]), facet2body = CF.Cy(pi) , name = '-Z')
+        pX = Facet(2.0, 1.0, array([ 1.5,0,0]), facet2body = CF.Cy(pi/2), name = '+X')
+        nX = Facet(2.0, 1.0, array([-1.5,0,0]), facet2body = CF.Cy(-pi/2), name = '-X')
+        pY = Facet(3.0, 2.0, array([0, .5,0]), facet2body = CF.Cx(-pi/2), name = '+Y')
+        nY = Facet(3.0, 2.0, array([0,-.5,0]), facet2body = CF.Cx(pi/2), name = '-Y')
+
+        self.RECTANGLE = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ], sample_dim = .1)
+
+
+def loading_bar(decimal_percentage, text = ''):
+    bar = '#'*int(decimal_percentage*20)
+    print('{2} Loading:[{0:<20}] {1:.1f}%'.format(bar,decimal_percentage*100, text), end = '\r')
+    if decimal_percentage == 1:
+        print('')
 
 if __name__ == '__main__':
 
-    pZ = Facet(1, 1, array([0,0, .5]), facet2body = identity(3) , name = '+Z')
-    nZ = Facet(1, 1, array([0,0,-.5]), facet2body = CF.Cy(pi) , name = '-Z')
-    pX = Facet(1, 1, array([ .5,0,0]), facet2body = CF.Cy(pi/2), name = '+X')
-    nX = Facet(1, 1, array([-.5,0,0]), facet2body = CF.Cy(-pi/2), name = '-X')
-    pY = Facet(1, 1, array([0, .5,0]), facet2body = CF.Cx(-pi/2), name = '+Y')
-    nY = Facet(1, 1, array([0,-.5,0]), facet2body = CF.Cx(pi/2), name = '-Y')
-    wingnX = Facet(1, .5, array([-1, 0,0]), facet2body = CF.Cx(pi/2), name = '-X wing', double_sided = True)
-    wingpX = Facet(1, .5, array([ 1, 0,0]), facet2body = CF.Cx(pi/2), name = '+X wing', double_sided = True)
+    obs_vecs = load('Rectangle/obs_vecs.npy')[::50]
+    sun_vecs = load('Rectangle/sun_vecs.npy')[::50]
+    attitudes = load('Rectangle/true_attitude.npy')[::50]
 
-    print(wingnX.center)
+    SC = Premade_Spacecraft().RECTANGLE
 
-    
+    # screwy_attitude = load('LEO_RECTANGLE/estimated_states.npy')[34834]
+    # screwy_obs_vec = obs_vecs[34834]
+    # dcm_eci2body = CF.euler2dcm(ROTATION, screwy_attitude[0:3]).T
+    # image = generate_image(SC, dcm_eci2body@screwy_obs_vec, dcm_eci2body@sun_vec_body, win_dim = (4,4), dpm = 5)
+    # power = SC.calc_reflected_power(dcm_eci2body@screwy_obs_vec, dcm_eci2body@sun_vec_body)
+    # print(power)
+    # plt.imshow(image, cmap= 'Greys')
+    # plt.show()
 
-    tbone = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ,wingnX, wingpX])
 
-    for facet in tbone.facets:
-        print(facet.name, [f.name for f in tbone.obscuring_facets[facet]])
+    for facet in SC.obscuring_facets:
+        print(facet.name, [f.name for f in SC.obscuring_facets[facet]])
+        print(facet.name, facet.center, facet.unit_normal)
 
-    
-    # for vertex in pX.vertices:
-    #         v_test = vertex - nZ.center
-    #         if dot(v_test, nZ.unit_normal) > 0:
-    #             print(v_test, dot(v_test, nZ.unit_normal))
+    num_frames = len(obs_vecs)
+    print(num_frames)
 
-    obs_vec = array([.5,1,.3])
-    obs_vec = obs_vec/norm(obs_vec)
-    sun_vec = array([-.5,1,.5])
-    sun_vec = sun_vec/norm(sun_vec)
+    # obs_body = array([ 0.67027951, -0.02873575, -0.74155218])
+    # sun_body = array([-0.01285413, -0.99098831,  0.13332702])
+    # image = generate_image(SC, obs_body, sun_body, win_dim = (4,4), dpm = 5)
+    # plt.imshow(image, cmap = 'Greys')
+    # plt.show()
 
-    # print(face2.intersects(array([-.4,0,0]), sun_vec))
-    # print(tbone.calc_reflecting_area(obs_vec, sun_vec, tbone.faces[0]))
-    #print(tbone.trace_ray(-obs_vec*5 + array([0, 0, -.7]), obs_vec, sun_vec))
+    frames = []
+    count = 0
+    max_val = 0
+    for quat, obs_vec, sun_vec in zip(attitudes, obs_vecs, sun_vecs):
+        dcm_eci2body = CF.quat2dcm(quat[0], quat[1:4]).T
+        image = generate_image(SC, dcm_eci2body@obs_vec, dcm_eci2body@sun_vec, win_dim = (4,4), dpm = 5)
+        im_max = amax(image)
+        if im_max > max_val:
+            max_val = im_max
+        frames.append(image)
+        count += 1
+        loading_bar(count/num_frames, 'Rendering gif')
 
-    image = generate_image(tbone, obs_vec, sun_vec, win_dim = (4,4), dpm = 20)
-    plt.imshow(image, cmap = 'gray')
-    plt.show()
+    frames = [frame/max_val for frame in frames]
+
+    imageio.mimsave('./boxwing_vis.gif',frames, fps = 10)
+
+    #plt.imshow(image, cmap = 'gray')
+    # plt.show()
 
                 
 

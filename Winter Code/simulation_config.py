@@ -8,9 +8,9 @@ class VARIABLES():
     ROTATION = 'xyz'
     DT = .01
 
-    __passes = rlc.SpacecraftObservation('CalPolySLO_obs.csv')
-    __passes.find_tle('sat41788.txt')
-    PASS = __passes.Passes[0]
+    # __passes = rlc.SpacecraftObservation('CalPolySLO_obs.csv')
+    # __passes.find_tle('sat41788.txt')
+    # PASS = __passes.Passes[0]
     LATITUDE = 37.1348 #degrees North
     LONGITUDE = -12.2110 #degrees East
     ALTITUDE = 684 #meters
@@ -43,7 +43,7 @@ class TRUTH():
     #           array([ 0, 0, 1]),
     #           array([ 0, 0,-1])]
 
-    MEASUREMENT_VARIANCE = .001
+    MEASUREMENT_VARIANCE = .00001
     ALBEDO = .6
 
 

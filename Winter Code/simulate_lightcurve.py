@@ -9,6 +9,7 @@ from sgp4.earth_gravity import wgs84
 from sgp4.io import twoline2rv
 import datetime
 import sys
+import os
 
 
 sys.path.insert(0, '../../Aero_Funcs')
@@ -20,18 +21,10 @@ import Aero_Plots as AP
 import Controls_Funcs as CF
 import Reflection_Funcs as RF
 
-
-
-TRUTH = config.TRUTH()
 VARIABLES = config.VARIABLES()
-
-ALBEDO = TRUTH.ALBEDO
-INERTIA = TRUTH.INERTIA
-MEASUREMENT_VARIANCE = TRUTH.MEASUREMENT_VARIANCE
 
 ROTATION = VARIABLES.ROTATION
 DT = VARIABLES.DT
-PASS = VARIABLES.PASS
 LAT = VARIABLES.LATITUDE
 LON = VARIABLES.LONGITUDE
 ALT = VARIABLES.ALTITUDE
@@ -40,32 +33,40 @@ R_DIFFUSION = VARIABLES.R_DIFFUSION
 N_PHONG = VARIABLES.N_PHONG
 C_SUN = VARIABLES.C_SUN
 
-PLATE_SC = RF.Premade_Spacecraft().BOX_WING
+SC = RF.Premade_Spacecraft().RECTANGLE
+#print(SC.obscuring_facets)
+
+RUN_NAME = 'Rectangle'
+directory = RUN_NAME
+RUN_TIME = 100
 
 def main():
 
-    angular_velocity0 = array([0,0.1,0])
+    angular_velocity0 = array([0.0,0.0,.2])
     # eta0 = 1
     # eps0 = array([0,0,0])
 
-    q0 = array([1,2,3,4])/norm([1,2,3,4])
-    eta0 = q0[3]
-    eps0 = q0[0:3]
+    eulers = [0,1,0]
 
-    eulers = array([0,0,0])
+    # dcm = CF.euler2dcm(ROTATION, eulers)
+    # eta0, eps0 = CF.dcm2quat(dcm)
 
-    state0 = hstack([eta0, eps0, angular_velocity0])
+    # q0 = array([1,2,3,4])/norm([1,2,3,4])
+    # eta0 = q0[3]
+    # eps0 = q0[0:3]
+
+    state0 = hstack([eulers, angular_velocity0])
 
 
     #propagate rotation
-    solver = ode(config.propagate_quats)
+    solver = ode(propagate_eulers_only)
     solver.set_integrator('lsoda')
     solver.set_initial_value(state0, 0)
-    solver.set_f_params(identity(3))
+    #solver.set_f_params(identity(3))
 
     newstate_rotation = []
     time = []
-    tspan = 400
+    tspan = RUN_TIME
     while solver.successful() and solver.t < tspan:
 
         newstate_rotation.append(solver.y)
@@ -80,47 +81,76 @@ def main():
 
     #propagate orbit
 
-    r_orbit = 6378 + 400
-    r_site = 6378
-    angle = arccos(r_site/r_orbit)
-    pos0 = CF.Cz(-angle, degrees = False)@array([r_orbit,0,0])
-    vel0 = CF.Cz(-angle, degrees = False)@array([0,sqrt(398600/r_orbit), 0])
+    rp = 6378 + 300
+    ra = 6378 + 42164
+    semi_a = (rp + ra)/2
 
+    vel0 = array([0, sqrt(398600/ra), 0])
+    pos0 = array([ra, 0, 0])
     state0 = hstack([pos0, vel0])
 
-    solver = ode(propagate_orbit)
-    solver.set_integrator('lsoda')
-    solver.set_initial_value(state0, 0)
+    r_site = 6378
 
-    newstate_orbit = []
-    tspan = 400
-    while solver.successful() and solver.t < tspan:
+    newstate_orbit = vstack([array([ra, 0, 0]) for i in range(len(time))])
 
-        newstate_orbit.append(solver.y)
+    # r_orbit = 6378 + 400
+    # r_site = 6378
+    # angle = arccos(r_site/r_orbit)
+    # pos0 = CF.Cz(-angle, degrees = False)@array([r_orbit,0,0])
+    # vel0 = CF.Cz(-angle, degrees = False)@array([0,sqrt(398600/r_orbit), 0])
 
-        solver.integrate(solver.t + DT)
-        loading_bar(solver.t/tspan, 'Simulating Orbit')
+    # state0 = hstack([pos0, vel0])
 
-    newstate_orbit = vstack(newstate_orbit)
+
+
+    # solver = ode(propagate_orbit)
+    # solver.set_integrator('lsoda')
+    # solver.set_initial_value(state0, 0)
+
+    # newstate_orbit = []
+    # tspan = RUN_TIME
+    # while solver.successful() and solver.t < tspan:
+
+    #     newstate_orbit.append(solver.y)
+
+    #     solver.integrate(solver.t + DT)
+    #     loading_bar(solver.t/tspan, 'Simulating Orbit')
+
+    # newstate_orbit = vstack(newstate_orbit)
 
     sc_gs = array([1,0,0])*r_site - newstate_orbit[:,0:3]
-    attitudes = newstate_rotation[:,0:4]
+    attitudes = newstate_rotation[:,0:3]
 
 
-
+    #sun_vecs = vstack([[0,1.0,0] for i in range(len(sc_gs))])
+    sun_vecs = sc_gs.copy()
 
     #Generate lightcurve
-    lightcurve = states_to_lightcurve(time, sc_gs, attitudes, PLATE_SC, quats = True)
+    lightcurve = states_to_lightcurve(time, sc_gs, sun_vecs, attitudes, SC)
 
-    plt.plot(time, lightcurve)
-    plt.show()
+    
 
 
     #Save Data
 
-    # save('true_lightcurve', lightcurve)
-    # save('true_states', newstate_rotation)
-    # save('time', time)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    save(directory+'/initial_angular_velocity', angular_velocity0)
+    save(directory+'/true_lightcurve', lightcurve)
+    save(directory+'/true_attitude', newstate_rotation)
+    save(directory+'/time', time)
+    save(directory+'/obs_vecs', sc_gs)
+    save(directory+'/sun_vecs', sun_vecs)
+
+    plt.plot(time, lightcurve)
+    plt.xlabel('Time [s]')
+    plt.ylabel('Reflected Power [w]')
+    plt.title('Reflected Power vs Time')
+
+    plt.savefig(directory+'/simulated_lightcurve.png',bbox_inches = 'tight')
+    plt.show()
+
 
     # sc_pos, tel_pos, sun_pos = get_positions(time, PASS)
     # save('sc_pos', sc_pos)
@@ -159,6 +189,19 @@ def main():
     # plt.plot(time, lightcurve, '.')
     # plt.show()
 
+def propagate_eulers_only(t, state):
+    phi = state[0]
+    theta = state[1]
+    omega = state[3:]
+
+
+    A = array([[1, sin(phi)*tan(theta)  , cos(phi)*tan(theta) ],
+               [0, cos(phi)             , -sin(phi)           ],
+               [0, sin(phi)*(1/cos(theta)) , cos(phi)*(1/cos(theta)) ]])
+
+    deulers = A@omega
+    return hstack([deulers, 0,0,0])
+
 
 def propagate_orbit(t, state, mu = 398600):
     pos = state[0:3]
@@ -170,27 +213,24 @@ def propagate_orbit(t, state, mu = 398600):
     return hstack([d_pos, d_vel])
 
 
-def states_to_lightcurve(times, obs_vecs, attitudes, spacecraft_geometry, quats = False):
+def states_to_lightcurve(times, obs_vecs, sun_vecs, attitudes, spacecraft_geometry, quats = False):
 
     lightcurve = []
 
     iters = len(times)
     count = 0
-    for time, obs_vec, attitude in zip(times, obs_vecs, attitudes):
+    for time, obs_vec, sun_vec, attitude in zip(times, obs_vecs, sun_vecs, attitudes):
 
         #now = utc0 + datetime.timedelta(seconds = time)
 
         #sun_vec = AF.vect_earth_to_sun(now)
-        sun_vec = array([0,1,0])
 
         if quats:
             eta = attitude[0]
             eps = attitude[1:4]
             dcm_body2eci = CF.quat2dcm(eta, eps)
         else:
-            eulers = state[:3]
-            dcm_body2eci = CF.euler2dcm(ROTATION, eulers)
-
+            dcm_body2eci = CF.euler2dcm(ROTATION, attitude)
         sun_vec_body = dcm_body2eci.T@sun_vec
         obs_vec_body = dcm_body2eci.T@obs_vec
         power = spacecraft_geometry.calc_reflected_power(obs_vec_body, sun_vec_body)
