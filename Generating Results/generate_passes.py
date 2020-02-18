@@ -146,6 +146,7 @@ for _pass in pass_list:
     while solver.t < _pass['Pass Length']:
         positions.append(solver.integrate(solver.t + DT))
         times.append(solver.t)
+    times = hstack(times)
     positions = vstack(positions)
 
     obs_vecs = []
@@ -174,6 +175,16 @@ for _pass in pass_list:
     site_poss = vstack(site_poss)
     range_vecs = vstack(range_vecs)
 
+    length_of_data = int(600/DT)
+    if len(obs_vecs) > length_of_data:
+            start_index = random.randint(0, len(obs_vecs) - length_of_data - 1)
+            obs_vecs = obs_vecs[start_index:start_index+length_of_data, :]
+            sun_vecs = sun_vecs[start_index:start_index+length_of_data, :]
+            sat_poss = sat_poss[start_index:start_index+length_of_data, :]
+            site_poss = site_poss[start_index:start_index+length_of_data, :]
+            range_vecs = range_vecs[start_index:start_index+length_of_data, :]
+            times = times[start_index:start_index+length_of_data]
+
     azimuths, elevations = AF.pass_az_el(site_poss[::100], sat_poss[::100])
 
     save(pass_directory+'/satpos.npy', sat_poss)
@@ -181,6 +192,7 @@ for _pass in pass_list:
     save(pass_directory+'/rangevec.npy', range_vecs)
     save(pass_directory+'/sunvec.npy', sun_vecs)
     save(pass_directory+'/obsvec.npy', obs_vecs)
+    save(pass_directory+'/times.npy', times)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(211, projection = 'polar')
@@ -192,8 +204,9 @@ for _pass in pass_list:
     for i in range(3):
 
         magnitude = random.rand()*.2
+        min_magnitude = .1
         omega = random.rand(3)
-        omega = omega/norm(omega)*magnitude
+        omega = omega/norm(omega)*magnitude + ones(3)*min_magnitude
         mrp = random.rand(3)
         mrp /= norm(mrp)
         state0 = hstack([mrp, omega])
@@ -217,6 +230,7 @@ for _pass in pass_list:
 
     plt.title('Lightcurves ' + str(_pass['Pass Length']) +' ' + str(omega))
     plt.savefig(pass_directory+'/Lightcurves.png')
+    plt.close()
 
 
 
