@@ -14,10 +14,10 @@ import datetime
 from sgp4.earth_gravity import wgs84
 from sgp4.io import twoline2rv
 
-from simulate_lightcurve import *
-import simulation_config as config
 import Aero_Funcs as AF
+import Controls_Funcs as CF
 import Aero_Plots as AP
+import Reflection_Funcs as RF
 
 import json
 
@@ -34,10 +34,10 @@ def propagate_mrps_inertia(t, state):
     mrps = state[0:3]
     omega = state[3:6]
 
-    inertia = diag([1, abs(state[6]), abs(state[7])])
+    est_inertia = diag([1, abs(state[6]), abs(state[7])])
 
     d_mrps = CF.mrp_derivative(mrps, omega)
-    d_omega = inv(inertia)@(-cross(omega, inertia@omega))
+    d_omega = inv(est_inertia)@(-cross(omega, est_inertia@omega))
 
     return hstack([d_mrps, d_omega, 0, 0])
 
@@ -48,8 +48,10 @@ def modified_rodrigues_prop(state, dt, inertia = None, est_inertia = False):
         solver = ode(propagate_mrps)
     else:
         solver = ode(propagate_mrps_inertia)
+
     solver.set_integrator('dopri5')
     solver.set_initial_value(state, 0)
+
     if not est_inertia:
         solver.set_f_params(inertia)
 
@@ -91,7 +93,7 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
         kf.x = initial_state
         kf.P = diag(ones(DIM_X))*100
         kf.R = noise**2
-        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3, 1e3, 1e3])*10*noise*1e-2
+        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3, 1e3, 1e3])*noise*1e-2
 
     else:
         DIM_X = 6
@@ -134,7 +136,7 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
     buffnum = 1
     for i, (z, obsvec, sunvec) in enumerate(zip(noisy_lightcurve, obsvecs, sunvecs)):
 
-        kf.predict(dt = dt, inertia = Inertia_Matrix)
+        kf.predict(dt = dt, inertia = Inertia_Matrix, est_inertia = est_inertia)
         kf.update(z, obsvec = obsvec, sunvec = sunvec, Geometry = Geometry)
 
         #print('[{0:+.4f}, {1:+.4f}, {2:+.4f}] [{3:+.4f}, {4:+.4f}, {5:+.4f}] {6:<10}'.format(*kf.x, i), end = '\r')

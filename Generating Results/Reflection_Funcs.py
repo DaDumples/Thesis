@@ -6,12 +6,8 @@ from sgp4.io import twoline2rv
 import datetime
 import sys
 
-from shapely.geometry import Polygon
-from shapely.ops import cascaded_union
-
 sys.path.insert(0, '../../Aero_Funcs')
 
-import read_lightcurve_data as rlc
 import Aero_Funcs as AF
 import Aero_Plots as AP
 import Controls_Funcs as CF

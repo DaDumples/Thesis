@@ -7,18 +7,17 @@ from filterpy.kalman import UnscentedKalmanFilter, MerweScaledSigmaPoints, MMAEF
 from filterpy.common import Q_discrete_white_noise
 from scipy.optimize import minimize
 from scipy.spatial.transform import Rotation as R
-import sys
-sys.path.insert(0, '../../../Aero_Funcs')
+import sys, os
+sys.path.insert(0, '../../Aero_Funcs')
 sys.path.insert(0, '..')
 import datetime
 from sgp4.earth_gravity import wgs84
 from sgp4.io import twoline2rv
 
-from simulate_lightcurve import *
-import simulation_config as config
 import Aero_Funcs as AF
 import Aero_Plots as AP
 from Attitude_Filter import Attitude_Filter
+import Reflection_Funcs as RF
 
 import json
 
