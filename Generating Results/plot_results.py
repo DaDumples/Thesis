@@ -62,56 +62,66 @@ for passfile in [os.path.join(Directory,file) for file in os.listdir(Directory) 
         inertia_std = []
         for cov in covariances:
             mrp_vals, mrp_vecs = eig(cov[0:3, 0:3])
-            mrp_std.append(sqrt(abs(sum(mrp_vals*mrp_vecs, axis = 1))))
+            mrp_std.append(abs(sum(sqrt(mrp_vals)*mrp_vecs, axis = 1)))
 
             rate_vals, rate_vecs = eig(cov[3:6,3:6])
-            rate_std.append(sqrt(abs(sum(rate_vals*rate_vecs, axis = 1))))
+            rate_std.append(abs(sum(sqrt(rate_vals)*rate_vecs, axis = 1)))
 
             if inertia_filtered:
                 inertia_vals, inertia_vecs = eig(cov[6:8,6:8])
-                inertia_std.append(sqrt(abs(sum(inertia_vals*inertia_vecs, axis = 1))))
+                inertia_std.append(abs(sum(sqrt(inertia_vals)*inertia_vecs, axis = 1)))
         mrp_std = vstack(mrp_std)
         rate_std = vstack(rate_std)
-        inertia_std = vstack(inertia_std)
+        if inertia_filtered:
+            inertia_std = vstack(inertia_std)
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        rate_error = abs(true_rates[0:len(times),:] - means[:,3:6])
-        ax1.plot(times, rate_error[:,0])
-        ax1.plot(times, rate_std[:,0], 'k')
-        ax1.plot(times, -rate_std[:,0], 'k')
+        rate_error = true_rates[0:len(times),:] - means[:,3:6]
+        ax1.plot(times[::100], rate_error[:,0][::100])
+        ax1.plot(times[::100], rate_std[:,0][::100], 'k')
+        ax1.plot(times[::100], -rate_std[:,0][::100], 'k')
+        ax1.set_ylim(-1.2, 1.2)
+        ax1.set_yticks(arange(-1.2, 1.2, .4))
+        ax1.grid()
 
-        ax2.plot(times, rate_error[:,1])
-        ax2.plot(times, rate_std[:,1], 'k')
-        ax2.plot(times, -rate_std[:,1], 'k')
+        ax2.plot(times[::100], rate_error[:,1][::100])
+        ax2.plot(times[::100], rate_std[:,1][::100], 'k')
+        ax2.plot(times[::100], -rate_std[:,1][::100], 'k')
+        ax2.set_ylim(-1.2, 1.2)
+        ax2.set_yticks(arange(-1.2, 1.2, .4))
+        ax2.grid()
 
-        ax3.plot(times, rate_error[:,2])
-        ax3.plot(times, rate_std[:,2], 'k')
-        ax3.plot(times, -rate_std[:,2], 'k')
+        ax3.plot(times[::100], rate_error[:,2][::100])
+        ax3.plot(times[::100], rate_std[:,2][::100], 'k')
+        ax3.plot(times[::100], -rate_std[:,2][::100], 'k')
+        ax3.set_ylim(-1.2, 1.2)
+        ax3.set_yticks(arange(-1.2, 1.2, .4))
+        ax3.grid()
         
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times, true_rates[:,0])
-        ax1.plot(times, means[:,3])
+        ax1.plot(times[::100], true_rates[0:len(times),0][::100])
+        ax1.plot(times[::100], means[:,3][::100])
 
-        ax2.plot(times, true_rates[:,1])
-        ax2.plot(times, means[:,4])
+        ax2.plot(times[::100], true_rates[0:len(times),1][::100])
+        ax2.plot(times[::100], means[:,4][::100])
 
-        ax3.plot(times, true_rates[:,2])
-        ax3.plot(times, means[:,5])
-
-        fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times, true_mrps[:,0])
-        ax1.plot(times, means[:,0])
-
-        ax2.plot(times, true_mrps[:,1])
-        ax2.plot(times, means[:,1])
-
-        ax3.plot(times, true_mrps[:,2])
-        ax3.plot(times, means[:,2])
+        ax3.plot(times[::100], true_rates[0:len(times),2][::100])
+        ax3.plot(times[::100], means[:,5][::100])
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times, true_lightcurve)
-        ax2.plot(times, est_lightcurve)
-        ax3.semilogy(times, residuals)
+        ax1.plot(times[::100], true_mrps[0:len(times),0][::100])
+        ax1.plot(times[::100], means[:,0][::100])
+
+        ax2.plot(times[::100], true_mrps[0:len(times),1][::100])
+        ax2.plot(times[::100], means[:,1][::100])
+
+        ax3.plot(times[::100], true_mrps[0:len(times),2][::100])
+        ax3.plot(times[::100], means[:,2][::100])
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
+        ax1.plot(times[::100], true_lightcurve[::100])
+        ax2.plot(times[::100], est_lightcurve[::100])
+        ax3.semilogy(times[::100], residuals[::100])
 
         plt.show()
