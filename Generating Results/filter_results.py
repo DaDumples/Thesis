@@ -49,14 +49,19 @@ for passfile in [os.path.join(Directory,file) for file in os.listdir(Directory) 
     lightcurves = [filename for filename in os.listdir(passfile) if 'lightcurve' in filename]
 
     for filename in lightcurves:
-        lightcurve = load(os.path.join(passfile, filename))
-
-        means, covariances, residuals, filtered_lightcurve = Attitude_Filter(lightcurve, obsvecs, sunvecs, DT, Noise_STD, Geometry, Inertia, est_inertia_flag)
 
         dataname = 'results'+filename.split('.')[0][-1]
         savedir = os.path.join(passfile, dataname)
         if not os.path.exists(savedir):
             os.makedirs(savedir)
+        else:
+            continue
+            
+        lightcurve = load(os.path.join(passfile, filename))
+
+        means, covariances, residuals, filtered_lightcurve = Attitude_Filter(lightcurve, obsvecs, sunvecs, DT, Noise_STD, Geometry, Inertia, est_inertia_flag)
+
+        
 
         save(os.path.join(savedir,dataname+'_raw_means'), means)
         save(os.path.join(savedir,dataname+'_raw_covariance'), covariances)

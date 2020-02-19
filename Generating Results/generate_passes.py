@@ -77,6 +77,11 @@ def loading_bar(decimal_percentage, text = ''):
         print('')
 
 Simulation_Configuration = json.load(open(sys.argv[1], 'r'))
+if len(sys.argv) == 3:
+    num_passes = int(sys.argv[2])
+else:
+    num_passes = 15
+
 Satellite = twoline2rv(Simulation_Configuration['TLE Line1'],
                        Simulation_Configuration['TLE Line2'], wgs84)
 Lat = Simulation_Configuration['Observation Site Lattitude']
@@ -96,7 +101,7 @@ if not os.path.exists(Directory):
 pass_list = []
 mid_pass_flag = False
 max_el = 0
-while len(pass_list) < 15:
+while len(pass_list) < num_passes:
     date += datetime.timedelta(seconds = 1)
     lst = AF.local_sidereal_time(date, Lon)
     site = AF.observation_site(Lat, lst, Alt)
@@ -217,7 +222,7 @@ for _pass in pass_list:
         solver.set_f_params(Inertia)
 
         attitudes = []
-        while solver.t < _pass['Pass Length']:
+        while len(attitudes) < len(times):
             attitudes.append(solver.integrate(solver.t + DT))
         attitudes = vstack(attitudes)
 

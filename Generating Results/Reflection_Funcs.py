@@ -63,6 +63,11 @@ def phong_brdf(obs_vec, sun_vec, normal, area):
     r_specular = .9
     r_diffuse = 0
     n_phong = 10
+    CCD_GAIN = 4.8 #Electrons per CCD "Count"
+    TELESCOPE_DIAMETER = 1 #meter
+    ELECTRON_ENERGY = 2.27 #Electron Volt [eV]
+    EXPOSURE_TIME = .028 #s
+    J2eV = 1.6022e-19 #Joules per eV
 
     obs_norm = obs_vec/norm(obs_vec)
     sun_norm = sun_vec/norm(sun_vec)
@@ -83,6 +88,12 @@ def phong_brdf(obs_vec, sun_vec, normal, area):
 
     Fsun = C_SUN*(specular + diffuse)*dot_ns
     Fobs = Fsun*area*dot_no/norm(obs_vec)**2
+
+    # collecting_area = pi*TELESCOPE_DIAMETER**2/4
+    # collected_energy = Fobs*collecting_area*EXPOSURE_TIME
+    # photons_collected = collected_energy/J2eV/ELECTRON_ENERGY
+    # counts = photons_collected/CCD_GAIN #flux
+    # instrument_magnitude =  2.5*log10(counts/EXPOSURE_TIME)
 
     return Fobs
 
