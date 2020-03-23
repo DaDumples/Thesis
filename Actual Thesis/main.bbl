@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+
+\bibitem{kf_kalman}
+
+
+\bibitem{kf_derivation}
+T.~Lacey.
+\newblock Tutorial: the kalman filter 11.1 introduction 11.2 mean squared
+  error.
+\newblock 1998.
+
+\bibitem{ukf_merwe}
+E.~Wan and R.~Merwe.
+\newblock The unscented kalman filter for nonlinear estimation.
+\newblock volume 153-158, pages 153 -- 158, 02 2000.
+
+\end{thebibliography}
