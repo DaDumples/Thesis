@@ -1,17 +1,6 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
 The style file: abbrv.bst
 Database file #1: bibliography.bib
-I was expecting a `,' or a `}'---line 14 of file bibliography.bib
- :     
- :     Author = {Kalman, Rudolph Emil},
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "kf_derivaiton"
-Warning--to sort, need author or key in kf_kalman
-Warning--empty author in kf_kalman
-Warning--empty title in kf_kalman
-Warning--empty journal in kf_kalman
-Warning--empty year in kf_kalman
 Warning--empty booktitle in kf_derivation
 Warning--empty booktitle in ukf_merwe
-(There was 1 error message)
+(There were 2 warnings)

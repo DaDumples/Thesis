@@ -1,7 +1,10 @@
 \begin{thebibliography}{1}
 
 \bibitem{kf_kalman}
-
+R.~E. Kalman.
+\newblock A new approach to linear filtering and prediction problems.
+\newblock {\em Transactions of the ASME--Journal of Basic Engineering},
+  82(Series D):35--45, 1960.
 
 \bibitem{kf_derivation}
 T.~Lacey.

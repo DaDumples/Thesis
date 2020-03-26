@@ -1,0 +1,21 @@
+\chapter*{Unscented Kalman Filter Formulation}
+
+This thesis actually utilizes two formulations of the UKF. The defines the state vector is composed of the modified Rodriguez parameters and angular velocity and is in the form:
+\begin{equation}
+\boldmath{x = \begin{bmatrix} p \\ \omega \end{bmatrix}}
+\end{equation}
+where $\boldmath{p}$ are the modified Roriguez parameters and  $\boldmath{w}$ is the angular velocity vector. This formulation is utilized in this thesis to filter data for objects that are assumed to be spinning about a constant axis or whose inertial properties are known. In either of these cases inertial properties do not need to be estimated.
+
+In the case that the object is tumbling, that is to say that the angular velocity is not constant in either the ECI or body frame, inertial properties need to be either known or estimated. If these properties are known then the state definition above suffices and only the forward propagation model must be changed. This is unlikely however as it is often difficult even for operators to accurately measure a spacecrafts inertial properties. This leads to the necessity to estimate the inertial properties.
+
+The simplest approach to estimating the inertial properties is to take advantage of the symmetric properties of the inertia matrix and add the matrices diagonal and either its upper or lower triangular. This adds six elements to the state that add computational complexity and increase the difficulty for the UKF to converge on accurate values. This thesis makes the following two assumptions to reduce the number of elements that are required to define the inertial properties.
+\begin{enumerate}
+\item The principal inertial frame is sufficiently aligned to the frame in which the geometry is defined such that the off-diagonal elements are negligible. This allows for the off-diagonal elements to be assumed to be zero, reducing the elements required to be estimated to only the diagonal.
+
+\item The disturbance torques applied to the spacecraft are negligible over the duration of a single pass. In can be shown that in the absence of disturbing torques the specific values of the inertia matrix no longer matter, rather it is only their relative magnitudes. This assumption is valid a wide range of spacecraft as the duration of a single pass is so small that very few torques could significantly affect measurements. This assumption allows for one element of the inertia matrix to be assumed to be one.
+\end{enumerate}
+The combination of these two assumptions reduces the number of elements that needed to be estimated to two: the second and third diagonal elements. Given these assumptions, the state vector becomes:
+\begin{equation}
+\boldmath{x = \begin{bmatrix} p \\ \omega \\ \Xi \end{bmatrix}}
+\end{equation}
+Where $\boldmath{\Xi}$ is defined to be a 2x1 vector containing two of the diagonal elements of the objects principal inertia matrix.

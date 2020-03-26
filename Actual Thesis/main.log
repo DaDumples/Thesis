@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  23 MAR 2020 13:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  26 MAR 2020 12:47
 entering extended mode
 **./main.tex
 (main.tex
@@ -879,36 +879,82 @@ Overfull \hbox (216.0877pt too wide) in paragraph at lines 122--122
 
  [8
 
-] (chapter-outline.tex (chapters/background_ukf.tex
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 3.
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
-been already used, duplicate ignored
+] (chapter-outline.tex (chapters/Introduction.tex)
+(chapters/background_kf.texpdfTeX warning (ext4): destination with the same ide
+ntifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.14 
-      [1
+l.1 \chapter
+            {Background} [1
 
-] [2] [3]
-Overfull \hbox (65.89322pt too wide) detected at line 72
+] [2]
+\uppercase {Chapter} 1.
+[3
+
+] [4] [5]
+Overfull \hbox (72.81654pt too wide) detected at line 76
 []
  []
 
 
-Overfull \hbox (117.1733pt too wide) detected at line 74
+Overfull \hbox (130.0204pt too wide) detected at line 83
 []
  []
 
-)) (main.bbl [4]) (appendix-outline.tex)
+[6] [7] [8]
+Overfull \hbox (155.7187pt too wide) detected at line 143
+[]
+ []
+
+
+Overfull \hbox (159.40463pt too wide) detected at line 152
+[]
+ []
+
+[9]) (chapters/ukf_formulation.tex [10]
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 5.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 5.
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
+
+[11
+
+]
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 19.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 19.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 21.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 21.
+
+
+)) (main.bbl [12]) (appendix-outline.tex)
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 167.
-[5
+[13
 
 ]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 167.
@@ -916,28 +962,35 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 167.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 167.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 167.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 0DE1CF97FA22BE81D60F7FD5279A3C03;234.
+(rerunfilecheck)             Checksum: FCC33D851B06D4B93297B51CC79EF4D0;200.
  ) 
 Here is how much of TeX's memory you used:
- 16090 strings out of 492946
- 257674 string characters out of 3126388
- 445284 words of memory out of 3000000
- 19660 multiletter control sequences out of 15000+200000
- 9191 words of font info for 35 fonts, out of 3000000 for 9000
+ 16140 strings out of 492946
+ 258405 string characters out of 3126388
+ 447284 words of memory out of 3000000
+ 19669 multiletter control sequences out of 15000+200000
+ 11699 words of font info for 43 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 136i,16n,131p,1325b,397s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 136i,17n,131p,1325b,416s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmbx10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmmi12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/theha/AppData/Local/Programs/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/theha/AppData/Loc
-al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/theha/
-AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:
-/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-msy8.pfb>
-Output written on main.pdf (13 pages, 102863 bytes).
+/cm/cmbx12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmex10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/theha/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/theha/AppData/Lo
+cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/theh
+a/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb>
+<C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmr12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
+c/amsfonts/cm/cmr6.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmr8.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/theha/AppData/Local/Pr
+ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/theha/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/User
+s/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12
+.pfb>
+Output written on main.pdf (21 pages, 175230 bytes).
 PDF statistics:
- 142 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
+ 231 PDF objects out of 1000 (max. 8388607)
+ 62 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

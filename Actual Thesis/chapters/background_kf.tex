@@ -1,0 +1,157 @@
+\chapter{Background}
+
+\section*{The Kalman Filter}
+The Kalman Filter is a statistical estimation technique derived with the intention of solving state estimation problems. \cite{ukf_merwe} The derivation for the Kalman filter assumes that the system is linear and for this case is shown to be optimal \cite{kf_kalman}. However, many estimation problems exist which are nonlinear in nature and for these cases modification to the original Kalman Filter have been made. These modifications are the Extended and Unscented formulations which approach the problem in different ways. In this thesis the Extended formulation will be mentioned but not explored in depth as it can quickly be shown to be unsuitable for the application of this thesis.
+
+In a sentence, the Kalman Filter combines a model of how a system is expected to behave and compares the predictions of this model with real world measurements of the system to discover what state of the system best corroborates the two. In other words, the Kalman Filter attempts to minimize the difference between measured data and predicted data by finding the state estimate that minimizes the difference \cite{kf_derivation}.
+
+Formulating a Kalman Filter begins by defining the model and measurements of a system to be the following:
+\begin{align}\label{system_functions}
+\dot{x} = f(x) + w_x \\
+z = h(x) + w_z
+\end{align}
+Where $x$ is the state of the system, $z$ is the measurement, $w_x$ and $w_z$ are the noise for the system and measurement models respectively. $f(x)$ describes the dynamics of the system and $h(x)$ is the measurement function. $w_x$ and $w_z$ are assumed to be gaussian with a mean of zero \cite{kf_derivation}. 
+
+If the system is completely linear, as it is assumed to be in the standard Kalman Filter, these functions can be written in the following form:
+\begin{align}\label{linear_systems}
+\dot{x} = Ax + w_x \\
+z = Hx + w_z
+\end{align}
+Where $A$ is now the system dynamics matrix and $H$ is the measurement matrix.
+
+Since $w_x$ is assumed to have a mean of zero, the differential equation for $x$ can be solved by the equation
+\begin{align}
+x(t) = x_0e^{At}
+\end{align}
+and thus:
+\begin{align}
+x(t + \delta t) = x(t)e^{A\delta t}.
+\end{align}
+By plugging $A\delta t$ into the series expansion of the exponential function you can calculate the state transition matrix $F$ such that
+\begin{align}\label{predict_step}
+x_{k+1} = Fx_{k}.
+\end{align}
+Where $k$ denotes an discrete measurement time evenly spaced by $\delta t$.
+
+The matrices $F$ and $H$ are the crux of the Kalman Filter and can only truly be calculated when the system and measurement functions are linear. 
+
+The final major component of the Kalman Filter is the state error covariance matrix, $P_x$ which is defined to be \cite{kf_derivation}
+\begin{align}
+P_x = E[(\hat{x} - x)(\hat{x} - x)^T]
+\end{align} 
+with $\hat{x}_k$ defined to be the true state, which can never truly be known. Because of this uncertainty, the covariance matrix must also be estimated and propagated with the state. The propagation equation for $P$ is the following:
+\begin{align}\label{predict_p}
+P^-_{k} = FP_{k-1}F + Q
+\end{align} 
+where $Q$ describes the error covariance of the system model and is defined to be
+\begin{align}
+Q = E[w_xw_x^T].
+\end{align} 
+
+At each timestep the state estimate, $x_k$, is updated using the following equation:
+\begin{align}
+x_{k} = x^-_{k} + K_k(z_k - Hx^-_k)
+\end{align} 
+where $x^-_k$ is the predicted state from equation \eqref{predict_step} and $K_k$ is called the Kalman gain and is calculated using
+\begin{align}
+K_k = P^-_{x_k}H^T(HP^-{x_k}H^T + R)^{-1}.
+\end{align} 
+$P^-_{x_k}$ is the predicted covariance matrix calculated from equation \eqref{predict_p} and $R$ describes the error covariance of the sensors and is defined to be
+\begin{align}
+R = E[w_zw_z^T].
+\end{align} 
+Finally, the state error covariance matrix, $P$, is also updated using
+\begin{align}
+P_{x_k} = (I - K_kH)P^-_{x_k}
+\end{align} 
+The final process can be summarized in the following table.
+
+\begin{center}
+\begin{tabular}{ | m{5em} | m{1cm}| } 
+	\hline
+	Predict & 
+	\begin{align*} 
+	x^-_{k} = Fx_{k-1} \\ 
+	P^-_{k} = FP_{x_{k-1}}F + Q 
+	\end{align*}\\ 
+	\hline
+	Update & 
+	\begin{align*} 
+	K_{k} = P^-_{x^-_k}H^T(HP^-_{x^-_k}H^T + R)^{-1} \\
+	x_{k} = x^-_{k} + K_k(z_k - Hx^-_k) \\ 
+	P_{x_k} = (I - K_kH)P^-_{x_k} 
+	\end{align*}\\ 
+	\hline
+\end{tabular}
+\end{center}
+
+
+\section*{The Unscented Kalman Filter}
+
+As previously mentioned, the Unscented Kalman Filter (UKF) is a modification to the original Kalman Filter designed to work around its assumption of linearity. Nonlinearity can enter the Kalman Filter in two ways. The system dynamics may become nonlinear, the measurement function may become nonlinear, or both. When this happens it no longer becomes possible to analytically calculate the Kalman gain, which in turn means that the optimal state estimate is no longer possible. The UKF is a method by which the optimal state estimate can be approximated and can be shown to be accurate to at least the second order \cite{ukf_merwe}.
+
+The UKF works by sampling a small set of points around the current state estimates and propagating them through the nonlinear system dynamics and measurement functions \cite{ukf_merwe}. By doing this, the state error covariance can be estimated by looking at the mean and covariance of the transformed sample points \cite{ukf_merwe}.
+
+% Put a graphic here
+
+
+The equation for selecting the sample points are the following \cite{ukf_merwe}:
+\begin{align}
+\mathcal{X}_0 = x \\
+\mathcal{X}_i = x + (\sqrt{(L + \lambda)P_x})_i && i = 1,...,L \\
+\mathcal{X}_i = x - (\sqrt{(L + \lambda)P_x})_{i-L} && i = L+1,...,2L
+\end{align}
+Here $L$ is the number elements in the state $x$. $P_x$ is the state covariance error, the same as in the standard Kalman Filter. $\lambda = \alpha^2(L + \kappa) - L$ with $\alpha$ and $\kappa$ being tunable parameters to place the sigma points. Notice that within the square root there is a matrix. The square root of a matrix is not uniquely defined. This thesis uses the Cholesky decomposition.
+
+In the formulation of the UKF, the equation for the Kalman gain at each time step becomes \cite{ukf_merwe}
+
+\begin{align}
+K = P_{xy}P^{-1}_{yy}.
+\end{align}
+
+Where $P_{xy}$ is the cross covariance of the sample points transformed by the nonlinear system dynamics and measurement function and $P_{yy}$ is the covariance of the sample points transformed by the measurement function.
+
+The equations to calculate the covariances are as follows \cite{ukf_merwe}:
+\begin{align}
+\chi = [f(\mathcal{X}_0),...,f(\mathcal{X}_{2L})]\\
+\mathcal{Y} = [h(\chi_0),...,h(\chi_{2L+1})]\\
+x^- = \sum_{i=0}^{2L}W_i\chi_i\\
+y = \sum_{i=0}^{2L}W_i\mathcal{Y}_i\\
+P^-_x = \sum_{i=0}^{2L}W_i(\chi_i - x^-)(\chi_i - x^-)^T\\
+P_{yy} = \sum_{i=0}^{2L}W_i(\mathcal{Y}_i - y)(\mathcal{Y}_i - y)^T \\
+P_{xy} = \sum_{i=0}^{2L}W_i(\chi_i - x^-)(\mathcal{Y}_i - y)
+\end{align}
+
+Here $W$ represent a set of weights for each sample point. The equation to calculate the weights is \cite{ukf_merwe}
+\begin{align}
+W_0 = \lambda/(L + \lambda) \\
+W_i = 1/2(L + \lambda) && i = 1,...,2L
+\end{align}
+
+Now that the sample points and covariances can be calculated, the full procedure for the UKF becomes:
+
+\begin{center}
+	\begin{tabular}{ | m{5em} | m{1cm}| } 
+		\hline
+		Predict & 
+		\begin{align*}
+		\chi = [f(\mathcal{X}_0),...,f(\mathcal{X}_{2L})]\\
+		\mathcal{Y} = [h(\chi_0),...,h(\chi_{2L})]\\
+		x^-_k = \sum_{i=0}^{2L}W_{i_k}\chi_{i_k}\\
+		y_k = \sum_{i=0}^{2L}W_{i_k}\mathcal{Y}_{i_k}\\
+		P^-_{x_k} = \sum_{i=0}^{2L}W_{i_k}(\chi_{i_k} - x^-_k)(\chi_{i_k} - x^-_k)^T
+		\end{align*}\\ 
+		\hline
+		Update & 
+		\begin{align*}
+		P_{y_ky_k} = \sum_{i=0}^{2L}W_{i_k}(\mathcal{Y}_{i_k} - y_k)(\mathcal{Y}_{i_k} - y_k)^T \\
+		P_{x_ky_k} = \sum_{i=0}^{2L}W_i(\chi_{i_k} - x^-_k)(\mathcal{Y}_{i_k} - y_k)\\
+		K_{k} = P_{x_ky_k}P^{-1}_{y_ky_k} \\
+		x_{k} = x^-_{k} + K_k(z_k - y_k) \\
+		P_{x_k} = P^-_k - K_kP_{y_ky_k}K^T
+		\end{align*}\\ 
+		\hline
+	\end{tabular}
+\end{center}
+
+
