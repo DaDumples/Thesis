@@ -1,4 +1,67 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{phong_brdf}
+M.~Ashikhmin and P.~Shirley.
+\newblock An anisotropic phong brdf model.
+\newblock {\em J. Graph. Tools}, 5(2):25--32, Feb. 2000.
+
+\bibitem{Bradley2014LIGHTCURVEIF}
+B.~K. Bradley and P.~Axelrad.
+\newblock Lightcurve inversion for shape estimation of geo objects from
+  space-based sensors.
+\newblock 2014.
+
+\bibitem{PSI}
+B.~{Calef}, J.~{Africano}, B.~{Birge}, D.~{Hall}, and P.~{Kervin}.
+\newblock {Photometric signature inversion}.
+\newblock In {\em Society of Photo-Optical Instrumentation Engineers (SPIE)
+  Conference Series}, volume 6307, page 63070E, Aug. 2006.
+
+\bibitem{Fulcoly}
+D.~O. Fulcoly, K.~I. Kalamaroff, and F.~Chun.
+\newblock Determining basic satellite shape from photometric light curves.
+\newblock {\em Journal of Spacecraft and Rockets}, 49(1):76--82, 2012.
+
+\bibitem{Separating}
+C.~B. K. K. B.~M. Hall, D. and P.~Kervin.
+\newblock Separating attitude and shape effects for non-resolved objects.
+\newblock 2007.
+
+\bibitem{AMOS}
+D.~Hall, J.~Africano, D.~Archambeault, B.~Birge, D.~Witte, and P.~Kervin.
+\newblock Amos observations of nasa's image satellite.
+\newblock -1:76, 01 2006.
+
+\bibitem{Holzinger2012AttitudeEF}
+M.~J. Holzinger, K.~T. Alfriend, C.~J. Wetterer, K.~V.~K. Luu, C.~A. Sabol,
+  K.~M. Hamada, and A.~Harms.
+\newblock Attitude estimation for unresolved agile space objects with shape
+  model uncertainty.
+\newblock 2012.
+
+\bibitem{SILHA2018844}
+J.~Šilha, J.-N. Pittet, M.~Hamara, and T.~Schildknecht.
+\newblock Apparent rotation properties of space debris extracted from
+  photometric measurements.
+\newblock {\em Advances in Space Research}, 61(3):844 -- 861, 2018.
+
+\bibitem{StateAndParameter}
+M.~{Jah} and R.~{Madler}.
+\newblock {Satellite Characterization: Angles and Light Curve Data Fusion for
+  Spacecraft State and Parameter Estimation}.
+\newblock In {\em Advanced Maui Optical and Space Surveillance Technologies
+  Conference}, page E49, 2007.
+
+\bibitem{kaasalainen_LCI}
+M.~Kaasalainen and J.~Torppa.
+\newblock Optimization methods for asteroid lightcurve inversion: I. shape
+  determination.
+\newblock {\em Icarus}, 153:24–36, 09 2001.
+
+\bibitem{KAASALAINEN2002369}
+M.~Kaasalainen, J.~Torppa, and J.~Piironen.
+\newblock Models of twenty asteroids from photometric data.
+\newblock {\em Icarus}, 159(2):369 -- 395, 2002.
 
 \bibitem{kf_kalman}
 R.~E. Kalman.
@@ -12,9 +75,76 @@ T.~Lacey.
   error.
 \newblock 1998.
 
+\bibitem{Linares_data_fusion}
+R.~Linares, M.~K. Jah, J.~L. Crassidis, F.~A. Leve, and T.~Kelecy.
+\newblock Astrometric and photometric data fusion for inactive space object
+  mass and area estimation.
+\newblock {\em Acta Astronautica}, 99:1 -- 15, 2014.
+
+\bibitem{SpaceObjectCharacterization}
+R.~Linares, M.~K. Jah, J.~L. Crassidis, and C.~K. Nebelecky.
+\newblock Space object shape characterization and tracking using light curve
+  and angles data.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 37(1):13--25, 2014.
+
+\bibitem{Linder}
+S.~J. S.~T. Linder, E. and M.~Hager.
+\newblock Extraction of spin periods of space debris from optical light curves.
+\newblock 2015.
+
+\bibitem{Magnusson1989DeterminationOP}
+P.~Magnusson, M.~A. Barucci, J.~D. Drummond, K.~Lumme, S.~J. Ostro, J.~Surdej,
+  R.~C. Taylor, and V.~Zappal{\`a}.
+\newblock Determination of pole orientations and shapes of asteroids.
+\newblock 1989.
+
+\bibitem{Minkowski1989}
+H.~Minkowski.
+\newblock {\em Volumen und Oberfl{\"a}che}, pages 146--192.
+\newblock Springer Vienna, Vienna, 1989.
+
+\bibitem{Nishimoto}
+D.~Nishimoto, D.~Archambeault, D.~Gerwe, and P.~Kervin.
+\newblock Satellite attitude from a raven class telescope.
+\newblock page~11, 09 2010.
+
+\bibitem{Ojakangas2012ProbableRS}
+G.~W. Ojakangas, P.~D. Anz-Meador, and H.~Cowardin.
+\newblock Probable rotation states of rocket bodies in low earth orbit.
+\newblock 2012.
+
+\bibitem{Tagliaferri}
+R.~Tagliaferri, A.~Ciaramella, L.~Milano, F.~Barone, and G.~Longo.
+\newblock Spectral analysis of stellar light curves by means of neural
+  networks.
+\newblock {\em Astronomy and Astrophysics Supplement Series}, 137, 06 1999.
+
+\bibitem{Wallace}
+B.~Wallace, P.~Somers, and R.~Scott.
+\newblock Determination of spin axis orientation of geosynchronous objects
+  using space-based sensors: An initial feasibility investigation.
+\newblock page~9, 09 2010.
+
 \bibitem{ukf_merwe}
 E.~Wan and R.~Merwe.
 \newblock The unscented kalman filter for nonlinear estimation.
 \newblock volume 153-158, pages 153 -- 158, 02 2000.
+
+\bibitem{WARNER2009134}
+B.~D. Warner, A.~W. Harris, and P.~Pravec.
+\newblock The asteroid lightcurve database.
+\newblock {\em Icarus}, 202(1):134 -- 146, 2009.
+
+\bibitem{AttitudeEstimationFromLightCurve}
+C.~J. Wetterer and M.~K. Jah.
+\newblock Attitude determination from light curves.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 32(5):1648--1651,
+  2009.
+
+\bibitem{wetterer_ukf}
+C.~J. Wetterer and M.~K. Jah.
+\newblock Attitude estimation from light curves.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 32(5):1648--1651,
+  2009.
 
 \end{thebibliography}

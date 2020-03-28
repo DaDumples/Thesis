@@ -1,0 +1,74 @@
+\chapter*{Measurement Model}
+
+%Inactive space object shape estimation via astrometric and photometric data fusion
+%An Anisotropic Phong BRDF Model [phong]
+%Attitude Estimation from Light Curves [wetterer_ukf]
+
+Light curves are the data collected by observing a satellite with a telescope and measuring the amount of light collected from it. In order to predict how much light a spacecraft is reflecting as a function of its attitude a reflection model is needed. This thesis implements a modified version of the Phong Bi-Direction Reflection Distribution Function (BRDF) as used by Linares et. al \cite{Linares_data_fusion} as well as a ray tracing algorithm that was proposed by Kaasalainen and Torppa \cite{kaasalainen_LCI}.
+
+An overview of the process is that there is a spacecraft geometry defined by a set of flat facets and at every measurement the facets that are both illuminated and visible by the observation site are evaluated by a BRDF. This BRDF takes into account the direction of the illumination source and observation as well as the illuminated area of the facet which is calculated using a ray tracing algorithm. The individual contributions of each facet are then summed to return the total reflected by the spacecraft.
+
+The code implemented in this thesis will be available on GitHub.
+
+\section*{Geometry Model}
+
+As stated above, a spacecraft geometry is defined as a set of flat faces. For simplicity this thesis uses only rectangular facets. Each facet has associated with it the following parameters:
+\begin{itemize}
+	\setlength\itemsep{0em}
+	\item Dimensions: Width and length
+	\item Area
+	\item Position: Expressed as a vector in the spacecraft body frame
+	\item Unit normal vector: Expressed as a vector in the spacecraft body frame
+	\item Orientation: Expressed as a DCM, quaternion, etc. with respect to the spacecraft body frame.
+	\item Specular reflection coefficient: float between 0 and 1
+	\item Diffuse reflection coefficient: float between 0 and 1 (0 for metallic surfaces)
+	\item Double-sided Boolean: Boolean representing a fully exposed facet such as a solar panel or a body mounted facet.
+\end{itemize}
+For determining the orientation of each facet, each facet has its own frame with the Z-axis defined to be the unit normal vector, and the X and Y axes aligned along the width and length of the rectangle.
+
+%Figure here showing the frame of each facet and other vectors
+
+\section*{Observation Model}
+
+According to Ashikhmin and Shirley, reflections can be modelled as the sum of their specular and diffuse components such that \cite{phong_brdf}:
+\begin{equation}
+\rho_{total} = \rho_s + \rho_d
+\end{equation}
+Conveniently, metallic surfaces have the property of being purely specular, allowing for the diffuse term to be ignored in many cases\cite{phong_brdf}. All vectors in the following equations are used in the spacecraft body frame.
+
+One feature of the BRDF used in this thesis is the ability to model anisotropic reflection, meaning that it can model the "streakyness" of surfaces like brushed metal. However, this requires additional information to describe the distribution of this reflection. This thesis assumes that the specular reflection is evenly distributed along all directions which allows the equation of specular reflection used by Linares et. al. to be simplifed to the following form \cite{Linares_data_fusion}:
+\begin{equation}
+\rho_{s_i} = \frac{n + 1}{8\pi}
+\frac{(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_h)^n}
+{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun} + \bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs} - (\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})}F_{reflect_i}
+\end{equation}
+Where $n$ is the specular distribution term and $F_{reflect_i}$ is:
+\begin{equation}
+F_{reflect_i} = R_{spec_i} = (1 - R_{spec_i})(1 - \bm{\mathrm{u}}_{sun}\cdotp \bm{\mathrm{u}}_h)^5.
+\end{equation}
+Where $R_{spec_i}$ is the specular coefficient for facet $i$.
+
+If the facet is metallic, the diffuse component is simply zero, otherwise it is the following:
+\begin{equation}
+\rho_{d_i} = \left(\frac{28R_{diff_i}}{23\pi}\right)
+(1 - R_{spec_i})
+\left[1 - (1 - \frac{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun}}{2})^5\right]
+\left[1 - (1 - \frac{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs}}{2})^5\right]
+\end{equation}
+Where $R_{diff_i}$ is the diffuse coefficient for the facet $i$.
+
+The equation for the total visible power reflected by the spacecraft then becomes:
+\begin{equation}
+F_{obs} = \frac{C_{sun,vis}}{{d^2}}\sum_{i=0}^N A_i\rho_{total_i}(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})
+\end{equation}
+Where $C_{sun,vis}$ is the power flux output from the sun in the visible spectrum [455W/m$^2$], $d$ is the distance from the observer to the spacecraft in meters, $A_i$ is the illuminated area of facet (calculated by a ray tracing algorithm), and $N$ is the number of facets.
+
+This quantity is the basis for all observations, however data from collected in telescopes is rarely reported in Watts, but in either counts or intensity. Intensity is defined to be a logarithmic scaling of power, while counts is a linear scaling of the number of photons received by the CCD sensor during a single measurement. The conversion from Watts to intensity magnitude used in this thesis is as follows:
+\begin{equation}
+m = -2.5\log_{10}(F_{obs})
+\end{equation}
+and the conversion from Watts to counts used in this thesis is:
+\begin{equation}
+counts = \frac{F_{obs}\alpha \Delta t}{E_{e^-} K}
+\end{equation}
+Where $\alpha$ represents the area of the telescope, $\Delta t$ is the exposure time, $E_{e^-}$ is the energy of a visible wavelength photon in Joules, and $K$ is the CCD gain of the sensor [$\frac{e^-}{count}$]. One of these equations should be used depending on the data.
