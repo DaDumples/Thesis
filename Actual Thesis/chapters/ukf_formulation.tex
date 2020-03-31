@@ -1,10 +1,10 @@
-\chapter*{Unscented Kalman Filter Formulation}
+\chapter{Unscented Kalman Filter Formulation}
 
 This thesis actually utilizes two formulations of the UKF. The defines the state vector is composed of the modified Rodriguez parameters and angular velocity and is in the form:
 \begin{equation}
-\boldmath{x = \begin{bmatrix} p \\ \omega \end{bmatrix}}
+\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \end{bmatrix}
 \end{equation}
-where $\boldmath{p}$ are the modified Roriguez parameters and  $\boldmath{w}$ is the angular velocity vector. This formulation is utilized in this thesis to filter data for objects that are assumed to be spinning about a constant axis or whose inertial properties are known. In either of these cases inertial properties do not need to be estimated.
+where $\bm{p}$ are the modified Roriguez parameters and  $\boldmath{w}$ is the angular velocity vector. This formulation is utilized in this thesis to filter data for objects that are assumed to be spinning about a constant axis or whose inertial properties are known. In either of these cases inertial properties do not need to be estimated.
 
 In the case that the object is tumbling, that is to say that the angular velocity is not constant in either the ECI or body frame, inertial properties need to be either known or estimated. If these properties are known then the state definition above suffices and only the forward propagation model must be changed. This is unlikely however as it is often difficult even for operators to accurately measure a spacecrafts inertial properties. This leads to the necessity to estimate the inertial properties.
 
@@ -16,6 +16,6 @@ The simplest approach to estimating the inertial properties is to take advantage
 \end{enumerate}
 The combination of these two assumptions reduces the number of elements that needed to be estimated to two: the second and third diagonal elements. Given these assumptions, the state vector becomes:
 \begin{equation}
-\boldmath{x = \begin{bmatrix} p \\ \omega \\ \Xi \end{bmatrix}}
+\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \\ \bm{\Xi} \end{bmatrix}
 \end{equation}
-Where $\boldmath{\Xi}$ is defined to be a 2x1 vector containing two of the diagonal elements of the objects principal inertia matrix.
+Where $\bm{\Xi}$ is defined to be a 2x1 vector containing two of the diagonal elements of the objects principal inertia matrix.

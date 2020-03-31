@@ -1,2 +1,8 @@
 \hbox to \linewidth {\hspace {1.5em}Figure\hfill Page}
 \addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Definition of vectors with respect to a facet.}}{15}{figure.4.1}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Visualizaion of an occluding facet.}}{17}{figure.4.2}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces A sample point that is visible but not illuminated}}{20}{figure.4.3}% 

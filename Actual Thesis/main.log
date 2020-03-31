@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  28 MAR 2020 15:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  31 MAR 2020 14:53
 entering extended mode
 **./main.tex
 (main.tex
@@ -702,6 +702,43 @@ Package: bm 2017/01/16 v1.2c Bold Symbol Support (DPC/FMi)
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 141.
 LaTeX Info: Redefining \bm on input line 207.
 )
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/algorithms\algorit
+hmic.sty"
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+\c@ALC@unique=\count170
+\c@ALC@line=\count171
+\c@ALC@rem=\count172
+\c@ALC@depth=\count173
+\ALC@tlm=\skip88
+\algorithmicindent=\skip89
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/algorithms\algorit
+hm.sty"
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+\@float@every@algorithm=\toks41
+\c@algorithm=\count174
+
+
+! LaTeX Error: Command \listofalgorithms already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.97 ...s}{\listof{algorithm}{\listalgorithmname}}
+                                                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+)
+("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\enumerate.st
+y"
+Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
+\@enLab=\toks42
+)
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/nowidow\nowidow.st
 y"
 Package: nowidow 2011/09/20 1.0 Easily prevent widows and orphans
@@ -711,7 +748,7 @@ Package: nowidow
 sty"
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
-\myfootnotesep=\skip88
+\myfootnotesep=\skip90
 \@indexfile=\write3
 \openout3 = `main.idx'.
 
@@ -721,30 +758,30 @@ Writing index file main.idx
 \glo@main@file=\write5
 \openout5 = `main.glo'.
 
-Package glossaries Info: Writing glossary file main.glo on input line 42.
-\tindent=\skip89
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 103.
+Package glossaries Info: Writing glossary file main.glo on input line 45.
+\tindent=\skip91
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 106.
 
-Package hyperref Info: Option `bookmarksopen' set `false' on input line 103.
-Package hyperref Info: Option `colorlinks' set `false' on input line 103.
-\c@qcounter=\count170
+Package hyperref Info: Option `bookmarksopen' set `false' on input line 106.
+Package hyperref Info: Option `colorlinks' set `false' on input line 106.
+\c@qcounter=\count175
 (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 109.
-LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
@@ -752,17 +789,17 @@ Package caption Info: End \AtBeginDocument code.
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
 df.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count171
+\scratchcounter=\count176
 \scratchdimen=\dimen170
 \scratchbox=\box50
-\nofMPsegments=\count172
-\nofMParguments=\count173
-\everyMPshowfont=\toks41
-\MPscratchCnt=\count174
+\nofMPsegments=\count177
+\nofMParguments=\count178
+\everyMPshowfont=\toks43
+\MPscratchCnt=\count179
 \MPscratchDim=\dimen171
-\MPnumerator=\count175
-\makeMPintoPDFobject=\count176
-\everyMPtoPDFconversion=\toks42
+\MPnumerator=\count180
+\makeMPintoPDFobject=\count181
+\everyMPtoPDFconversion=\toks44
 )
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf-
 base.sty"
@@ -813,9 +850,9 @@ G,.JBIG2,.JB2,.eps]
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count177
+\c@lstlisting=\count182
 \AtBeginShipoutBox=\box51
-Package hyperref Info: Link coloring OFF on input line 109.
+Package hyperref Info: Link coloring OFF on input line 112.
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\nameref.s
 ty"
@@ -825,11 +862,11 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 estring.sty"
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count178
+\c@section@level=\count183
 )
-LaTeX Info: Redefining \ref on input line 109.
-LaTeX Info: Redefining \pageref on input line 109.
-LaTeX Info: Redefining \nameref on input line 109.
+LaTeX Info: Redefining \ref on input line 112.
+LaTeX Info: Redefining \pageref on input line 112.
+LaTeX Info: Redefining \nameref on input line 112.
  (main.out) (main.out)
 \@outlinefile=\write6
 \openout6 = `main.out'.
@@ -839,31 +876,41 @@ LaTeX Info: Redefining \nameref on input line 109.
 \openout4 = `main.ist'.
 
 {C:/Users/theha/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 120.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 123.
 
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 120.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 123.
 
 [2]
-LaTeX Font Info:    Try loading font information for U+msa on input line 123.
+LaTeX Font Info:    Try loading font information for U+msa on input line 126.
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 123.
+LaTeX Font Info:    Try loading font information for U+msb on input line 126.
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 123--123
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
 []|[] 
  []
 
 
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 123--123
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+[]|[] 
+ []
+
+
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+[]|[] 
+ []
+
+
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
 []|[] 
  []
 
@@ -886,16 +933,18 @@ Overfull \hbox (216.0877pt too wide) in paragraph at lines 123--123
 
  [8
 
-] (chapter-outline.tex (chapters/Introduction.tex)
-(chapters/background_kf.texpdfTeX warning (ext4): destination with the same ide
-ntifier (name{page.1}) has been already used, duplicate ignored
+] (chapter-outline.tex (chapters/Introduction.tex
+\uppercase {Chapter} 1.
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1 \chapter
-            {Background} [1
+l.11 I
+      n this thesis, attempts to bring the theoretical prospects of lightcur...
+[1
 
-] [2]
-\uppercase {Chapter} 1.
+]) (chapters/background_kf.tex [2]
+\uppercase {Chapter} 2.
 [3
 
 ] [4] [5]
@@ -919,18 +968,7 @@ Overfull \hbox (159.40463pt too wide) detected at line 152
  []
 
 [9]) (chapters/ukf_formulation.tex [10]
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 5.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 5.
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
-
+\uppercase {Chapter} 3.
 
 LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
 
@@ -939,54 +977,75 @@ LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
 
 [11
 
+]) (chapters/measurement_model.tex [12]
+\uppercase {Chapter} 4.
+[13
+
 ]
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 19.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 19.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 21.
+<figures/facet.png, id=219, 372.79276pt x 245.718pt>
+File: figures/facet.png Graphic file (type png)
+<use figures/facet.png>
+Package pdftex.def Info: figures/facet.png  used on input line 37.
+(pdftex.def)             Requested size: 216.81pt x 142.90646pt.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 21.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-) (chapters/measurement_model.tex [12] [13
-
-] [14]
-Overfull \hbox (5.12154pt too wide) in paragraph at lines 63--65
+[14]
+Overfull \hbox (5.12154pt too wide) in paragraph at lines 54--56
 \OT1/cmr/m/n/12 Where $\OML/cmm/m/it/12 C[]$ \OT1/cmr/m/n/12 is the power flux 
 out-put from the sun in the vis-i-ble spec-trum [455W/m$[]$],
  []
 
-[15])) (main.bbl [16] [17
+[15 <./figures/facet.png>]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 73.
+<figures/occlusion_check.png, id=237, 249.3315pt x 225.84375pt>
+File: figures/occlusion_check.png Graphic file (type png)
+<use figures/occlusion_check.png>
+Package pdftex.def Info: figures/occlusion_check.png  used on input line 88.
+(pdftex.def)             Requested size: 216.81pt x 196.38597pt.
+ [16] [17 <./figures/occlusion_check.png>] [18]
+<figures/visible_and_illuminated.png, id=275, 292.09125pt x 241.50224pt>
+File: figures/visible_and_illuminated.png Graphic file (type png)
+<use figures/visible_and_illuminated.png>
+Package pdftex.def Info: figures/visible_and_illuminated.png  used on input lin
+e 155.
+(pdftex.def)             Requested size: 216.81pt x 179.26527pt.
+))
 
-] [18]) (appendix-outline.tex)
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+(main.bbl [19] [20 <./figures/visible_and_illuminated.png>] [21
+
+] [22])
+(appendix-outline.tex)
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 168.
-[19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 168.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 171.
+[23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 171.
  (main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 168.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 168.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 171.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 171.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 66C58F92CE9395BEFF8984FBE57E6325;200.
+(rerunfilecheck)             Checksum: 509FBEDDADA4A6FCD0E5AC7F8F501A84;662.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 16271 strings out of 492946
- 260316 string characters out of 3126388
- 447284 words of memory out of 3000000
- 19757 multiletter control sequences out of 15000+200000
- 11699 words of font info for 43 fonts, out of 3000000 for 9000
+ 16561 strings out of 492946
+ 264385 string characters out of 3126388
+ 449284 words of memory out of 3000000
+ 19982 multiletter control sequences out of 15000+200000
+ 12614 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 136i,17n,131p,1325b,450s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 136i,17n,131p,1325b,677s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmex10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
@@ -1003,9 +1062,9 @@ ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/theha/AppD
 ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/User
 s/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12
 .pfb>
-Output written on main.pdf (27 pages, 206734 bytes).
+Output written on main.pdf (31 pages, 315454 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
- 99 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 415 PDF objects out of 1000 (max. 8388607)
+ 148 named destinations out of 1000 (max. 500000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 

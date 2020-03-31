@@ -1,6 +1,6 @@
 \chapter{Background}
 
-\section*{The Kalman Filter}
+\section{The Kalman Filter}
 The Kalman Filter is a statistical estimation technique derived with the intention of solving state estimation problems. \cite{ukf_merwe} The derivation for the Kalman filter assumes that the system is linear and for this case is shown to be optimal \cite{kf_kalman}. However, many estimation problems exist which are nonlinear in nature and for these cases modification to the original Kalman Filter have been made. These modifications are the Extended and Unscented formulations which approach the problem in different ways. In this thesis the Extended formulation will be mentioned but not explored in depth as it can quickly be shown to be unsuitable for the application of this thesis.
 
 In a sentence, the Kalman Filter combines a model of how a system is expected to behave and compares the predictions of this model with real world measurements of the system to discover what state of the system best corroborates the two. In other words, the Kalman Filter attempts to minimize the difference between measured data and predicted data by finding the state estimate that minimizes the difference \cite{kf_derivation}.
@@ -86,7 +86,7 @@ The final process can be summarized in the following table.
 \end{center}
 
 
-\section*{The Unscented Kalman Filter}
+\section{The Unscented Kalman Filter}
 
 As previously mentioned, the Unscented Kalman Filter (UKF) is a modification to the original Kalman Filter designed to work around its assumption of linearity. Nonlinearity can enter the Kalman Filter in two ways. The system dynamics may become nonlinear, the measurement function may become nonlinear, or both. When this happens it no longer becomes possible to analytically calculate the Kalman gain, which in turn means that the optimal state estimate is no longer possible. The UKF is a method by which the optimal state estimate can be approximated and can be shown to be accurate to at least the second order \cite{ukf_merwe}.
 
