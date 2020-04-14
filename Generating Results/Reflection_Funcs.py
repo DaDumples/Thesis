@@ -1,4 +1,5 @@
 from numpy import *
+import numpy as np
 from numpy.linalg import *
 
 from sgp4.earth_gravity import wgs84
@@ -54,58 +55,63 @@ def lommel_seeliger(obs_vec, sun_vec, albedo, normal, area):
     return brightness
 
 
-def phong_brdf(obs_vec, sun_vec, normal, area):
+def phong_brdf(obs_vec, sun_vec, normal, area, exposure_time, r_specular = .2, r_diffuse = 0):
     #As implemented in INACTIVE SPACE OBJECT SHAPE ESTIMATION
     #VIA ASTROMETRIC AND PHOTOMETRIC DATA FUSION
 
     #Assumes specular lobe is even in all directions, nu = nv = N_PHONG
     C_SUN = 455 #Visible spectrum solar flux
-    r_specular = .9
-    r_diffuse = 0
-    n_phong = 10
-    CCD_GAIN = 4.8 #Electrons per CCD "Count"
+    n_phong = 1
+    CCD_GAIN = 4.8 #Electrons per CCD "Count" from datasheet
     TELESCOPE_DIAMETER = 1 #meter
     ELECTRON_ENERGY = 2.27 #Electron Volt [eV]
-    EXPOSURE_TIME = .028 #s
     J2eV = 1.6022e-19 #Joules per eV
+    alpha = 1
 
     obs_norm = obs_vec/norm(obs_vec)
     sun_norm = sun_vec/norm(sun_vec)
     h_vec = (obs_norm + sun_norm)
     h_vec = h_vec/norm(h_vec)
+    normal = normal/norm(normal)
 
     dot_ns = dot(normal, sun_norm)
     dot_no = dot(normal, obs_norm)
     dot_nh = dot(normal, h_vec)
 
-    F_reflect = r_specular + (1-r_specular)*(1 - dot(sun_norm, h_vec))
+    # As per INACTIVE SHAPE ESTIMATION
     exponent = n_phong
+    F_reflect = r_specular + (1-r_specular)*(1 - dot(sun_norm, h_vec))**5
     denominator = dot_ns + dot_no - dot_ns*dot_no
 
-    specular = (n_phong+1)/(8*pi)*(dot_nh**exponent)/denominator*F_reflect
-
+    specular = sqrt((n_phong+1)*(n_phong+1))/(8*pi)*(dot_nh**exponent)/denominator*F_reflect
     diffuse = 28*r_diffuse/(23*pi)*(1 - r_specular)*(1 - (1 - dot_ns/2)**5)*(1 - (1 - dot_no/2)**5)
 
+    #As per Astrometric and Photometric Data Fusion
+    #u_spec = 2*(dot(normal, sun_norm)*normal) - sun_norm
+    #specular = r_specular*(dot(obs_norm, u_spec)**alpha)/dot(sun_norm, normal)
+    #diffuse = r_diffuse/pi
+
     Fsun = C_SUN*(specular + diffuse)*dot_ns
-    Fobs = Fsun*area*dot_no/norm(obs_vec)**2
+    Fobs = Fsun*area*dot_no/norm(obs_vec*1e3)**2
 
-    # collecting_area = pi*TELESCOPE_DIAMETER**2/4
-    # collected_energy = Fobs*collecting_area*EXPOSURE_TIME
-    # photons_collected = collected_energy/J2eV/ELECTRON_ENERGY
-    # counts = photons_collected/CCD_GAIN #flux
-    # instrument_magnitude =  2.5*log10(counts/EXPOSURE_TIME)
+    collecting_area = pi*(TELESCOPE_DIAMETER**2)/4
+    collected_energy = Fobs*collecting_area*exposure_time
+    photons_collected = collected_energy/J2eV/ELECTRON_ENERGY
+    counts = photons_collected/CCD_GAIN #flux
+    instrument_magnitude =  -2.5*log10(Fobs)
 
-    return Fobs
-
+    return counts
 
 class Facet():
 
-    def __init__(self, x_dim, y_dim, center_pos, name = '', facet2body = None, double_sided = False):
+    def __init__(self, x_dim, y_dim, center_pos, name = '', facet2body = None, double_sided = False, specular_coef = 0.2, diffuse_coef = 0):
         self.center = center_pos
         self.x_dim = x_dim
         self.y_dim = y_dim
         self.area = x_dim*y_dim
         self.double_sided = double_sided
+        self.specular_coef = specular_coef
+        self.diffuse_coef = diffuse_coef
 
         self.name = name
 
@@ -127,8 +133,10 @@ class Facet():
 
         direction = direction/norm(direction)
 
+        #check if ray and plane are perpendicular
         if dot(direction, self.unit_normal) == 0:
             return inf
+        #check if the source is ON the plane
         elif dot((self.center - source), self.unit_normal) == 0:
             return 0
 
@@ -212,7 +220,7 @@ class Spacecraft_Geometry():
 
 
 
-    def calc_reflected_power(self, obs_vec_body, sun_vec_body):
+    def calc_reflected_power(self, obs_vec_body, sun_vec_body, exposure_time):
 
         power = 0
         #poop = []
@@ -225,10 +233,7 @@ class Spacecraft_Geometry():
                 else:
                     reflecting_area = self.calc_reflecting_area(obs_vec_body, sun_vec_body, facet)
 
-                power += phong_brdf(obs_vec_body, sun_vec_body, facet.unit_normal, reflecting_area)
-                #poop.append(facet.name)
-
-        #print(poop)
+                power += phong_brdf(obs_vec_body, sun_vec_body, facet.unit_normal, reflecting_area, exposure_time, facet.specular_coef, facet.diffuse_coef)
 
 
         return power
@@ -248,7 +253,7 @@ class Spacecraft_Geometry():
 
         return area
 
-    def trace_ray(self, source, ray, sun_vec):
+    def trace_ray(self, source, ray, sun_vec, exposure_time):
 
         obs_vec = -ray
         distances = asarray([f.intersects(source, ray) for f in self.facets])
@@ -288,11 +293,11 @@ class Spacecraft_Geometry():
                             #print(facet.name)
                             return 0
                             break
-            return phong_brdf(obs_vec, sun_vec, unit_normal, 1)
+            return phong_brdf(obs_vec, sun_vec, unit_normal, 1, exposure_time, facet.specular_coef, facet.diffuse_coef)
 
         
 
-def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, win_dim = (2,2), dpm = 50):
+def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, exposure_time, win_dim = (2,2), dpm = 50):
     """
     camera_axis is the direction that the camera is pointing
     sun axis is the direction that the light is moving (sun to spacecraft)
@@ -316,7 +321,7 @@ def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, win_dim = (2
             y_pos = (win_pix[1]/2 - y)/dpm
             pix_pos = camera_rotation@array([x_pos, y_pos, 0]) + camera_pos
             
-            image[x,y] = spacecraft_geometry.trace_ray(pix_pos, ray_direction, sun_vec_body)
+            image[x,y] = spacecraft_geometry.trace_ray(pix_pos, ray_direction, sun_vec_body, exposure_time)
 
     m = amax(image)
     # if m == 0:
@@ -350,7 +355,7 @@ class Premade_Spacecraft():
         segments = 20
         angle = 2*pi/segments
         radius = 1.5
-        side_length = 1.8*sin(angle/2)*radius
+        side_length = radius*sin(angle/2)*radius
         lenght = 9
         cylinder_facets = []
         for theta in linspace(0, 2*pi, segments)[:-1]:
@@ -359,11 +364,54 @@ class Premade_Spacecraft():
             cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder'))
 
         pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3))
+        pZ.area = pi*radius**2
         nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi))
+        nZ.area = pi*radius**2
         cylinder_facets.append(pZ)
         cylinder_facets.append(nZ)
 
         self.CYLINDER = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
+
+        segments = 20
+        angle = 2*pi/segments
+        radius = 1.3
+        side_length = radius*sin(angle/2)*radius
+        lenght = 10.73
+        cylinder_facets = []
+        for theta in linspace(0, 2*pi, segments)[:-1]:
+            pos = CF.Cz(theta)@array([1,0,0])
+            facet2body = CF.Cz(theta)@CF.Cy(pi/2)
+            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder'))
+
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3))
+        pZ.area = pi*radius**2
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi))
+        nZ.area = pi*radius**2
+        cylinder_facets.append(pZ)
+        cylinder_facets.append(nZ)
+
+        self.ARIANE40 = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
+
+        segments = 20
+        angle = 2*pi/segments
+        radius = 1.2
+        side_length = radius*sin(angle/2)*radius
+        lenght = 6.5
+        cylinder_facets = []
+        for theta in linspace(0, 2*pi, segments)[:-1]:
+            pos = CF.Cz(theta)@array([1,0,0])
+            facet2body = CF.Cz(theta)@CF.Cy(pi/2)
+            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, specular_coef = 0, diffuse_coef = 0.0075, name = 'cylinder'))
+
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3), specular_coef = 0, diffuse_coef = 0.0075)
+        pZ.area = pi*radius**2
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi), specular_coef = 0, diffuse_coef = 0.0075)
+        nZ.area = pi*radius**2
+        cylinder_facets.append(pZ)
+        cylinder_facets.append(nZ)
+
+        self.SL8 = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
+
 
         pZ = Facet(3.0, 1.0, array([0,0, 1.0]), facet2body = identity(3) , name = '+Z')
         nZ = Facet(3.0, 1.0, array([0,0,-1.0]), facet2body = CF.Cy(pi) , name = '-Z')
@@ -383,6 +431,18 @@ class Premade_Spacecraft():
 
         self.LONG_RECTANGLE = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ], sample_dim = .1)
 
+        xdim = .1
+        ydim = .1
+        zdim = .3
+        pZ = Facet(xdim, ydim, array([0,0, zdim/2]), facet2body = identity(3) , name = '+Z')
+        nZ = Facet(xdim, ydim, array([0,0,-zdim/2]), facet2body = CF.Cy(pi) , name = '-Z')
+        pX = Facet(zdim, ydim, array([xdim/2,0,0]), facet2body = CF.Cy(pi/2), name = '+X')
+        nX = Facet(zdim, ydim, array([-xdim/2,0,0]), facet2body = CF.Cy(-pi/2), name = '-X')
+        pY = Facet(xdim, zdim, array([0, ydim/2,0]), facet2body = CF.Cx(-pi/2), name = '+Y')
+        nY = Facet(xdim, zdim, array([0,-ydim/2,0]), facet2body = CF.Cx(pi/2), name = '-Y')
+
+        self.EXOCUBE = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ], sample_dim = .01)
+
     def get_geometry(self, name):
         name = name.upper()
         if name == 'BOX_WING':
@@ -397,6 +457,12 @@ class Premade_Spacecraft():
             return self.RECTANGLE
         elif name == 'LONG_RECTANGLE':
             return self.LONG_RECTANGLE
+        elif name == 'ARIANE40':
+            return self.ARIANE40
+        elif name == 'EXOCUBE':
+            return self.EXOCUBE
+        elif name == 'SL8':
+            return self.SL8
         else:
             print(name, 'is not a valid geometry.')
 
@@ -409,42 +475,21 @@ def loading_bar(decimal_percentage, text = ''):
 
 if __name__ == '__main__':
 
-    obs_vecs = load('Splotchy_Rectangle_Leo/obs_vecs.npy')[::50]
-    sun_vecs = load('Splotchy_Rectangle_Leo/sun_vecs.npy')[::50]
-    attitudes = load('Splotchy_Rectangle_Leo/true_attitude.npy')[::50]
+    obs_vecs = load('obsvec.npy')[:50]
+    sun_vecs = load('obsvec.npy')[:50]
+    attitudes = load('mrps0.npy')[:50]
 
-    SC = Premade_Spacecraft().SPLOTCHY_RECTANGLE
-
-    # screwy_attitude = load('LEO_RECTANGLE/estimated_states.npy')[34834]
-    # screwy_obs_vec = obs_vecs[34834]
-    # dcm_eci2body = CF.euler2dcm(ROTATION, screwy_attitude[0:3]).T
-    # image = generate_image(SC, dcm_eci2body@screwy_obs_vec, dcm_eci2body@sun_vec_body, win_dim = (4,4), dpm = 5)
-    # power = SC.calc_reflected_power(dcm_eci2body@screwy_obs_vec, dcm_eci2body@sun_vec_body)
-    # print(power)
-    # plt.imshow(image, cmap= 'Greys')
-    # plt.show()
-
-
-    for facet in SC.obscuring_facets:
-        print(facet.name, [f.name for f in SC.obscuring_facets[facet]])
-        print(facet.name, facet.center, facet.unit_normal)
+    Geometry = Premade_Spacecraft().EXOCUBE
 
     num_frames = len(obs_vecs)
-    print(num_frames)
-
-    # obs_body = array([ 0.67027951, -0.02873575, -0.74155218])
-    # sun_body = array([-0.01285413, -0.99098831,  0.13332702])
-    # image = generate_image(SC, obs_body, sun_body, win_dim = (4,4), dpm = 5)
-    # plt.imshow(image, cmap = 'Greys')
-    # plt.show()
 
     frames = []
     count = 0
     max_val = 0
-    for mrps, obs_vec, sun_vec in zip(attitudes[:,0:3], obs_vecs, sun_vecs):
-        dcm_eci2body = CF.euler2dcm(ROTATION, mrps).T
+    for mrps, obs_vec, sun_vec in zip(attitudes, obs_vecs, sun_vecs):
+        dcm_eci2body = CF.mrp2dcm(mrps).T
         #dcm_eci2body = CF.mrp2dcm(mrps).T
-        image = generate_image(SC, dcm_eci2body@obs_vec, dcm_eci2body@sun_vec, win_dim = (4,4), dpm = 5)
+        image = generate_image(Geometry, dcm_eci2body@obs_vec, dcm_eci2body@sun_vec, win_dim = (1,1), dpm = 100)
         im_max = amax(image)
         if im_max > max_val:
             max_val = im_max
@@ -454,12 +499,7 @@ if __name__ == '__main__':
 
     frames = [frame/max_val for frame in frames]
 
-    imageio.mimsave('./true_rotation.gif',frames, fps = 10)
-
-    #plt.imshow(image, cmap = 'gray')
-    # plt.show()
-
-                
+    imageio.mimsave('test.gif',frames, fps = 10)
 
 
 

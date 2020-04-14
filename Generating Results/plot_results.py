@@ -56,7 +56,7 @@ for i, passfile in enumerate(pass_directories):
         result_dir = os.path.join(passfile,resultfile)
         inertia_filtered = 'inertia' in resultfile
 
-        times = load(os.path.join(passfile, 'times.npy'))
+        times = load(os.path.join(passfile, 'time.npy'))
 
         true_lightcurve = load(os.path.join(passfile, 'lightcurve'+run_number+'.npy'))
         true_mrps = load(os.path.join(passfile, 'mrps'+run_number+'.npy'))

@@ -37,7 +37,10 @@ print('Done grouping.')
 pass_dfs = []
 for num in pass_numbers:
     print(num, end = '\r')
+    #check each pass observation, make sure its classified as a satellite (not a star) and that its on the main lens (8)
     sub_df = df[df['Detection Request Id'] == num]
+    sub_df = sub_df[sub_df['Classification Id'] == 3]
+    sub_df = sub_df[sub_df['Camera Id'] == 8]
     if len(sub_df['Flux']) > 100:
         pass_dfs.append(sub_df)
 print('{} passes found.'.format(len(pass_dfs)))
@@ -46,12 +49,16 @@ for p in pass_dfs:
     julian_day = asarray(p['Time Jd Int'])[0]
     julian_day_integers = asarray(p['Time Jd Int'])
     norad_id = asarray(p['Norad Id'])[0]
-    error_mean = p['Flux Err'].mean()
+    error_std = p['Flux Err'].std()
+    exposure_time = asarray(p['Exp Time Sec'])[0]
+    azimuths = asarray(p['Az Deg'])
+    elevations = asarray(p['Obs El Deg'])
 
     print(norad_id, end = '\r')
 
     day_fractions = asarray(p['Time Jd Frac'])
     julian_dates = day_fractions + julian_day_integers
+    time = (julian_dates - julian_dates[0])*24*3600
 
     sample_rate = (julian_dates[1] - julian_dates[0])*24*3600
     date0 = julian.from_jd(julian_day + day_fractions[0])
@@ -71,17 +78,21 @@ for p in pass_dfs:
     datafile = open(datafilename, 'w')
     datafile.write('Start JD: '+str(julian_dates[0])+'\n')
     datafile.write('Start Date: '+str(date0)+'\n')
-    datafile.write('Sample Rate: '+str(sample_rate)+'\n')
-    datafile.write('Error Mean: '+str(error_mean)+'\n')
+    datafile.write('Error std: '+str(error_std)+'\n')
+    datafile.write('Exposure Time: '+str(exposure_time)+'\n')
     datafile.close()
 
     
 
     save(os.path.join(pass_directory,'lightcurve{}.npy'.format(number)), asarray(p['Flux']))
     save(os.path.join(pass_directory,'julian_dates{}.npy'.format(number)), asarray(julian_dates))
+    save(os.path.join(pass_directory,'norad_id{}.npy'.format(number)), asarray(norad_id))
+    save(os.path.join(pass_directory,'time.npy'), asarray(time))
+    save(os.path.join(pass_directory,'azimuth.npy'), asarray(azimuths))
+    save(os.path.join(pass_directory,'elevation.npy'), asarray(elevations))
 
-    plt.plot(julian_dates, p['Flux'])
-    plt.xlabel('Julian Date')
+    plt.plot(time, p['Flux'])
+    plt.xlabel('Seconds from pass start')
     plt.ylabel('Flux/Counts')
     plt.savefig(os.path.join(pass_directory,'Lightcurve{}.png'.format(number)), bbox_inches = 'tight')
     plt.close()
