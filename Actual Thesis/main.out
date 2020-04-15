@@ -4,8 +4,18 @@
 \BOOKMARK [0][-]{chapter.2}{2 Background}{}% 4
 \BOOKMARK [1][-]{section.2.1}{2.1 The Kalman Filter}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.2}{2.2 The Unscented Kalman Filter}{chapter.2}% 6
-\BOOKMARK [0][-]{chapter.3}{3 Unscented Kalman Filter Formulation}{}% 7
-\BOOKMARK [0][-]{chapter.4}{4 Measurement Model}{}% 8
-\BOOKMARK [1][-]{section.4.1}{4.1 Observation Model}{chapter.4}% 9
-\BOOKMARK [1][-]{section.4.2}{4.2 Ray Tracing Model}{chapter.4}% 10
-\BOOKMARK [0][-]{chapter*.4}{BIBLIOGRAPHY}{}% 11
+\BOOKMARK [1][-]{section.2.3}{2.3 Light Curves}{chapter.2}% 7
+\BOOKMARK [0][-]{chapter.3}{3 Unscented Kalman Filter Formulation}{}% 8
+\BOOKMARK [0][-]{chapter.4}{4 Measurement Model}{}% 9
+\BOOKMARK [1][-]{section.4.1}{4.1 Observation Model}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.2}{4.2 Ray Tracing Model}{chapter.4}% 11
+\BOOKMARK [0][-]{chapter.5}{5 Results}{}% 12
+\BOOKMARK [1][-]{section.5.1}{5.1 Simulated Data}{chapter.5}% 13
+\BOOKMARK [2][-]{subsection.5.1.1}{5.1.1 Test Cases}{section.5.1}% 14
+\BOOKMARK [2][-]{subsection.5.1.2}{5.1.2 Simulation Methodology}{section.5.1}% 15
+\BOOKMARK [2][-]{subsection.5.1.3}{5.1.3 Simulation Results}{section.5.1}% 16
+\BOOKMARK [1][-]{section.5.2}{5.2 Real Data}{chapter.5}% 17
+\BOOKMARK [2][-]{subsection.5.2.1}{5.2.1 SERT-2}{section.5.2}% 18
+\BOOKMARK [2][-]{subsection.5.2.2}{5.2.2 Ajisai \(EGS\)}{section.5.2}% 19
+\BOOKMARK [1][-]{section.5.3}{5.3 Symmetrical Solution Groups}{chapter.5}% 20
+\BOOKMARK [0][-]{chapter*.4}{BIBLIOGRAPHY}{}% 21

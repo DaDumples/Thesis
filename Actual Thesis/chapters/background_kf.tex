@@ -154,4 +154,12 @@ Now that the sample points and covariances can be calculated, the full procedure
 	\end{tabular}
 \end{center}
 
+\section{Light Curves}
 
+Light curves are data that is collected from a telescope observing a spacecraft. The lightcurves for this thesis were helpfully provided by Lockheed-Martin and collected from their facility in the Santa Cruz mountains in California.
+
+There are two methods to collecting light curve data, either take a long exposure photograph and record the spacecraft as a streak across the sensor or have the telescope track the spacecraft while taking images at intervals. Lockheed-Martin's facility performs the latter. 
+
+Once the raw data is collected, it is processed with the Python library SEP which is a wrapper around the Source Extractor command-line program (SEP) which analyses astronomical images. The data used in this thesis was returned using SEP's extract function which calculates the "flux" of an object at ever frame. "Flux" is simply the sum total of all the pixel values corresponding to that object.
+
+The value of any given pixel in the data is determined by the CCD of the detector. The CCD used for this data was Basler avA2300-25gm. In astronomy, each increment that a CCD pixel reports is called a "count" and represents a threshold of photos hitting that pixel. The number of photos per count is given by the CCD's gain which in this case was 4.8. This means that the flux reported by SEP represents the total counts received from the spacecraft. By multiplying by the CCD gain the number of photos received can be calculated.

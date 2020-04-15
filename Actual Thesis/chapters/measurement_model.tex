@@ -90,7 +90,7 @@ The first step is to iterate through each facet and precompute a list of other f
 	\label{occluding_facet}
 \end{figure}
 
-In order to estimate the area of a facet that is contributing to the measurement, regularly space sample points need to be precomputed across each face. Finer spacing will result in more accurate results but increase the computer time required. 
+In order to estimate the area of a facet that is contributing to the measurement, regularly space sample points need to be precomputed across each face. Finer spacing will result in more accurate results but increase the computer time required. It is important that each sample point represents an equal area of the facet. To do this, sample points should be placed at the centers of grid squares of equal area.
 
 When the visible brightness of any facet needs to be computed, these points will have to be checked for both visibility and illumination. A point is both visible and illuminated if all of the following conditions are met:
 \begin{enumerate}
@@ -105,7 +105,7 @@ d = \frac{(\bm{p}_0 - \bm{l}_0)\cdotp \bm{n}}{\bm{l}\cdotp \bm{n}}
 \end{equation}
 Here, $d$ is the distance between point $l_0$ and the plane defined by the normal vector $n$ along the vector $l$. $p_0$ is a point on the plane. This equation will be used to determine the point of intersection of $\bm{\mathrm{u}}_{obs}$ and $\bm{\mathrm{u}}_{sun}$ from each sample point to the planes of each occluding facet.
 
-The difference between a facet and a plane is that a plane in infinite while a facet has bounds. This means that as long as $l$ is not perpendicular to $n$ there always exists a distance $d$. This thesis determines whether or not a ray intersects a facet within its boundaries by first calculating the point of intersection of the ray and plane using:
+As long as $l$ is not perpendicular to $n$ there always exists a distance $d$. This thesis determines whether or not a ray intersects a facet within its boundaries by first calculating the point of intersection of the ray and plane using:
 \begin{equation}\label{eq:intersection_pt}
 \bm{p}_{\mathrm{x}} = \bm{l}_0 + d\bm{l}
 \end{equation}
@@ -149,7 +149,7 @@ The approximation of the total illuminated area of the facet then becomes:
 \begin{equation}
 A_i = A_{i0} \left( 1 - \frac{\text{number of points excluded}}{\text{total number of points}} \right)
 \end{equation}
-Where $A_{i0}$ is the total area of the facet. In the convenient case where a facet has no other facets that could occlude it $A_i = A_{i0}$. This is true of every facet on a geometry which is a convex polyhedron.
+Where $A_{i0}$ is the total area of the facet. In the convenient case where a facet has no other facets that could occlude it, $A_i = A_{i0}$. This is true of every facet on a geometry which is a convex polyhedron.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 3in]{figures/visible_and_illuminated}

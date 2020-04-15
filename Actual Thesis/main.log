@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  31 MAR 2020 14:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  14 APR 2020 20:20
 entering extended mode
 **./main.tex
 (main.tex
@@ -712,32 +712,10 @@ Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \ALC@tlm=\skip88
 \algorithmicindent=\skip89
 )
-("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/algorithms\algorit
-hm.sty"
-Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
-nment
-\@float@every@algorithm=\toks41
-\c@algorithm=\count174
-
-
-! LaTeX Error: Command \listofalgorithms already defined.
-               Or name \end... illegal, see p.192 of the manual.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.97 ...s}{\listof{algorithm}{\listalgorithmname}}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-)
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\enumerate.st
 y"
 Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
-\@enLab=\toks42
+\@enLab=\toks41
 )
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/nowidow\nowidow.st
 y"
@@ -758,30 +736,30 @@ Writing index file main.idx
 \glo@main@file=\write5
 \openout5 = `main.glo'.
 
-Package glossaries Info: Writing glossary file main.glo on input line 45.
+Package glossaries Info: Writing glossary file main.glo on input line 44.
 \tindent=\skip91
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 106.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 105.
 
-Package hyperref Info: Option `bookmarksopen' set `false' on input line 106.
-Package hyperref Info: Option `colorlinks' set `false' on input line 106.
-\c@qcounter=\count175
+Package hyperref Info: Option `bookmarksopen' set `false' on input line 105.
+Package hyperref Info: Option `colorlinks' set `false' on input line 105.
+\c@qcounter=\count174
 (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 111.
+LaTeX Font Info:    ... okay on input line 111.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
@@ -789,17 +767,17 @@ Package caption Info: End \AtBeginDocument code.
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
 df.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count176
+\scratchcounter=\count175
 \scratchdimen=\dimen170
 \scratchbox=\box50
-\nofMPsegments=\count177
-\nofMParguments=\count178
-\everyMPshowfont=\toks43
-\MPscratchCnt=\count179
+\nofMPsegments=\count176
+\nofMParguments=\count177
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count178
 \MPscratchDim=\dimen171
-\MPnumerator=\count180
-\makeMPintoPDFobject=\count181
-\everyMPtoPDFconversion=\toks44
+\MPnumerator=\count179
+\makeMPintoPDFobject=\count180
+\everyMPtoPDFconversion=\toks43
 )
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf-
 base.sty"
@@ -850,9 +828,9 @@ G,.JBIG2,.JB2,.eps]
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count182
+\c@lstlisting=\count181
 \AtBeginShipoutBox=\box51
-Package hyperref Info: Link coloring OFF on input line 112.
+Package hyperref Info: Link coloring OFF on input line 111.
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\nameref.s
 ty"
@@ -862,11 +840,11 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 estring.sty"
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count183
+\c@section@level=\count182
 )
-LaTeX Info: Redefining \ref on input line 112.
-LaTeX Info: Redefining \pageref on input line 112.
-LaTeX Info: Redefining \nameref on input line 112.
+LaTeX Info: Redefining \ref on input line 111.
+LaTeX Info: Redefining \pageref on input line 111.
+LaTeX Info: Redefining \nameref on input line 111.
  (main.out) (main.out)
 \@outlinefile=\write6
 \openout6 = `main.out'.
@@ -876,41 +854,41 @@ LaTeX Info: Redefining \nameref on input line 112.
 \openout4 = `main.ist'.
 
 {C:/Users/theha/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 123.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 122.
 
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 123.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
 
 [2]
-LaTeX Font Info:    Try loading font information for U+msa on input line 126.
+LaTeX Font Info:    Try loading font information for U+msa on input line 125.
 
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 126.
+LaTeX Font Info:    Try loading font information for U+msb on input line 125.
 ("C:\Users\theha\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 []|[] 
  []
 
 
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 []|[] 
  []
 
 
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 []|[] 
  []
 
 
-Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
+Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 []|[] 
  []
 
@@ -920,18 +898,17 @@ Overfull \hbox (216.0877pt too wide) in paragraph at lines 126--126
 
  [6
 
-] (main.lot)
+] [7] (main.lot)
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
-
-[7
+[8
 
 ] (main.lof)
 \tf@lof=\write9
 \openout9 = `main.lof'.
 
- [8
+ [9
 
 ] (chapter-outline.tex (chapters/Introduction.tex
 \uppercase {Chapter} 1.
@@ -967,7 +944,7 @@ Overfull \hbox (159.40463pt too wide) detected at line 152
 []
  []
 
-[9]) (chapters/ukf_formulation.tex [10]
+[9] [10]) (chapters/ukf_formulation.tex [11]
 \uppercase {Chapter} 3.
 
 LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
@@ -975,14 +952,14 @@ LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
 
 LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
 
-[11
+[12
 
-]) (chapters/measurement_model.tex [12]
+]) (chapters/measurement_model.tex [13]
 \uppercase {Chapter} 4.
-[13
+[14
 
 ]
-<figures/facet.png, id=219, 372.79276pt x 245.718pt>
+<figures/facet.png, id=290, 372.79276pt x 245.718pt>
 File: figures/facet.png Graphic file (type png)
 <use figures/facet.png>
 Package pdftex.def Info: figures/facet.png  used on input line 37.
@@ -991,80 +968,138 @@ Package pdftex.def Info: figures/facet.png  used on input line 37.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[14]
+[15]
 Overfull \hbox (5.12154pt too wide) in paragraph at lines 54--56
 \OT1/cmr/m/n/12 Where $\OML/cmm/m/it/12 C[]$ \OT1/cmr/m/n/12 is the power flux 
 out-put from the sun in the vis-i-ble spec-trum [455W/m$[]$],
  []
 
-[15 <./figures/facet.png>]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 73.
-<figures/occlusion_check.png, id=237, 249.3315pt x 225.84375pt>
+[16 <./figures/facet.png>]
+Overfull \hbox (17.62482pt too wide) detected at line 85
+[][] 
+ []
+
+<figures/occlusion_check.png, id=309, 249.3315pt x 225.84375pt>
 File: figures/occlusion_check.png Graphic file (type png)
 <use figures/occlusion_check.png>
 Package pdftex.def Info: figures/occlusion_check.png  used on input line 88.
 (pdftex.def)             Requested size: 216.81pt x 196.38597pt.
- [16] [17 <./figures/occlusion_check.png>] [18]
-<figures/visible_and_illuminated.png, id=275, 292.09125pt x 241.50224pt>
+[17] [18 <./figures/occlusion_check.png>]
+Overfull \hbox (17.62482pt too wide) detected at line 146
+[][] 
+ []
+
+[19]
+<figures/visible_and_illuminated.png, id=347, 290.2845pt x 235.47975pt>
 File: figures/visible_and_illuminated.png Graphic file (type png)
 <use figures/visible_and_illuminated.png>
 Package pdftex.def Info: figures/visible_and_illuminated.png  used on input lin
 e 155.
-(pdftex.def)             Requested size: 216.81pt x 179.26527pt.
-))
+(pdftex.def)             Requested size: 216.81pt x 175.87637pt.
+) (chapters/Results.tex
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-(main.bbl [19] [20 <./figures/visible_and_illuminated.png>] [21
+[20] [21 <./figures/visible_and_illuminated.png>]
+\uppercase {Chapter} 5.
+<Figures/Long_Rectangle_Image.png, id=380, 301.125pt x 301.125pt>
+File: Figures/Long_Rectangle_Image.png Graphic file (type png)
+<use Figures/Long_Rectangle_Image.png>
+Package pdftex.def Info: Figures/Long_Rectangle_Image.png  used on input line 1
+3.
+(pdftex.def)             Requested size: 184.9429pt x 184.94954pt.
+<Figures/Cylinder_Image.png, id=381, 351.3125pt x 351.3125pt>
+File: Figures/Cylinder_Image.png Graphic file (type png)
+<use Figures/Cylinder_Image.png>
+Package pdftex.def Info: Figures/Cylinder_Image.png  used on input line 14.
+(pdftex.def)             Requested size: 184.9429pt x 184.94571pt.
+<Figures/Box_Wing_Image.png, id=382, 301.125pt x 301.125pt>
+File: Figures/Box_Wing_Image.png Graphic file (type png)
+<use Figures/Box_Wing_Image.png>
+Package pdftex.def Info: Figures/Box_Wing_Image.png  used on input line 16.
+(pdftex.def)             Requested size: 184.9429pt x 184.94954pt.
+<Figures/leo_orbit.png, id=383, 462.528pt x 344.0052pt>
+File: Figures/leo_orbit.png Graphic file (type png)
+<use Figures/leo_orbit.png>
+Package pdftex.def Info: Figures/leo_orbit.png  used on input line 25.
+(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
+<Figures/meo_orbit.png, id=384, 462.528pt x 344.0052pt>
+File: Figures/meo_orbit.png Graphic file (type png)
+<use Figures/meo_orbit.png>
+Package pdftex.def Info: Figures/meo_orbit.png  used on input line 26.
+(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
+<Figures/geo_orbit.png, id=385, 462.528pt x 344.0052pt>
+File: Figures/geo_orbit.png Graphic file (type png)
+<use Figures/geo_orbit.png>
+Package pdftex.def Info: Figures/geo_orbit.png  used on input line 28.
+(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
+[22
 
-] [22])
-(appendix-outline.tex)
+] [23 <./Figures/Long_Rectangle_Image.png (PNG copy)> <./Figures/Cylinder_Image
+.png (PNG copy)> <./Figures/Box_Wing_Image.png (PNG copy)>] [24 <./Figures/leo_
+orbit.png> <./Figures/meo_orbit.png> <./Figures/geo_orbit.png>] [25]
+<figures/sert-2.jpg, id=409, 401.5pt x 231.86626pt>
+File: figures/sert-2.jpg Graphic file (type jpg)
+<use figures/sert-2.jpg>
+Package pdftex.def Info: figures/sert-2.jpg  used on input line 55.
+(pdftex.def)             Requested size: 227.62204pt x 131.454pt.
+<figures/ajisai.jpg, id=413, 481.8pt x 321.2pt>
+File: figures/ajisai.jpg Graphic file (type jpg)
+<use figures/ajisai.jpg>
+Package pdftex.def Info: figures/ajisai.jpg  used on input line 68.
+(pdftex.def)             Requested size: 227.62204pt x 151.7482pt.
+
+[26 <./figures/sert-2.jpg>]
+<figures/ajisai_panels.jpg, id=419, 642.4pt x 268.00125pt>
+File: figures/ajisai_panels.jpg Graphic file (type jpg)
+<use figures/ajisai_panels.jpg>
+Package pdftex.def Info: figures/ajisai_panels.jpg  used on input line 76.
+(pdftex.def)             Requested size: 426.79134pt x 178.05501pt.
+)) (main.bbl [27 <./figures/ajisai.jpg> <./figures/ajisai_panels.jpg>] [28
+
+] [29] [30]) (appendix-outline.tex)
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 171.
-[23]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 171.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 170.
+[31]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 170.
  (main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 171.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 171.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 170.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 170.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 509FBEDDADA4A6FCD0E5AC7F8F501A84;662.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+(rerunfilecheck)             Checksum: B9743B5ED04F51544B37D180A4EF1076;1353.
  ) 
 Here is how much of TeX's memory you used:
- 16561 strings out of 492946
- 264385 string characters out of 3126388
+ 16627 strings out of 492946
+ 265647 string characters out of 3126388
  449284 words of memory out of 3000000
- 19982 multiletter control sequences out of 15000+200000
+ 20007 multiletter control sequences out of 15000+200000
  12614 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 136i,17n,131p,1325b,677s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 136i,17n,131p,1325b,842s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmbx12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmex10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/theha/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/theha/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/theh
-a/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb>
-<C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmr12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmr8.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/theha/AppData/Local/Pr
-ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/theha/AppD
-ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/User
-s/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12
-.pfb>
-Output written on main.pdf (31 pages, 315454 bytes).
+/cm/cmbx10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmbx12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/theha/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/theha/AppData/L
+ocal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/the
+ha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
+C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmmib10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmr12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/theha/AppData/Local/Programs/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/theha/AppData/Local/Pr
+ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/theha/App
+Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Use
+rs/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8
+.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmti12.pfb>
+Output written on main.pdf (40 pages, 536039 bytes).
 PDF statistics:
- 415 PDF objects out of 1000 (max. 8388607)
- 148 named destinations out of 1000 (max. 500000)
- 104 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 548 PDF objects out of 1000 (max. 8388607)
+ 177 named destinations out of 1000 (max. 500000)
+ 229 words of extra memory for PDF output out of 10000 (max. 10000000)
 

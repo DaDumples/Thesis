@@ -65,15 +65,15 @@ ax = Axes3D(fig, azim = -130, elev = 30)
 ax.plot(facet[:,0] - .5, facet[:,1] - .5, zeros(5), 'k')
 ax.plot(.5*ones(5), facet[:,0] - .5, facet[:,1] - .5, 'k')
 
-pts = linspace(-.5, .5, 6)[1:-1]
+pts = linspace(-.5, .5, 6)[1:] - 1/6/2
 for x in pts:
     for y in pts:
         ax.scatter(x, y, 0, color = 'k', alpha = .5)
 
 ax.quiver(.5, 0, 0, 0, 1, 0, color = 'k', arrow_length_ratio=.1, alpha = .5)
-ax.text(.5,1,0, r'$\mathrm{u}_x$', fontsize = 12)
+ax.text(.5,1,0, r'$\mathrm{u}_y$', fontsize = 12)
 ax.quiver(.5, 0, 0, 0, 0, 1, color = 'k', arrow_length_ratio=.1, alpha = .5)
-ax.text(.5,0,1, r'$\mathrm{u}_y$', fontsize = 12)
+ax.text(.5,0,1, r'$\mathrm{u}_x$', fontsize = 12)
 
 pt = array([pts[2], pts[2], 0])
 px_sun = array([.5, -.3, .1])

@@ -52,6 +52,10 @@ M.~{Jah} and R.~{Madler}.
 \newblock In {\em Advanced Maui Optical and Space Surveillance Technologies
   Conference}, page E49, 2007.
 
+\bibitem{ajisai_jaxa}
+JAXA.
+\newblock About experimental geodetic satellite "ajisai" (egs).
+
 \bibitem{kaasalainen_LCI}
 M.~Kaasalainen and J.~Torppa.
 \newblock Optimization methods for asteroid lightcurve inversion: I. shape
@@ -68,6 +72,17 @@ R.~E. Kalman.
 \newblock A new approach to linear filtering and prediction problems.
 \newblock {\em Transactions of the ASME--Journal of Basic Engineering},
   82(Series D):35--45, 1960.
+
+\bibitem{sert2}
+W.~R. Kerslake and L.~R. Ignaczak.
+\newblock Development and flight history of sert 2 spacecraft.
+\newblock 01 1992.
+
+\bibitem{ajisai}
+D.~Kucharski, G.~Kirchner, T.~Otsubo, and F.~Koidl.
+\newblock A method to calculate zero-signature satellite laser ranging normal
+  points for millimeter geodesy - a case study with ajisai.
+\newblock {\em Earth Planets and Space}, 67:34, 03 2015.
 
 \bibitem{kf_derivation}
 T.~Lacey.
