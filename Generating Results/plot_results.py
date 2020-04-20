@@ -16,6 +16,7 @@ from sgp4.io import twoline2rv
 
 import Aero_Funcs as AF
 import Aero_Plots as AP
+import Controls_Funcs as CF
 from Attitude_Filter import Attitude_Filter
 import Reflection_Funcs as RF
 
@@ -39,6 +40,7 @@ Geometry = RF.Premade_Spacecraft().get_geometry(Simulation_Configuration['Spacec
 Noise_STD = Simulation_Configuration['Sensor STD']
 Directory = Simulation_Configuration['Directory']
 
+DPI = 100
 
 est_inertia_flag = False
 if '-i' in sys.argv:
@@ -70,6 +72,38 @@ for i, passfile in enumerate(pass_directories):
         covariances = load(os.path.join(result_dir, 'results'+run_number+'_raw_covariance.npy'))
         residuals = load(os.path.join(result_dir, 'results'+run_number+'_raw_residuals.npy'))
 
+        stp = int(floor(1/DT))
+
+        eci_rate_true = vstack(list([CF.mrp2dcm(true_mrps[0])@true_rates[0] for m, rate in zip(true_mrps, true_rates)]))
+        eci_rate_ests = []
+        for est, tru in zip(means, eci_rate_true):
+            eci_rate_est = CF.mrp2dcm(est[0:3])@est[3:6]
+            a = norm(eci_rate_est - tru)
+            b = norm(-eci_rate_est - tru)
+            if b < a:
+                eci_rate_ests.append(-eci_rate_est)
+            else:
+                eci_rate_ests.append(eci_rate_est)
+        eci_rate_ests = vstack(eci_rate_ests)
+
+
+        obs_frame_true_rate = []
+        obs_frame_est_rate = []
+        for obs, sun, truth, est in zip(obs_vecs, sun_vecs, eci_rate_true, eci_rate_ests):
+
+            x = obs/norm(obs)
+            z = cross(sun, obs)/norm(cross(sun,obs))
+            y = cross(z, x)
+
+            eci2obs = vstack([x, y, z])
+
+            obs_frame_true_rate.append(eci2obs@truth)
+            obs_frame_est_rate.append(eci2obs@est)
+
+
+        obs_frame_true_rate = vstack(obs_frame_true_rate)
+        obs_frame_est_rate = vstack(obs_frame_est_rate)
+
 
         mrp_std = []
         rate_std = []
@@ -89,36 +123,57 @@ for i, passfile in enumerate(pass_directories):
         if inertia_filtered:
             inertia_std = vstack(inertia_std)
 
-        for i, (truth, mean) in enumerate(zip(true_rates, means[:,3:6])):
-            if dot(truth, mean) < 0:
-                means[i, 3:6] = -mean
+        raw_rates = means[:,3:6]
+        if len(means[0]) != 8:
+            for i, (truth, mean) in enumerate(zip(true_rates, means[:,3:6])):
+                if dot(truth, mean) < 0:
+                    means[i, 3:6] = -mean
 
         for i, truth in enumerate(true_mrps):
             if norm(truth) > 1:
                 true_mrps[i] = -truth/norm(truth)
 
+        if len(means[0]) == 8:
+            fig, (ax1, ax2) = plt.subplots(2,1, sharex = True)
+            ax1.plot([times[::stp][0], times[::stp][-1]], [Inertia[1,1], Inertia[1,1]])
+            ax1.plot(times[::stp], means[:,6][::stp])
+            
+            ax1.grid()
+            ax1.set_title('YY-Inertia vs Truth')
+            ax1.legend(['Truth',r'Estimate'])
+
+            ax2.plot([times[::stp][0], times[::stp][-1]], [Inertia[2,2], Inertia[2,2]])
+            ax2.plot(times[::stp], means[:,7][::stp])
+            
+            ax2.grid()
+            ax2.set_title('ZZ-Inertia vs Truth')
+            ax2.legend(['Truth',r'Estimate'])
+
+            plt.savefig(os.path.join(result_dir,'Inertia Comparison.png'),dpi = DPI, bbox_inches = 'tight')
+            plt.close()
+
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
         rate_error = true_rates[0:len(times),:] - means[:,3:6]
-        ax1.plot(times[::100], rate_error[:,0][::100])
-        ax1.plot(times[::100], 3*rate_std[:,0][::100], 'k', alpha = .4)
-        ax1.plot(times[::100], -3*rate_std[:,0][::100], 'k', alpha = .4)
+        ax1.plot(times[::stp], rate_error[:,0][::stp])
+        ax1.plot(times[::stp], 3*rate_std[:,0][::stp], 'k', alpha = .4)
+        ax1.plot(times[::stp], -3*rate_std[:,0][::stp], 'k', alpha = .4)
         ax1.set_ylim(-.4, .4)
         ax1.set_yticks(arange(-.4, .4, .2))
         ax1.grid()
         ax1.set_title('X-Rate Error')
         ax1.legend(['Error',r'3$\sigma$ Error'])
 
-        ax2.plot(times[::100], rate_error[:,1][::100])
-        ax2.plot(times[::100], 3*rate_std[:,1][::100], 'k', alpha = .4)
-        ax2.plot(times[::100], -3*rate_std[:,1][::100], 'k', alpha = .4)
+        ax2.plot(times[::stp], rate_error[:,1][::stp])
+        ax2.plot(times[::stp], 3*rate_std[:,1][::stp], 'k', alpha = .4)
+        ax2.plot(times[::stp], -3*rate_std[:,1][::stp], 'k', alpha = .4)
         ax2.set_ylim(-.4, .4)
         ax2.set_yticks(arange(-.4, .4, .2))
         ax2.grid()
         ax2.set_title('Y-Rate Error')
 
-        ax3.plot(times[::100], rate_error[:,2][::100])
-        ax3.plot(times[::100], 3*rate_std[:,2][::100], 'k', alpha = .4)
-        ax3.plot(times[::100], -3*rate_std[:,2][::100], 'k', alpha = .4)
+        ax3.plot(times[::stp], rate_error[:,2][::stp])
+        ax3.plot(times[::stp], 3*rate_std[:,2][::stp], 'k', alpha = .4)
+        ax3.plot(times[::stp], -3*rate_std[:,2][::stp], 'k', alpha = .4)
         
         ax3.set_ylim(-.4, .4)
         ax3.set_yticks(arange(-.4, .4, .2))
@@ -128,20 +183,24 @@ for i, passfile in enumerate(pass_directories):
         ax3.set_xlabel('Time [s]')
         ax2.set_ylabel('Error')
 
-        plt.savefig(os.path.join(result_dir,'Rate Errors.png'),dpi = 300, bbox_inches = 'tight')
+        plt.savefig(os.path.join(result_dir,'Rate Errors.png'),dpi = DPI, bbox_inches = 'tight')
         plt.close()
 
-        
+
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times[::100], true_rates[0:len(times),0][::100])
-        ax1.plot(times[::100], means[:,3][::100])
+        ax1.plot(times[::stp], true_rates[0:len(times),0][::stp])
+        ax1.plot(times[::stp], means[:,3][::stp])
 
-        ax2.plot(times[::100], true_rates[0:len(times),1][::100])
-        ax2.plot(times[::100], means[:,4][::100])
+        ax2.plot(times[::stp], true_rates[0:len(times),1][::stp])
+        ax2.plot(times[::stp], means[:,4][::stp])
 
-        ax3.plot(times[::100], true_rates[0:len(times),2][::100])
-        ax3.plot(times[::100], means[:,5][::100])
+        ax3.plot(times[::stp], true_rates[0:len(times),2][::stp])
+        ax3.plot(times[::stp], means[:,5][::stp])
+
+        ax1.grid()
+        ax2.grid()
+        ax3.grid()
 
         ax1.set_title('X-rate Estimate vs Truth')
         ax1.legend(['Truth', 'Est.'])
@@ -151,32 +210,85 @@ for i, passfile in enumerate(pass_directories):
         ax3.set_xlabel('Time [s]')
         ax2.set_ylabel('Angular Rate [rad/s]')
 
-        plt.savefig(os.path.join(result_dir,'Rate Comparison.png'),dpi = 300, bbox_inches = 'tight')
+        plt.savefig(os.path.join(result_dir,'Rate Comparison.png'),dpi = DPI, bbox_inches = 'tight')
         plt.close()
+
+        
+        fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
+        ax1.plot(times[::stp], eci_rate_true[0:len(times),0][::stp])
+        ax1.plot(times[::stp], eci_rate_ests[:,0][::stp])
+
+        ax2.plot(times[::stp], eci_rate_true[0:len(times),1][::stp])
+        ax2.plot(times[::stp], eci_rate_ests[:,1][::stp])
+
+        ax3.plot(times[::stp], eci_rate_true[0:len(times),2][::stp])
+        ax3.plot(times[::stp], eci_rate_ests[:,2][::stp])
+
+        ax1.grid()
+        ax2.grid()
+        ax3.grid()
+
+        ax1.set_title('X-rate Estimate vs Truth ECI')
+        ax1.legend(['Truth', 'Est.'])
+        ax2.set_title('Y-rate Estimate vs Truth ECI')
+        ax3.set_title('Z-rate Estimate vs Truth ECI')
+
+        ax3.set_xlabel('Time [s]')
+        ax2.set_ylabel('Angular Rate [rad/s]')
+
+        plt.savefig(os.path.join(result_dir,'ECI Rate Comparison.png'),dpi = DPI, bbox_inches = 'tight')
+        plt.close()
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
+        ax1.plot(times[::stp], obs_frame_true_rate[0:len(times),0][::stp])
+        ax1.plot(times[::stp], obs_frame_est_rate[:,0][::stp])
+
+        ax2.plot(times[::stp], obs_frame_true_rate[0:len(times),1][::stp])
+        ax2.plot(times[::stp], obs_frame_est_rate[:,1][::stp])
+
+        ax3.plot(times[::stp], obs_frame_true_rate[0:len(times),2][::stp])
+        ax3.plot(times[::stp], obs_frame_est_rate[:,2][::stp])
+
+        ax1.set_title('X-rate Estimate vs Truth OBS Frame')
+        ax1.legend(['Truth', 'Est.'])
+        ax2.set_title('Y-rate Estimate vs Truth OBS Frame')
+        ax3.set_title('Z-rate Estimate vs Truth OBS Frame')
+
+        ax1.grid()
+        ax2.grid()
+        ax3.grid()
+
+        ax3.set_xlabel('Time [s]')
+        ax2.set_ylabel('Angular Rate [rad/s]')
+
+        plt.savefig(os.path.join(result_dir,'OBS Frame Rate Comparison.png'),dpi = DPI, bbox_inches = 'tight')
+        plt.close()
+
+
 
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
         mrp_error = true_mrps[0:len(times),:] - means[:,0:3]
-        ax1.plot(times[::100], mrp_error[:,0][::100])
-        ax1.plot(times[::100], 3*mrp_std[:,0][::100], 'k', alpha = .4)
-        ax1.plot(times[::100], -3*mrp_std[:,0][::100], 'k', alpha = .4)
+        ax1.plot(times[::stp], mrp_error[:,0][::stp])
+        ax1.plot(times[::stp], 3*mrp_std[:,0][::stp], 'k', alpha = .4)
+        ax1.plot(times[::stp], -3*mrp_std[:,0][::stp], 'k', alpha = .4)
         ax1.set_ylim(-.4, .4)
         ax1.set_yticks(arange(-.4, .4, .2))
         ax1.grid()
         ax1.set_title('MRP-1 Error')
         ax1.legend(['Error',r'3$\sigma$ Error'])
 
-        ax2.plot(times[::100], mrp_error[:,1][::100])
-        ax2.plot(times[::100], 3*mrp_std[:,1][::100], 'k', alpha = .4)
-        ax2.plot(times[::100], -3*mrp_std[:,1][::100], 'k', alpha = .4)
+        ax2.plot(times[::stp], mrp_error[:,1][::stp])
+        ax2.plot(times[::stp], 3*mrp_std[:,1][::stp], 'k', alpha = .4)
+        ax2.plot(times[::stp], -3*mrp_std[:,1][::stp], 'k', alpha = .4)
         ax2.set_ylim(-.4, .4)
         ax2.set_yticks(arange(-.4, .4, .2))
         ax2.grid()
         ax2.set_title('MRP-2 Error')
 
-        ax3.plot(times[::100], mrp_error[:,2][::100])
-        ax3.plot(times[::100], 3*mrp_std[:,2][::100], 'k', alpha = .4)
-        ax3.plot(times[::100], -3*mrp_std[:,2][::100], 'k', alpha = .4)
+        ax3.plot(times[::stp], mrp_error[:,2][::stp])
+        ax3.plot(times[::stp], 3*mrp_std[:,2][::stp], 'k', alpha = .4)
+        ax3.plot(times[::stp], -3*mrp_std[:,2][::stp], 'k', alpha = .4)
         ax3.set_ylim(-.4, .4)
         ax3.set_yticks(arange(-.4, .4, .2))
         ax3.grid()
@@ -185,18 +297,18 @@ for i, passfile in enumerate(pass_directories):
         ax3.set_xlabel('Time [s]')
         ax2.set_ylabel('Error')
 
-        plt.savefig(os.path.join(result_dir,'MRP Errors.png'),dpi = 300, bbox_inches = 'tight')
+        plt.savefig(os.path.join(result_dir,'MRP Errors.png'),dpi = DPI, bbox_inches = 'tight')
         plt.close()
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times[::100], true_mrps[0:len(times),0][::100])
-        ax1.plot(times[::100], means[:,0][::100])
+        ax1.plot(times[::stp], true_mrps[0:len(times),0][::stp])
+        ax1.plot(times[::stp], means[:,0][::stp])
 
-        ax2.plot(times[::100], true_mrps[0:len(times),1][::100])
-        ax2.plot(times[::100], means[:,1][::100])
+        ax2.plot(times[::stp], true_mrps[0:len(times),1][::stp])
+        ax2.plot(times[::stp], means[:,1][::stp])
 
-        ax3.plot(times[::100], true_mrps[0:len(times),2][::100])
-        ax3.plot(times[::100], means[:,2][::100])
+        ax3.plot(times[::stp], true_mrps[0:len(times),2][::stp])
+        ax3.plot(times[::stp], means[:,2][::stp])
 
         ax1.set_title('MRP-1 Estimate vs Truth')
         ax1.legend(['Truth', 'Est.'])
@@ -206,13 +318,13 @@ for i, passfile in enumerate(pass_directories):
         ax3.set_xlabel('Time [s]')
         ax2.set_ylabel('MRP')
 
-        plt.savefig(os.path.join(result_dir,'MRP Comparison.png'),dpi = 300, bbox_inches = 'tight')
+        plt.savefig(os.path.join(result_dir,'MRP Comparison.png'),dpi = DPI, bbox_inches = 'tight')
         plt.close()
 
         fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex = True)
-        ax1.plot(times[::100], true_lightcurve[::100])
-        ax2.plot(times[::100], est_lightcurve[::100])
-        ax3.plot(times[::100], residuals[::100])
+        ax1.plot(times[::stp], true_lightcurve[::stp])
+        ax2.plot(times[::stp], est_lightcurve[::stp])
+        ax3.plot(times[::stp], residuals[::stp])
         ax1.set_title('True Lightcurve')
         ax2.set_title('Estimated Lightcurve')
         ax3.set_title('Resudial Error')
@@ -220,7 +332,7 @@ for i, passfile in enumerate(pass_directories):
         ax3.set_xlabel('Time [s]')
         ax2.set_ylabel(r'$W/m^{2}$')
 
-        plt.savefig(os.path.join(result_dir,'LightCurve Residual.png'),dpi = 300, bbox_inches = 'tight')
+        plt.savefig(os.path.join(result_dir,'LightCurve Residual.png'),dpi = DPI, bbox_inches = 'tight')
         plt.close()
 
         plt.figure()
@@ -232,5 +344,5 @@ for i, passfile in enumerate(pass_directories):
         plt.xlabel('Time [s]')
         plt.ylabel('SPA [Deg]')
         plt.title('Solar Phase Angle During Pass')
-        plt.savefig(os.path.join(result_dir,'SPA.png'), bbox_inches = 'tight', dpi = 300)
+        plt.savefig(os.path.join(result_dir,'SPA.png'), bbox_inches = 'tight', dpi = DPI)
         plt.close()
