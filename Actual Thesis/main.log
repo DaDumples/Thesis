@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  14 APR 2020 20:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  19 APR 2020 21:58
 entering extended mode
 **./main.tex
 (main.tex
@@ -892,13 +892,13 @@ Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 []|[] 
  []
 
-[3] (abstract.tex) [4] (acknowledgements.tex) [5] (main.toc)
+[3] (abstract.tex) [4] (acknowledgements.tex) [5] (main.toc [6
+
+])
 \tf@toc=\write7
 \openout7 = `main.toc'.
 
- [6
-
-] [7] (main.lot)
+ [7] (main.lot)
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
@@ -959,7 +959,7 @@ LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
 [14
 
 ]
-<figures/facet.png, id=290, 372.79276pt x 245.718pt>
+<figures/facet.png, id=299, 372.79276pt x 245.718pt>
 File: figures/facet.png Graphic file (type png)
 <use figures/facet.png>
 Package pdftex.def Info: figures/facet.png  used on input line 37.
@@ -979,7 +979,7 @@ Overfull \hbox (17.62482pt too wide) detected at line 85
 [][] 
  []
 
-<figures/occlusion_check.png, id=309, 249.3315pt x 225.84375pt>
+<figures/occlusion_check.png, id=318, 249.3315pt x 225.84375pt>
 File: figures/occlusion_check.png Graphic file (type png)
 <use figures/occlusion_check.png>
 Package pdftex.def Info: figures/occlusion_check.png  used on input line 88.
@@ -990,7 +990,7 @@ Overfull \hbox (17.62482pt too wide) detected at line 146
  []
 
 [19]
-<figures/visible_and_illuminated.png, id=347, 290.2845pt x 235.47975pt>
+<figures/visible_and_illuminated.png, id=356, 290.2845pt x 235.47975pt>
 File: figures/visible_and_illuminated.png Graphic file (type png)
 <use figures/visible_and_illuminated.png>
 Package pdftex.def Info: figures/visible_and_illuminated.png  used on input lin
@@ -1002,33 +1002,33 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [20] [21 <./figures/visible_and_illuminated.png>]
 \uppercase {Chapter} 5.
-<Figures/Long_Rectangle_Image.png, id=380, 301.125pt x 301.125pt>
+<Figures/Long_Rectangle_Image.png, id=389, 301.125pt x 301.125pt>
 File: Figures/Long_Rectangle_Image.png Graphic file (type png)
 <use Figures/Long_Rectangle_Image.png>
 Package pdftex.def Info: Figures/Long_Rectangle_Image.png  used on input line 1
 3.
 (pdftex.def)             Requested size: 184.9429pt x 184.94954pt.
-<Figures/Cylinder_Image.png, id=381, 351.3125pt x 351.3125pt>
+<Figures/Cylinder_Image.png, id=390, 351.3125pt x 351.3125pt>
 File: Figures/Cylinder_Image.png Graphic file (type png)
 <use Figures/Cylinder_Image.png>
 Package pdftex.def Info: Figures/Cylinder_Image.png  used on input line 14.
 (pdftex.def)             Requested size: 184.9429pt x 184.94571pt.
-<Figures/Box_Wing_Image.png, id=382, 301.125pt x 301.125pt>
+<Figures/Box_Wing_Image.png, id=391, 301.125pt x 301.125pt>
 File: Figures/Box_Wing_Image.png Graphic file (type png)
 <use Figures/Box_Wing_Image.png>
 Package pdftex.def Info: Figures/Box_Wing_Image.png  used on input line 16.
 (pdftex.def)             Requested size: 184.9429pt x 184.94954pt.
-<Figures/leo_orbit.png, id=383, 462.528pt x 344.0052pt>
+<Figures/leo_orbit.png, id=392, 462.528pt x 344.0052pt>
 File: Figures/leo_orbit.png Graphic file (type png)
 <use Figures/leo_orbit.png>
 Package pdftex.def Info: Figures/leo_orbit.png  used on input line 25.
 (pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
-<Figures/meo_orbit.png, id=384, 462.528pt x 344.0052pt>
+<Figures/meo_orbit.png, id=393, 462.528pt x 344.0052pt>
 File: Figures/meo_orbit.png Graphic file (type png)
 <use Figures/meo_orbit.png>
 Package pdftex.def Info: Figures/meo_orbit.png  used on input line 26.
 (pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
-<Figures/geo_orbit.png, id=385, 462.528pt x 344.0052pt>
+<Figures/geo_orbit.png, id=394, 462.528pt x 344.0052pt>
 File: Figures/geo_orbit.png Graphic file (type png)
 <use Figures/geo_orbit.png>
 Package pdftex.def Info: Figures/geo_orbit.png  used on input line 28.
@@ -1038,45 +1038,62 @@ Package pdftex.def Info: Figures/geo_orbit.png  used on input line 28.
 ] [23 <./Figures/Long_Rectangle_Image.png (PNG copy)> <./Figures/Cylinder_Image
 .png (PNG copy)> <./Figures/Box_Wing_Image.png (PNG copy)>] [24 <./Figures/leo_
 orbit.png> <./Figures/meo_orbit.png> <./Figures/geo_orbit.png>] [25]
-<figures/sert-2.jpg, id=409, 401.5pt x 231.86626pt>
+[26] [27] [28]
+<figures/sert-2.jpg, id=431, 401.5pt x 231.86626pt>
 File: figures/sert-2.jpg Graphic file (type jpg)
 <use figures/sert-2.jpg>
-Package pdftex.def Info: figures/sert-2.jpg  used on input line 55.
+Package pdftex.def Info: figures/sert-2.jpg  used on input line 115.
 (pdftex.def)             Requested size: 227.62204pt x 131.454pt.
-<figures/ajisai.jpg, id=413, 481.8pt x 321.2pt>
+<figures/SERT2_Image.png, id=432, 467.49657pt x 359.09157pt>
+File: figures/SERT2_Image.png Graphic file (type png)
+<use figures/SERT2_Image.png>
+Package pdftex.def Info: figures/SERT2_Image.png  used on input line 115.
+(pdftex.def)             Requested size: 170.71652pt x 131.13034pt.
+ [29]
+<figures/ajisai.jpg, id=442, 481.8pt x 321.2pt>
 File: figures/ajisai.jpg Graphic file (type jpg)
 <use figures/ajisai.jpg>
-Package pdftex.def Info: figures/ajisai.jpg  used on input line 68.
-(pdftex.def)             Requested size: 227.62204pt x 151.7482pt.
+Package pdftex.def Info: figures/ajisai.jpg  used on input line 131.
+(pdftex.def)             Requested size: 256.0748pt x 170.7204pt.
+<figures/AJISAI.png, id=443, 301.125pt x 301.125pt>
+File: figures/AJISAI.png Graphic file (type png)
+<use figures/AJISAI.png>
+Package pdftex.def Info: figures/AJISAI.png  used on input line 131.
+(pdftex.def)             Requested size: 170.71652pt x 170.72406pt.
 
-[26 <./figures/sert-2.jpg>]
-<figures/ajisai_panels.jpg, id=419, 642.4pt x 268.00125pt>
+Overfull \hbox (17.17134pt too wide) in paragraph at lines 130--134
+[][] 
+ []
+
+<figures/ajisai_panels.jpg, id=444, 642.4pt x 268.00125pt>
 File: figures/ajisai_panels.jpg Graphic file (type jpg)
 <use figures/ajisai_panels.jpg>
-Package pdftex.def Info: figures/ajisai_panels.jpg  used on input line 76.
+Package pdftex.def Info: figures/ajisai_panels.jpg  used on input line 141.
 (pdftex.def)             Requested size: 426.79134pt x 178.05501pt.
-)) (main.bbl [27 <./figures/ajisai.jpg> <./figures/ajisai_panels.jpg>] [28
+[30 <./figures/sert-2.jpg> <./figures/SERT2_Image.png> <./figures/ajisai.jpg> <
+./figures/AJISAI.png (PNG copy)>])) (main.bbl [31 <./figures/ajisai_panels.jpg>
+] [32
 
-] [29] [30]) (appendix-outline.tex)
+] [33] [34]) (appendix-outline.tex)
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 170.
-[31]
+[35]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 170.
  (main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 170.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 170.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B9743B5ED04F51544B37D180A4EF1076;1353.
+(rerunfilecheck)             Checksum: 80C4505A861422D68EECBE5A864AC667;1438.
  ) 
 Here is how much of TeX's memory you used:
- 16627 strings out of 492946
- 265647 string characters out of 3126388
+ 16650 strings out of 492946
+ 266077 string characters out of 3126388
  449284 words of memory out of 3000000
- 20007 multiletter control sequences out of 15000+200000
+ 20021 multiletter control sequences out of 15000+200000
  12614 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  136i,17n,131p,1325b,842s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1097,9 +1114,9 @@ Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Use
 rs/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8
 .pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti12.pfb>
-Output written on main.pdf (40 pages, 536039 bytes).
+Output written on main.pdf (44 pages, 551767 bytes).
 PDF statistics:
- 548 PDF objects out of 1000 (max. 8388607)
- 177 named destinations out of 1000 (max. 500000)
- 229 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 580 PDF objects out of 1000 (max. 8388607)
+ 184 named destinations out of 1000 (max. 500000)
+ 247 words of extra memory for PDF output out of 10000 (max. 10000000)
 
