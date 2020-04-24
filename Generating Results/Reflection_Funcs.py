@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 import imageio
+import pickle
 
 def lommel_seeliger(obs_vec, sun_vec, albedo, normal, area):
     #determines the brightness of a facet at 1 meter distance
@@ -87,9 +88,9 @@ def phong_brdf(obs_vec, sun_vec, normal, area, exposure_time, r_specular = .2, r
     diffuse = 28*r_diffuse/(23*pi)*(1 - r_specular)*(1 - (1 - dot_ns/2)**5)*(1 - (1 - dot_no/2)**5)
 
     #As per Astrometric and Photometric Data Fusion
-    #u_spec = 2*(dot(normal, sun_norm)*normal) - sun_norm
-    #specular = r_specular*(dot(obs_norm, u_spec)**alpha)/dot(sun_norm, normal)
-    #diffuse = r_diffuse/pi
+    # u_spec = 2*(dot(normal, sun_norm)*normal) - sun_norm
+    # specular = r_specular*(dot(obs_norm, u_spec)**alpha)/dot(sun_norm, normal)
+    # diffuse = r_diffuse/pi
 
     Fsun = C_SUN*(specular + diffuse)*dot_ns
     Fobs = Fsun*area*dot_no/norm(obs_vec*1e3)**2
@@ -98,7 +99,7 @@ def phong_brdf(obs_vec, sun_vec, normal, area, exposure_time, r_specular = .2, r
     collected_energy = Fobs*collecting_area*exposure_time
     photons_collected = collected_energy/J2eV/ELECTRON_ENERGY
     counts = photons_collected/CCD_GAIN #flux
-    instrument_magnitude =  -2.5*log10(Fobs)
+    #instrument_magnitude =  -2.5*log10(Fobs)
 
     return counts
 
@@ -181,6 +182,7 @@ class Spacecraft_Geometry():
         self.sample_nums = {}
         self.sample_dim = sample_dim
 
+
         self.calc_obscuring_faces()
         self.calc_sample_pts()
 
@@ -206,8 +208,8 @@ class Spacecraft_Geometry():
         for facet in self.facets:
 
             self.sample_points[facet] = []
-            x_num = ceil(facet.x_dim/self.sample_dim)
-            y_num = ceil(facet.y_dim/self.sample_dim)
+            x_num = int(ceil(facet.x_dim/self.sample_dim))
+            y_num = int(ceil(facet.y_dim/self.sample_dim))
 
             self.sample_nums[facet] = x_num*y_num
 
@@ -297,7 +299,7 @@ class Spacecraft_Geometry():
 
         
 
-def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, exposure_time, win_dim = (2,2), dpm = 50):
+def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, exposure_time, win_dim = (2,2), dpm = 50, load_bar = False):
     """
     camera_axis is the direction that the camera is pointing
     sun axis is the direction that the light is moving (sun to spacecraft)
@@ -316,6 +318,8 @@ def generate_image(spacecraft_geometry, obs_vec_body, sun_vec_body, exposure_tim
     camera_rotation = CF.axis_angle2dcm(cross(array([0,0,1]), ray_direction), camera_angle)
 
     for y, row in enumerate(image):
+        if load_bar:
+                loading_bar(y/len(image), text = 'Recticulating Splines')
         for x, pix in enumerate(row):
             x_pos = (x - win_pix[0]/2)/dpm
             y_pos = (win_pix[1]/2 - y)/dpm
@@ -372,40 +376,46 @@ class Premade_Spacecraft():
 
         self.CYLINDER = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
 
+        spec_coef = 0
+        diffuse_coef = .002
         segments = 20
         angle = 2*pi/segments
         radius = 1.3
-        side_length = radius*sin(angle/2)*radius
-        lenght = 10.73
+        side_length = radius*sin(angle/2)*2
+        lenght = 11.6
         cylinder_facets = []
         for theta in linspace(0, 2*pi, segments)[:-1]:
-            pos = CF.Cz(theta)@array([1,0,0])
+            pos = CF.Cz(theta)@array([radius,0,0])
             facet2body = CF.Cz(theta)@CF.Cy(pi/2)
-            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder'))
+            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder', specular_coef = spec_coef, diffuse_coef = diffuse_coef))
 
-        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3))
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3), specular_coef = spec_coef, diffuse_coef = diffuse_coef)
         pZ.area = pi*radius**2
-        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi))
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi), specular_coef = spec_coef, diffuse_coef = diffuse_coef)
         nZ.area = pi*radius**2
         cylinder_facets.append(pZ)
         cylinder_facets.append(nZ)
 
+        #https://www.spacelaunchreport.com/ariane4.html
+        #data from second stage
         self.ARIANE40 = Spacecraft_Geometry(cylinder_facets, sample_dim = .5)
+
+        diffuse_coef = .0002
 
         segments = 20
         angle = 2*pi/segments
         radius = 1.2
-        side_length = radius*sin(angle/2)*radius
+        side_length = radius*sin(angle/2)*2
         lenght = 6.5
         cylinder_facets = []
         for theta in linspace(0, 2*pi, segments)[:-1]:
-            pos = CF.Cz(theta)@array([1,0,0])
+            pos = CF.Cz(theta)@array([radius,0,0])
             facet2body = CF.Cz(theta)@CF.Cy(pi/2)
-            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, specular_coef = 0, diffuse_coef = 0.0075, name = 'cylinder'))
+            cylinder_facets.append(Facet(lenght, side_length, pos, facet2body = facet2body, specular_coef = 0, diffuse_coef = diffuse_coef, name = 'cylinder'))
 
-        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3), specular_coef = 0, diffuse_coef = 0.0075)
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3), specular_coef = 0, diffuse_coef = diffuse_coef)
         pZ.area = pi*radius**2
-        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi), specular_coef = 0, diffuse_coef = 0.0075)
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi), specular_coef = 0, diffuse_coef = diffuse_coef)
         nZ.area = pi*radius**2
         cylinder_facets.append(pZ)
         cylinder_facets.append(nZ)
@@ -443,6 +453,74 @@ class Premade_Spacecraft():
 
         self.EXOCUBE = Spacecraft_Geometry([pX,nX,pY,nY,pZ,nZ], sample_dim = .01)
 
+        spec_coef = .002
+
+        
+
+        segments = 20
+        angle = 2*pi/segments
+        radius = 1.5/2
+        side_length = 2*sin(angle/2)*radius
+        lenght = 7.9
+        cylinder_facets = []
+        for theta in linspace(0, 2*pi, segments)[:-1]:
+            pos = CF.Cz(theta)@array([radius,0,0])
+            facet2body = CF.Cz(theta)@CF.Cy(pi/2)
+            outer_facet = Facet(lenght, side_length, pos, facet2body = facet2body, name = 'cylinder', specular_coef = spec_coef)
+            cylinder_facets.append(outer_facet)
+
+        
+
+
+        pZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,lenght/2]), name = '+Z', facet2body = identity(3), specular_coef = spec_coef)
+        pZ.area = pi*radius**2
+        nZ = Facet(1.4/sqrt(2), 1.4/sqrt(2), array([0,0,-lenght/2]), name = '-Z', facet2body = CF.Cx(pi), specular_coef = spec_coef)
+        nZ.area = pi*radius**2
+        cylinder_facets.append(pZ)
+        cylinder_facets.append(nZ)
+
+        pX_panel = Facet(6, 1.5, array([6/2 + radius, 0, lenght/2 - 1.5/2]), name = '+X Panel', facet2body = CF.Cx(pi/2), double_sided = True, specular_coef = spec_coef)
+        nX_panel = Facet(6, 1.5, array([-6/2 - radius, 0, lenght/2 - 1.5/2]), name = '-X Panel', facet2body = CF.Cx(pi/2), double_sided = True, specular_coef = spec_coef)
+        cylinder_facets.append(pX_panel)
+        cylinder_facets.append(nX_panel)
+
+        dumypanel = Facet(lenght, radius/2, array([0,0,0]), facet2body = CF.Cy(pi/2), name = 'Fake Shadow', specular_coef = 0)
+        
+        self.SERT2 = Spacecraft_Geometry(cylinder_facets, sample_dim = .1)
+
+        self.SERT2.obscuring_facets[pX_panel] = [dumypanel]
+        self.SERT2.obscuring_facets[nX_panel] = [dumypanel]
+
+        # for f in self.SERT2.obscuring_facets.keys():
+        #     print(f.name, [x.name for x in self.SERT2.obscuring_facets[f]])
+
+
+    def AJISAI(self):
+
+        ajisai_file = open('AJISAI_coords','rb')
+        coords = pickle.load(ajisai_file)
+        ajisai_file.close()
+
+        Radius = 1.075
+        facets = []
+        for lat in coords.keys():
+            for lon in coords[lat]:
+                rlat = lat/180*pi
+                rlon = lon/180*pi
+                
+                facet2body = CF.Cz(rlon).T@CF.Cy(pi/2 - rlat)
+                position  =  CF.Cz(rlon)@CF.Cy(rlat)@array([1,0,0])
+                facet = Facet(15/100, 15/100, position, facet2body = facet2body, specular_coef = 0.002)
+                facets.append(facet)
+
+        AJISAI = Spacecraft_Geometry(facets, sample_dim = 1)
+        for facet in AJISAI.facets:
+            AJISAI.obscuring_facets[facet] = []
+
+        return AJISAI
+
+
+
     def get_geometry(self, name):
         name = name.upper()
         if name == 'BOX_WING':
@@ -463,6 +541,10 @@ class Premade_Spacecraft():
             return self.EXOCUBE
         elif name == 'SL8':
             return self.SL8
+        elif name == 'SERT2':
+            return self.SERT2
+        elif name == 'AJISAI':
+            return self.AJISAI()
         else:
             print(name, 'is not a valid geometry.')
 

@@ -27,8 +27,8 @@
 \@writefile{toc}{\hbox to \linewidth {\hfill Page}}
 \@writefile{toc}{\contentsline {chapter}{LIST OF TABLES}{viii}{chapter*.2}\protected@file@percent }
 \@writefile{lot}{\hbox to \linewidth {\hspace  {1.5em}Table\hfill Page}}
-\citation{ajisai}
 \@writefile{toc}{\contentsline {chapter}{LIST OF FIGURES}{ix}{chapter*.3}\protected@file@percent }
+\citation{ajisai}
 \@writefile{lof}{\hbox to \linewidth {\hspace  {1.5em}Figure\hfill Page}}
 \@writefile{toc}{\noindent CHAPTER }
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}\protected@file@percent }
@@ -76,9 +76,15 @@
 \citation{phong_brdf}
 \citation{Linares_data_fusion}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Observation Model}{15}{section.4.1}\protected@file@percent }
+\newlabel{PHONG1}{{4.1}{15}{Observation Model}{equation.4.1.1}{}}
+\newlabel{PHONG1@cref}{{[equation][1][4]4.1}{[1][14][]15}}
+\newlabel{Phong_Specular}{{4.2}{15}{Observation Model}{equation.4.1.2}{}}
+\newlabel{Phong_Specular@cref}{{[equation][2][4]4.2}{[1][15][]15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Definition of vectors with respect to a facet.}}{16}{figure.4.1}\protected@file@percent }
 \newlabel{facet}{{4.1}{16}{Definition of vectors with respect to a facet}{figure.4.1}{}}
 \newlabel{facet@cref}{{[figure][1][4]4.1}{[1][15][]16}}
+\newlabel{Phong_Diffuse}{{4.4}{16}{Observation Model}{equation.4.1.4}{}}
+\newlabel{Phong_Diffuse@cref}{{[equation][4][4]4.4}{[1][15][]16}}
 \citation{kaasalainen_LCI}
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Ray Tracing Model}{17}{section.4.2}\protected@file@percent }
 \newlabel{alg:calc_obscuring}{{1}{18}{Ray Tracing Model}{algocfline.1}{}}
@@ -107,24 +113,49 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Three Simulated Geometries.}}{23}{figure.5.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Three Simulated Orbits.}}{24}{figure.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Simulation Results}{25}{subsection.5.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.1}The Cylinder}{27}{subsubsection.5.1.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Mean Errors in the Body Frame for the Cylinder Geometry}}{28}{figure.5.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Mean Errors in the Observation Frame for the Cylinder Geometry}}{28}{figure.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.1}Existence of Multiple Solutions}{25}{subsubsection.5.1.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.2}Convergence Criteria}{26}{subsubsection.5.1.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.3}Methodology}{26}{subsubsection.5.1.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.4}Hypothesis}{28}{subsubsection.5.1.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.5}Case: Fixed Axis of Rotation}{28}{subsubsection.5.1.3.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Percentages of Trials with Converged Solutions: Fixed Axis Case}}{29}{table.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Body Rate Error}}{29}{figure.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Error Bounds for Various Geometries in Body Frame}}{30}{table.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Error Bounds for Various Geometries in Observation Frame}}{30}{table.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Observation Frame Rate Error}}{31}{figure.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.6}Case: Tumbling Spacecraft}{31}{subsubsection.5.1.3.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces Percentages of Trials with Converged Solutions: Tumbling Case}}{31}{table.5.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Converged Solution of a Rectangular Prism in LEO spinning About a Fixed Axis.}}{32}{figure.5.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Converged Solution of a Cylinder in LEO Spinning About a Fixed Axis.}}{32}{figure.5.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{33}{figure.5.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3.7}Hypothesis Results}{33}{subsubsection.5.1.3.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{34}{figure.5.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{34}{figure.5.9}\protected@file@percent }
 \citation{sert2}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{35}{figure.5.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Real Data}{35}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}SERT-2}{35}{subsection.5.2.1}\protected@file@percent }
 \citation{ajisai_jaxa}
 \citation{ajisai}
 \citation{ajisai_jaxa}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Real Data}{29}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}SERT-2}{29}{subsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Ajisai (EGS)}{29}{subsection.5.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Example of a solution which is flipped across the observation plane.}}{36}{figure.5.11}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.12}{\ignorespaces Consecutive Images from the observers perspective of truth [TOP] and estimate [BOTTOM] showing a mirror image solution.}}{36}{figure.5.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.13}{\ignorespaces SERT-2 vs Reflectance Model}}{37}{figure.5.13}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Final Angular Velocity Vector of SERT-2 According to UKF Estimates.}}{37}{table.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Ajisai (EGS)}{37}{subsection.5.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.14}{\ignorespaces Convergence of a solution using real data of SERT-2.}}{38}{figure.5.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.15}{\ignorespaces AJISAI vs Reflectance Model}}{38}{figure.5.15}\protected@file@percent }
 \citation{ajisai}
 \citation{ajisai}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces SERT-2 vs Reflectance Model}}{30}{figure.5.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces AJISAI vs Reflectance Model}}{30}{figure.5.6}\protected@file@percent }
 \citation{*}
 \bibdata{bibliography}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Ajisai with Engineer [Left]. Corner Cube Reflector Locations [Right] \cite  {ajisai}}}{31}{figure.5.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Symmetrical Solution Groups}{31}{section.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.16}{\ignorespaces Ajisai with Engineer [Left]. Corner Cube Reflector Locations [Right] \cite  {ajisai}}}{39}{figure.5.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Ariane-40 R/B}{39}{subsection.5.2.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces Add caption}}{39}{table.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Symmetrical Solution Groups}{39}{section.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.17}{\ignorespaces Measurement model mismatch with real data from AJISAI.}}{40}{figure.5.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.18}{\ignorespaces SERT-2 vs Reflectance Model}}{40}{figure.5.18}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.19}{\ignorespaces Convergence of a solution using real data of Ariane-40 R/B.}}{41}{figure.5.19}\protected@file@percent }
 \bibcite{phong_brdf}{1}
 \bibcite{Bradley2014LIGHTCURVEIF}{2}
 \bibcite{PSI}{3}
@@ -134,7 +165,7 @@
 \bibcite{Holzinger2012AttitudeEF}{7}
 \bibcite{SILHA2018844}{8}
 \bibcite{StateAndParameter}{9}
-\@writefile{toc}{\contentsline {chapter}{BIBLIOGRAPHY}{32}{chapter*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{BIBLIOGRAPHY}{42}{chapter*.4}\protected@file@percent }
 \bibcite{ajisai_jaxa}{10}
 \bibcite{kaasalainen_LCI}{11}
 \bibcite{KAASALAINEN2002369}{12}

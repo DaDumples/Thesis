@@ -21,6 +21,9 @@ import Reflection_Funcs as RF
 
 import json
 #Luca was here
+
+PASS_TIME = 600 #seconds
+
 def propagate_mrps(t, state, inertia):
     mrps = state[0:3]
     omega = state[3:6]
@@ -42,7 +45,7 @@ def propagate_orbit(t, state, mu = 398600):
 
     return hstack([d_pos, d_vel])
 
-def states_to_lightcurve(obs_vecs, sun_vecs, attitudes, spacecraft_geometry):
+def states_to_lightcurve(obs_vecs, sun_vecs, attitudes, spacecraft_geometry, Exposure_Time):
     '''
     @param times list of dates at which each observation was taken
     @param obs_vecs array of vectors from the observer to the spacecraft
@@ -60,7 +63,7 @@ def states_to_lightcurve(obs_vecs, sun_vecs, attitudes, spacecraft_geometry):
         dcm_body2eci = CF.mrp2dcm(attitude)
         sun_vec_body = dcm_body2eci.T@sun_vec
         obs_vec_body = dcm_body2eci.T@obs_vec
-        power = spacecraft_geometry.calc_reflected_power(obs_vec_body, sun_vec_body)
+        power = spacecraft_geometry.calc_reflected_power(obs_vec_body, sun_vec_body, Exposure_Time)
         lightcurve.append(power)
 
         count += 1
@@ -76,11 +79,12 @@ def loading_bar(decimal_percentage, text = ''):
     if decimal_percentage == 1:
         print('')
 
+
 Simulation_Configuration = json.load(open(sys.argv[1], 'r'))
 if len(sys.argv) == 3:
     num_passes = int(sys.argv[2])
 else:
-    num_passes = 15
+    num_passes = 12
 
 Satellite = twoline2rv(Simulation_Configuration['TLE Line1'],
                        Simulation_Configuration['TLE Line2'], wgs84)
@@ -92,6 +96,8 @@ Inertia = asarray(Simulation_Configuration['Inertia Matrix'])
 Geometry = RF.Premade_Spacecraft().get_geometry(Simulation_Configuration['Spacecraft Geometry'])
 Noise_STD = Simulation_Configuration['Sensor STD']
 Directory = Simulation_Configuration['Directory']
+Exposure_Time = Simulation_Configuration['Exposure Time']
+Real_Data = Simulation_Configuration['Real Data']
 
 date = Satellite.epoch - datetime.timedelta(hours = 1)
 
@@ -109,8 +115,12 @@ while len(pass_list) < num_passes:
     sc_pos = asarray(sc_pos)
     range_vec = sc_pos - site
     sun_vec = AF.vect_earth_to_sun(date)
+
     illuminated  = AF.shadow(sc_pos, sun_vec)
-    if dot(range_vec, site) > 0 and illuminated:
+    above_horizon = dot(range_vec, site) > 0
+    SPA_less_than_90 = dot(sun_vec, site - sc_pos) > 0
+
+    if above_horizon and illuminated and SPA_less_than_90:
         if mid_pass_flag == False:
             print('Pass encountered',date)
             mid_pass_flag = True
@@ -159,12 +169,13 @@ for _pass in pass_list:
     sat_poss = []
     site_poss = []
     range_vecs = []
-    for t in times:
+    for t, state in zip(times, positions):
         date = _pass['Date0'] + datetime.timedelta(seconds = t)
         lst = AF.local_sidereal_time(date, Lon)
         site = AF.observation_site(Lat, lst, Alt)
-        sc_pos, sc_vel = Satellite.propagate(*date.timetuple()[0:6])
-        sc_pos = asarray(sc_pos)
+        #sc_pos, sc_vel = Satellite.propagate(*date.timetuple()[0:6])
+        sc_pos = state[0:3]
+        #sc_pos = asarray(sc_pos)
         range_vec = sc_pos - site
         sun_vec = AF.vect_earth_to_sun(date)
 
@@ -180,7 +191,7 @@ for _pass in pass_list:
     site_poss = vstack(site_poss)
     range_vecs = vstack(range_vecs)
 
-    length_of_data = int(600/DT)
+    length_of_data = int(PASS_TIME/DT)
     if len(obs_vecs) > length_of_data:
             start_index = random.randint(0, len(obs_vecs) - length_of_data - 1)
             obs_vecs = obs_vecs[start_index:start_index+length_of_data, :]
@@ -197,7 +208,7 @@ for _pass in pass_list:
     save(pass_directory+'/rangevec.npy', range_vecs)
     save(pass_directory+'/sunvec.npy', sun_vecs)
     save(pass_directory+'/obsvec.npy', obs_vecs)
-    save(pass_directory+'/times.npy', times)
+    save(pass_directory+'/time.npy', times)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(211, projection = 'polar')
@@ -229,7 +240,7 @@ for _pass in pass_list:
         save(pass_directory+'/mrps'+str(i)+'.npy', attitudes[:,0:3])
         save(pass_directory+'/angular_rate'+str(i)+'.npy', attitudes[:,3:6])
 
-        lightcurve = states_to_lightcurve(obs_vecs, sun_vecs, attitudes[:,0:3], Geometry)
+        lightcurve = states_to_lightcurve(obs_vecs, sun_vecs, attitudes[:,0:3], Geometry, Exposure_Time)
         save(pass_directory+'/lightcurve'+str(i)+'.npy', lightcurve)
         ax2.plot(times, lightcurve)
 

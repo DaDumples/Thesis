@@ -29,8 +29,8 @@ def loading_bar(decimal_percentage, text = ''):
 Simulation_Configuration = json.load(open(sys.argv[1], 'r'))
 Geometry = RF.Premade_Spacecraft().get_geometry(Simulation_Configuration['Spacecraft Geometry'])
 
-truth_dir = 'testing_kf/2020-10-15 21-39-01.719359'
-result_dir = 'testing_kf/2020-10-15 21-39-01.719359/results0'
+truth_dir = 'CYLINDER_LEO/2020-10-18 14-50-26.252128'
+result_dir = 'CYLINDER_LEO/2020-10-18 14-50-26.252128/results2'
 result_num = result_dir[-1]
 
 
@@ -40,11 +40,12 @@ attitudes = load(truth_dir+'/mrps'+result_num+'.npy')[::50]
 Exposure_Time = Simulation_Configuration['Exposure Time']
 
 num_frames = len(obs_vecs)
+START_INDEX = -5000
 
 frames = []
 count = 0
 max_val = 0
-for mrps, obs_vec, sun_vec in zip(attitudes, obs_vecs, sun_vecs):
+for mrps, obs_vec, sun_vec in zip(attitudes[START_INDEX:], obs_vecs[START_INDEX:], sun_vecs[START_INDEX:]):
     dcm_eci2body = CF.mrp2dcm(mrps).T
     #dcm_eci2body = CF.mrp2dcm(mrps).T
     image = RF.generate_image(Geometry, dcm_eci2body@obs_vec, dcm_eci2body@sun_vec, Exposure_Time, win_dim = (6,6), dpm = 20)
@@ -65,7 +66,7 @@ attitudes = load(result_dir+'/results'+result_num+'_raw_means.npy')[:,0:3][::50]
 frames = []
 count = 0
 max_val = 0
-for mrps, obs_vec, sun_vec in zip(attitudes, obs_vecs, sun_vecs):
+for mrps, obs_vec, sun_vec in zip(attitudes[START_INDEX:], obs_vecs[START_INDEX:], sun_vecs[START_INDEX:]):
     dcm_eci2body = CF.mrp2dcm(mrps).T
     #dcm_eci2body = CF.mrp2dcm(mrps).T
     image = RF.generate_image(Geometry, dcm_eci2body@obs_vec, dcm_eci2body@sun_vec, Exposure_Time, win_dim = (6,6), dpm = 20)

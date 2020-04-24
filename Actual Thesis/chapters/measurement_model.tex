@@ -15,13 +15,13 @@ The code implemented in this thesis will be available on GitHub.
 \section{Observation Model}
 
 According to Ashikhmin and Shirley, reflections can be modelled as the sum of their specular and diffuse components such that \cite{phong_brdf}:
-\begin{equation}
+\begin{equation}\label{PHONG1}
 \rho_{total} = \rho_s + \rho_d
 \end{equation}
 Conveniently, metallic surfaces have the property of being purely specular, allowing for the diffuse term to be ignored in many cases\cite{phong_brdf}. All vectors in the following equations are used in the spacecraft body frame.
 
 One feature of the BRDF used in this thesis is the ability to model anisotropic reflection, meaning that it can model the "streakyness" of surfaces like brushed metal. However, this requires additional information to describe the distribution of this reflection. This thesis assumes that the specular reflection is evenly distributed along all directions which allows the equation of specular reflection used by Linares et. al. to be simplifed to the following form \cite{Linares_data_fusion}:
-\begin{equation}
+\begin{equation}\label{Phong_Specular}
 \rho_{s_i} = \frac{n + 1}{8\pi}
 \frac{(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_h)^n}
 {\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun} + \bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs} - (\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})}F_{reflect_i}
@@ -40,7 +40,7 @@ Where $R_{spec_i}$ is the specular coefficient for facet $i$.
 \end{figure}
 
 If the facet is metallic, the diffuse component is simply zero, otherwise it is the following:
-\begin{equation}
+\begin{equation}\label{Phong_Diffuse}
 \rho_{d_i} = \left(\frac{28R_{diff_i}}{23\pi}\right)
 (1 - R_{spec_i})
 \left[1 - (1 - \frac{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun}}{2})^5\right]

@@ -59,7 +59,7 @@ def modified_rodrigues_prop(state, dt, inertia = None, est_inertia = False):
 
     return hstack([solver.y])
 
-def mrp_measurement_function(state, obsvec, sunvec, Geometry):
+def mrp_measurement_function(state, obsvec, sunvec, exposure_time, Geometry):
 
     mrps = state[0:3]
     dcm_body2eci = CF.mrp2dcm(mrps)
@@ -67,7 +67,7 @@ def mrp_measurement_function(state, obsvec, sunvec, Geometry):
     obs_vec_body = dcm_body2eci.T@obsvec
     sun_vec_body = dcm_body2eci.T@sunvec
 
-    return array([Geometry.calc_reflected_power(obs_vec_body, sun_vec_body)])
+    return array([Geometry.calc_reflected_power(obs_vec_body, sun_vec_body, exposure_time)])
 
 
 def loading_bar(decimal_percentage, text = ''):
@@ -76,7 +76,10 @@ def loading_bar(decimal_percentage, text = ''):
     if decimal_percentage == 1:
         print('')
 
-def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_Matrix, est_inertia = False):
+def Attitude_Filter(lightcurve, obsvecs, sunvecs, time, noise, Geometry, Inertia_Matrix, exposure_time, est_inertia = False):
+
+    dts = diff(time)
+    ave_dt = average(dts)
     if est_inertia:
         DIM_X = 8
         DIM_Z = 1
@@ -86,14 +89,14 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
         initial_inertia = array([1.0, 1.0])
         initial_state = hstack([initial_mrps, initial_rate, initial_inertia])
 
-        kf = UnscentedKalmanFilter(dim_x = DIM_X, dim_z = DIM_Z, dt = dt,
+        kf = UnscentedKalmanFilter(dim_x = DIM_X, dim_z = DIM_Z, dt = ave_dt,
                                    fx = modified_rodrigues_prop,
                                    hx = mrp_measurement_function,
                                    points = points)
         kf.x = initial_state
         kf.P = diag(ones(DIM_X))*100
         kf.R = noise**2
-        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3, 1e3, 1e3])*noise*1e-2
+        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3, 1e3, 1e3])*1e-12
 
     else:
         DIM_X = 6
@@ -104,18 +107,15 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
 
         initial_state = hstack([initial_mrps, initial_rate])
 
-        kf = UnscentedKalmanFilter(dim_x = DIM_X, dim_z = DIM_Z, dt = dt,
+        kf = UnscentedKalmanFilter(dim_x = DIM_X, dim_z = DIM_Z, dt = ave_dt,
                                    fx = modified_rodrigues_prop,
                                    hx = mrp_measurement_function,
                                    points = points)
         kf.x = initial_state
         kf.P = diag(ones(DIM_X))*100
         kf.R = noise**2
-        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3])*noise*1e-2
+        kf.Q = diag([1, 1, 1, 1e3, 1e3, 1e3])*1e-12
         #print(kf.Q)
-
-
-    noisy_lightcurve = lightcurve + random.normal(0, noise, len(lightcurve))
     # plt.plot(noisy_lightcurve)
     # plt.plot(lightcurve)
     # plt.show()
@@ -124,20 +124,12 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
     covariances = zeros((len(lightcurve), DIM_X, DIM_X))
     residuals = zeros(len(lightcurve))
     filtered_lightcurve = zeros(len(lightcurve))
-
-    len_residual_buffer = int(10/dt)
-    if len(lightcurve) < len_residual_buffer:
-        len_residuals = int(len(lightcurve)/10)
+    
     
 
-
-    RMS = 1000.0
-    dRMS = 1.0
-    buffnum = 1
-    for i, (z, obsvec, sunvec) in enumerate(zip(noisy_lightcurve, obsvecs, sunvecs)):
-
+    for i, (z, obsvec, sunvec, dt) in enumerate(zip(lightcurve, obsvecs, sunvecs, dts)):
+        kf.update(z, obsvec = obsvec, sunvec = sunvec, exposure_time = exposure_time, Geometry = Geometry)
         kf.predict(dt = dt, inertia = Inertia_Matrix, est_inertia = est_inertia)
-        kf.update(z, obsvec = obsvec, sunvec = sunvec, Geometry = Geometry)
 
         #print('[{0:+.4f}, {1:+.4f}, {2:+.4f}] [{3:+.4f}, {4:+.4f}, {5:+.4f}] {6:<10}'.format(*kf.x, i), end = '\r')
 
@@ -147,9 +139,13 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
             mrps = kf.x[0:3]
             kf.x[0:3] = -mrps/norm(mrps)
 
+        #keep angular velocity from exploding
+        #limits maximum estimate to be 1 radian/s
         if norm(kf.x[3:6]) > 1:
             kf.x[3:6] = kf.x[3:6]/norm(kf.x[3:6])
 
+        #keep inertia from exploding
+        #limits maximum inertia estimate to be 5
         if est_inertia:
             if abs(kf.x[6]) > 5:
                 kf.x[6] = 5
@@ -165,16 +161,6 @@ def Attitude_Filter(lightcurve, obsvecs, sunvecs, dt, noise, Geometry, Inertia_M
         covariances[i, :, :] = kf.P
         residuals[i] = kf.y
         filtered_lightcurve[i] = kf.zp
-
-        # if floor(i/len_residual_buffer) > buffnum:
-        #     RMS_n = sqrt(sum(residuals[-len_residual_buffer:]))
-        #     print(sum(residuals[-len_residual_buffer:]))
-        #     dRMS = (RMS - RMS_n)/RMS
-        #     RMS = RMS_n
-        #     buffnum += 1
-
-        # if dRMS < .01:
-        #     break
 
 
 
