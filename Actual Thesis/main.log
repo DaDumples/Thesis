@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  24 APR 2020 15:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.9.30)  26 APR 2020 17:18
 entering extended mode
 **./main.tex
 (main.tex
@@ -743,7 +743,7 @@ Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 105.
 Package hyperref Info: Option `bookmarksopen' set `false' on input line 105.
 Package hyperref Info: Option `colorlinks' set `false' on input line 105.
 \c@qcounter=\count174
-(main.aux)
+(main.aux (appendices/ray_tracing_algorythm.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 111.
@@ -906,7 +906,13 @@ Overfull \hbox (216.0877pt too wide) in paragraph at lines 125--125
 
 ] (main.lof [9
 
-])
+]
+Overfull \hbox (4.64177pt too wide) in paragraph at lines 28--28
+ [][] [][]\OT1/cmr/m/n/12 AJISAI with En-gi-neer [Left]. Cor-ner Cube Re-flec-t
+or Lo-ca-tions [Right] 
+ []
+
+)
 \tf@lof=\write9
 \openout9 = `main.lof'.
 
@@ -924,42 +930,22 @@ l.11 I
 \uppercase {Chapter} 2.
 [3
 
-] [4] [5]
-Overfull \hbox (72.81654pt too wide) detected at line 76
-[]
- []
-
-
-Overfull \hbox (130.0204pt too wide) detected at line 83
-[]
- []
-
-[6] [7] [8]
-Overfull \hbox (155.7187pt too wide) detected at line 143
-[]
- []
-
-
-Overfull \hbox (159.40463pt too wide) detected at line 152
-[]
- []
-
-[9] [10]) (chapters/ukf_formulation.tex [11]
+] [4] [5] [6] [7] [8]) (chapters/ukf_formulation.tex [9]
 \uppercase {Chapter} 3.
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 7.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 8.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 7.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 8.
 
-[12
+[10
 
-]) (chapters/measurement_model.tex [13]
+] [11] [12]) (chapters/measurement_model.tex [13]
 \uppercase {Chapter} 4.
 [14
 
 ]
-<figures/facet.png, id=379, 372.79276pt x 245.718pt>
+<figures/facet.png, id=423, 372.79276pt x 245.718pt>
 File: figures/facet.png Graphic file (type png)
 <use figures/facet.png>
 Package pdftex.def Info: figures/facet.png  used on input line 37.
@@ -979,22 +965,22 @@ Overfull \hbox (17.62482pt too wide) detected at line 85
 [][] 
  []
 
-<figures/occlusion_check.png, id=398, 249.3315pt x 225.84375pt>
+<figures/occlusion_check.png, id=442, 249.3315pt x 225.84375pt>
 File: figures/occlusion_check.png Graphic file (type png)
 <use figures/occlusion_check.png>
 Package pdftex.def Info: figures/occlusion_check.png  used on input line 88.
 (pdftex.def)             Requested size: 216.81pt x 196.38597pt.
 [17] [18 <./figures/occlusion_check.png>]
-Overfull \hbox (17.62482pt too wide) detected at line 146
+Overfull \hbox (17.62482pt too wide) detected at line 152
 [][] 
  []
 
 [19]
-<figures/visible_and_illuminated.png, id=436, 290.2845pt x 235.47975pt>
+<figures/visible_and_illuminated.png, id=480, 290.2845pt x 235.47975pt>
 File: figures/visible_and_illuminated.png Graphic file (type png)
 <use figures/visible_and_illuminated.png>
 Package pdftex.def Info: figures/visible_and_illuminated.png  used on input lin
-e 155.
+e 161.
 (pdftex.def)             Requested size: 216.81pt x 175.87637pt.
 ) (chapters/Results.tex
 
@@ -1002,367 +988,393 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [20] [21 <./figures/visible_and_illuminated.png>]
 \uppercase {Chapter} 5.
-<Figures/Long_Rectangle_Image_Axes.png, id=470, 72.27pt x 72.27pt>
+<Figures/Long_Rectangle_Image_Axes.png, id=520, 72.27pt x 72.27pt>
 File: Figures/Long_Rectangle_Image_Axes.png Graphic file (type png)
 <use Figures/Long_Rectangle_Image_Axes.png>
 Package pdftex.def Info: Figures/Long_Rectangle_Image_Axes.png  used on input l
-ine 13.
-(pdftex.def)             Requested size: 184.9429pt x 184.95317pt.
-<Figures/Cylinder_Axes.png, id=471, 84.315pt x 84.315pt>
+ine 14.
+(pdftex.def)             Requested size: 142.26378pt x 142.27126pt.
+<Figures/Cylinder_Axes.png, id=521, 84.315pt x 84.315pt>
 File: Figures/Cylinder_Axes.png Graphic file (type png)
 <use Figures/Cylinder_Axes.png>
-Package pdftex.def Info: Figures/Cylinder_Axes.png  used on input line 14.
-(pdftex.def)             Requested size: 184.9429pt x 184.94675pt.
-<Figures/Box_Wing_Axes.png, id=472, 72.27pt x 72.27pt>
+Package pdftex.def Info: Figures/Cylinder_Axes.png  used on input line 15.
+(pdftex.def)             Requested size: 142.26378pt x 142.26701pt.
+<Figures/Box_Wing_Axes.png, id=522, 72.27pt x 72.27pt>
 File: Figures/Box_Wing_Axes.png Graphic file (type png)
 <use Figures/Box_Wing_Axes.png>
-Package pdftex.def Info: Figures/Box_Wing_Axes.png  used on input line 16.
-(pdftex.def)             Requested size: 184.9429pt x 184.95317pt.
-<Figures/leo_orbit.png, id=473, 462.528pt x 344.0052pt>
+Package pdftex.def Info: Figures/Box_Wing_Axes.png  used on input line 17.
+(pdftex.def)             Requested size: 142.26378pt x 142.27126pt.
+<Figures/leo_orbit.png, id=523, 462.528pt x 344.0052pt>
 File: Figures/leo_orbit.png Graphic file (type png)
 <use Figures/leo_orbit.png>
-Package pdftex.def Info: Figures/leo_orbit.png  used on input line 25.
-(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
-<Figures/meo_orbit.png, id=474, 462.528pt x 344.0052pt>
+Package pdftex.def Info: Figures/leo_orbit.png  used on input line 28.
+(pdftex.def)             Requested size: 142.26378pt x 105.81114pt.
+<Figures/meo_orbit.png, id=524, 462.528pt x 344.0052pt>
 File: Figures/meo_orbit.png Graphic file (type png)
 <use Figures/meo_orbit.png>
-Package pdftex.def Info: Figures/meo_orbit.png  used on input line 26.
-(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
-<Figures/geo_orbit.png, id=475, 462.528pt x 344.0052pt>
+Package pdftex.def Info: Figures/meo_orbit.png  used on input line 29.
+(pdftex.def)             Requested size: 142.26378pt x 105.81114pt.
+<Figures/geo_orbit.png, id=525, 462.528pt x 344.0052pt>
 File: Figures/geo_orbit.png Graphic file (type png)
 <use Figures/geo_orbit.png>
-Package pdftex.def Info: Figures/geo_orbit.png  used on input line 28.
-(pdftex.def)             Requested size: 184.9429pt x 137.55238pt.
+Package pdftex.def Info: Figures/geo_orbit.png  used on input line 31.
+(pdftex.def)             Requested size: 142.26378pt x 105.81114pt.
 [22
 
 ] [23 <./Figures/Long_Rectangle_Image_Axes.png> <./Figures/Cylinder_Axes.png> <
 ./Figures/Box_Wing_Axes.png>] [24 <./Figures/leo_orbit.png> <./Figures/meo_orbi
 t.png> <./Figures/geo_orbit.png>] [25] [26] [27]
-<Figures/Body_Errorbars.png, id=509, 430.36784pt x 314.01315pt>
+<figures/Observation_Frame.png, id=563, 225.2415pt x 236.68425pt>
+File: figures/Observation_Frame.png Graphic file (type png)
+<use figures/Observation_Frame.png>
+Package pdftex.def Info: figures/Observation_Frame.png  used on input line 86.
+(pdftex.def)             Requested size: 241.84842pt x 254.14168pt.
+ [28 <./figures/Observation_Frame.png>]
+<Figures/Body_Errorbars.png, id=569, 430.36784pt x 314.01315pt>
 File: Figures/Body_Errorbars.png Graphic file (type png)
 <use Figures/Body_Errorbars.png>
-Package pdftex.def Info: Figures/Body_Errorbars.png  used on input line 100.
+Package pdftex.def Info: Figures/Body_Errorbars.png  used on input line 119.
 (pdftex.def)             Requested size: 241.84842pt x 176.46425pt.
- [28]
-Overfull \hbox (27.54338pt too wide) in paragraph at lines 111--124
- [] 
- []
-
-[29 <./Figures/Body_Errorbars.png>]
-Overfull \hbox (27.54338pt too wide) in paragraph at lines 135--151
- [] 
- []
-
-<Figures/OBS_Errorbars.png, id=520, 423.86356pt x 314.01315pt>
-File: Figures/OBS_Errorbars.png Graphic file (type png)
-<use Figures/OBS_Errorbars.png>
-Package pdftex.def Info: Figures/OBS_Errorbars.png  used on input line 157.
-(pdftex.def)             Requested size: 241.84842pt x 179.16663pt.
-<figures/Rectangle_Leo/BODY.png, id=523, 411.939pt x 328.1058pt>
+<figures/Rectangle_Leo/BODY.png, id=570, 411.939pt x 328.1058pt>
 File: figures/Rectangle_Leo/BODY.png Graphic file (type png)
 <use figures/Rectangle_Leo/BODY.png>
-Package pdftex.def Info: figures/Rectangle_Leo/BODY.png  used on input line 167
+Package pdftex.def Info: figures/Rectangle_Leo/BODY.png  used on input line 126
 .
-(pdftex.def)             Requested size: 142.26378pt x 113.31177pt.
-<figures/Rectangle_Leo/CURVE.png, id=524, 435.5472pt x 326.9013pt>
+(pdftex.def)             Requested size: 184.9429pt x 147.3008pt.
+<figures/Rectangle_Leo/CURVE.png, id=571, 435.5472pt x 326.9013pt>
 File: figures/Rectangle_Leo/CURVE.png Graphic file (type png)
 <use figures/Rectangle_Leo/CURVE.png>
-Package pdftex.def Info: figures/Rectangle_Leo/CURVE.png  used on input line 16
-8.
-(pdftex.def)             Requested size: 142.26378pt x 106.77539pt.
-<figures/Rectangle_Leo/OBS.png, id=525, 419.52734pt x 328.1058pt>
+Package pdftex.def Info: figures/Rectangle_Leo/CURVE.png  used on input line 12
+7.
+(pdftex.def)             Requested size: 184.9429pt x 138.81398pt.
+<figures/Rectangle_Leo/OBS.png, id=572, 419.52734pt x 328.1058pt>
 File: figures/Rectangle_Leo/OBS.png Graphic file (type png)
 <use figures/Rectangle_Leo/OBS.png>
-Package pdftex.def Info: figures/Rectangle_Leo/OBS.png  used on input line 170.
+Package pdftex.def Info: figures/Rectangle_Leo/OBS.png  used on input line 129.
 
-(pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
-<figures/Rectangle_Leo/MRP.png, id=526, 409.0482pt x 326.9013pt>
+(pdftex.def)             Requested size: 184.9429pt x 144.64235pt.
+<figures/Rectangle_Leo/MRP.png, id=573, 409.0482pt x 326.9013pt>
 File: figures/Rectangle_Leo/MRP.png Graphic file (type png)
 <use figures/Rectangle_Leo/MRP.png>
-Package pdftex.def Info: figures/Rectangle_Leo/MRP.png  used on input line 171.
+Package pdftex.def Info: figures/Rectangle_Leo/MRP.png  used on input line 130.
 
-(pdftex.def)             Requested size: 142.26378pt x 113.6889pt.
+(pdftex.def)             Requested size: 184.9429pt x 147.79756pt.
 
-Overfull \hbox (15.67424pt too wide) in paragraph at lines 166--174
+Overfull \hbox (15.67424pt too wide) in paragraph at lines 125--133
 [][] 
  []
 
-[30]
-<figures/Cylinder_Leo/BODY.png, id=531, 419.52734pt x 328.1058pt>
+<figures/Cylinder_Leo/BODY.png, id=574, 419.52734pt x 328.1058pt>
 File: figures/Cylinder_Leo/BODY.png Graphic file (type png)
 <use figures/Cylinder_Leo/BODY.png>
-Package pdftex.def Info: figures/Cylinder_Leo/BODY.png  used on input line 180.
+Package pdftex.def Info: figures/Cylinder_Leo/BODY.png  used on input line 139.
 
-(pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
-<figures/Cylinder_Leo/CURVE.png, id=532, 426.1521pt x 326.9013pt>
+(pdftex.def)             Requested size: 184.9429pt x 144.64235pt.
+<figures/Cylinder_Leo/CURVE.png, id=575, 426.1521pt x 326.9013pt>
 File: figures/Cylinder_Leo/CURVE.png Graphic file (type png)
 <use figures/Cylinder_Leo/CURVE.png>
-Package pdftex.def Info: figures/Cylinder_Leo/CURVE.png  used on input line 181
+Package pdftex.def Info: figures/Cylinder_Leo/CURVE.png  used on input line 140
 .
-(pdftex.def)             Requested size: 142.26378pt x 109.12978pt.
-<figures/Cylinder_Leo/OBS.png, id=533, 426.03165pt x 328.1058pt>
+(pdftex.def)             Requested size: 184.9429pt x 141.87169pt.
+<figures/Cylinder_Leo/OBS.png, id=576, 426.03165pt x 328.1058pt>
 File: figures/Cylinder_Leo/OBS.png Graphic file (type png)
 <use figures/Cylinder_Leo/OBS.png>
-Package pdftex.def Info: figures/Cylinder_Leo/OBS.png  used on input line 183.
-(pdftex.def)             Requested size: 142.26378pt x 109.56691pt.
-<figures/Cylinder_Leo/MRP.png, id=534, 410.2527pt x 326.9013pt>
+Package pdftex.def Info: figures/Cylinder_Leo/OBS.png  used on input line 142.
+(pdftex.def)             Requested size: 184.9429pt x 142.4345pt.
+<figures/Cylinder_Leo/MRP.png, id=577, 410.2527pt x 326.9013pt>
 File: figures/Cylinder_Leo/MRP.png Graphic file (type png)
 <use figures/Cylinder_Leo/MRP.png>
-Package pdftex.def Info: figures/Cylinder_Leo/MRP.png  used on input line 184.
-(pdftex.def)             Requested size: 142.26378pt x 113.35968pt.
+Package pdftex.def Info: figures/Cylinder_Leo/MRP.png  used on input line 143.
+(pdftex.def)             Requested size: 184.9429pt x 147.3636pt.
 
-Overfull \hbox (15.67424pt too wide) in paragraph at lines 179--187
+Overfull \hbox (15.67424pt too wide) in paragraph at lines 138--146
 [][] 
  []
 
-<figures/BW_Geo/BODY.png, id=535, 413.02306pt x 328.1058pt>
+<figures/BW_Geo/BODY.png, id=578, 413.02306pt x 328.1058pt>
 File: figures/BW_Geo/BODY.png Graphic file (type png)
 <use figures/BW_Geo/BODY.png>
-Package pdftex.def Info: figures/BW_Geo/BODY.png  used on input line 192.
-(pdftex.def)             Requested size: 142.26378pt x 113.01138pt.
-<figures/BW_Geo/CURVE.png, id=536, 423.7431pt x 326.9013pt>
+Package pdftex.def Info: figures/BW_Geo/BODY.png  used on input line 151.
+(pdftex.def)             Requested size: 184.9429pt x 146.9203pt.
+<figures/BW_Geo/CURVE.png, id=579, 423.7431pt x 326.9013pt>
 File: figures/BW_Geo/CURVE.png Graphic file (type png)
 <use figures/BW_Geo/CURVE.png>
-Package pdftex.def Info: figures/BW_Geo/CURVE.png  used on input line 193.
-(pdftex.def)             Requested size: 142.26378pt x 109.74829pt.
-<figures/BW_Geo/OBS.png, id=537, 420.97275pt x 328.1058pt>
+Package pdftex.def Info: figures/BW_Geo/CURVE.png  used on input line 152.
+(pdftex.def)             Requested size: 184.9429pt x 142.67477pt.
+<figures/BW_Geo/OBS.png, id=580, 420.97275pt x 328.1058pt>
 File: figures/BW_Geo/OBS.png Graphic file (type png)
 <use figures/BW_Geo/OBS.png>
-Package pdftex.def Info: figures/BW_Geo/OBS.png  used on input line 195.
-(pdftex.def)             Requested size: 142.26378pt x 110.87862pt.
-<figures/BW_Geo/MRP.png, id=538, 410.9754pt x 326.9013pt>
+Package pdftex.def Info: figures/BW_Geo/OBS.png  used on input line 154.
+(pdftex.def)             Requested size: 184.9429pt x 144.1417pt.
+<figures/BW_Geo/MRP.png, id=581, 410.9754pt x 326.9013pt>
 File: figures/BW_Geo/MRP.png Graphic file (type png)
 <use figures/BW_Geo/MRP.png>
-Package pdftex.def Info: figures/BW_Geo/MRP.png  used on input line 196.
-(pdftex.def)             Requested size: 142.26378pt x 113.16016pt.
+Package pdftex.def Info: figures/BW_Geo/MRP.png  used on input line 155.
+(pdftex.def)             Requested size: 184.9429pt x 147.1092pt.
 
-Overfull \hbox (38.84761pt too wide) in paragraph at lines 190--199
-[]\OT1/cmr/m/n/12 ![ht] [] 
+Overfull \hbox (15.67424pt too wide) in paragraph at lines 150--158
+[][] 
  []
 
-[31 <./Figures/OBS_Errorbars.png>]
+[29]
+Overfull \hbox (27.54338pt too wide) in paragraph at lines 167--180
+ [] 
+ []
 
-LaTeX Warning: Text page 32 contains only floats.
+[30 <./Figures/Body_Errorbars.png>] [31 <./figures/Rectangle_Leo/BODY.png> <./f
+igures/Rectangle_Leo/CURVE.png> <./figures/Rectangle_Leo/OBS.png> <./figures/Re
+ctangle_Leo/MRP.png>] [32 <./figures/Cylinder_Leo/BODY.png> <./figures/Cylinder
+_Leo/CURVE.png> <./figures/Cylinder_Leo/OBS.png> <./figures/Cylinder_Leo/MRP.pn
+g>] [33 <./figures/BW_Geo/BODY.png> <./figures/BW_Geo/CURVE.png> <./figures/BW_
+Geo/OBS.png> <./figures/BW_Geo/MRP.png>]
+Overfull \hbox (27.54338pt too wide) in paragraph at lines 192--208
+ [] 
+ []
 
-[32 <./figures/Rectangle_Leo/BODY.png> <./figures/Rectangle_Leo/CURVE.png> <./f
-igures/Rectangle_Leo/OBS.png> <./figures/Rectangle_Leo/MRP.png> <./figures/Cyli
-nder_Leo/BODY.png> <./figures/Cylinder_Leo/CURVE.png> <./figures/Cylinder_Leo/O
-BS.png> <./figures/Cylinder_Leo/MRP.png>]
-<figures/Cylinder_Meo_Tumbling/BODY.png, id=556, 409.7709pt x 328.1058pt>
+<Figures/OBS_Errorbars.png, id=617, 423.86356pt x 314.01315pt>
+File: Figures/OBS_Errorbars.png Graphic file (type png)
+<use Figures/OBS_Errorbars.png>
+Package pdftex.def Info: Figures/OBS_Errorbars.png  used on input line 214.
+(pdftex.def)             Requested size: 241.84842pt x 179.16663pt.
+[34]
+<figures/Cylinder_Meo_Tumbling/BODY.png, id=624, 409.7709pt x 328.1058pt>
 File: figures/Cylinder_Meo_Tumbling/BODY.png Graphic file (type png)
 <use figures/Cylinder_Meo_Tumbling/BODY.png>
 Package pdftex.def Info: figures/Cylinder_Meo_Tumbling/BODY.png  used on input 
-line 227.
-(pdftex.def)             Requested size: 142.26378pt x 113.91254pt.
-<figures/Cylinder_Meo_Tumbling/CURVE.png, id=557, 428.3202pt x 326.9013pt>
+line 243.
+(pdftex.def)             Requested size: 184.9429pt x 148.0818pt.
+<figures/Cylinder_Meo_Tumbling/CURVE.png, id=625, 428.3202pt x 326.9013pt>
 File: figures/Cylinder_Meo_Tumbling/CURVE.png Graphic file (type png)
 <use figures/Cylinder_Meo_Tumbling/CURVE.png>
 Package pdftex.def Info: figures/Cylinder_Meo_Tumbling/CURVE.png  used on input
- line 228.
-(pdftex.def)             Requested size: 142.26378pt x 108.5761pt.
-<figures/Cylinder_Meo_Tumbling/INERTIA.png, id=558, 387.3672pt x 314.01315pt>
+ line 244.
+(pdftex.def)             Requested size: 184.9429pt x 141.15341pt.
+<figures/Cylinder_Meo_Tumbling/INERTIA.png, id=626, 387.3672pt x 314.01315pt>
 File: figures/Cylinder_Meo_Tumbling/INERTIA.png Graphic file (type png)
 <use figures/Cylinder_Meo_Tumbling/INERTIA.png>
 Package pdftex.def Info: figures/Cylinder_Meo_Tumbling/INERTIA.png  used on inp
-ut line 230.
-(pdftex.def)             Requested size: 142.26378pt x 115.32536pt.
-<figures/Rect_Meo_Tumbling/BODY.png, id=559, 409.7709pt x 328.1058pt>
+ut line 246.
+(pdftex.def)             Requested size: 184.9429pt x 149.91963pt.
+<figures/Rect_Meo_Tumbling/BODY.png, id=627, 409.7709pt x 328.1058pt>
 File: figures/Rect_Meo_Tumbling/BODY.png Graphic file (type png)
 <use figures/Rect_Meo_Tumbling/BODY.png>
 Package pdftex.def Info: figures/Rect_Meo_Tumbling/BODY.png  used on input line
- 238.
-(pdftex.def)             Requested size: 142.26378pt x 113.91254pt.
-<figures/Rect_Meo_Tumbling/CURVE.png, id=560, 421.8159pt x 326.9013pt>
+ 254.
+(pdftex.def)             Requested size: 184.9429pt x 148.0818pt.
+<figures/Rect_Meo_Tumbling/CURVE.png, id=628, 421.8159pt x 326.9013pt>
 File: figures/Rect_Meo_Tumbling/CURVE.png Graphic file (type png)
 <use figures/Rect_Meo_Tumbling/CURVE.png>
 Package pdftex.def Info: figures/Rect_Meo_Tumbling/CURVE.png  used on input lin
-e 239.
-(pdftex.def)             Requested size: 142.26378pt x 110.25209pt.
-<figures/Rect_Meo_Tumbling/INERTIA.png, id=561, 387.3672pt x 314.01315pt>
+e 255.
+(pdftex.def)             Requested size: 184.9429pt x 143.32822pt.
+<figures/Rect_Meo_Tumbling/INERTIA.png, id=629, 387.3672pt x 314.01315pt>
 File: figures/Rect_Meo_Tumbling/INERTIA.png Graphic file (type png)
 <use figures/Rect_Meo_Tumbling/INERTIA.png>
 Package pdftex.def Info: figures/Rect_Meo_Tumbling/INERTIA.png  used on input l
-ine 241.
-(pdftex.def)             Requested size: 142.26378pt x 115.32536pt.
-<figures/BW_Geo_Tumbling/BODY.png, id=562, 409.7709pt x 328.1058pt>
+ine 257.
+(pdftex.def)             Requested size: 184.9429pt x 149.91963pt.
+<figures/BW_Geo_Tumbling/BODY.png, id=630, 409.7709pt x 328.1058pt>
 File: figures/BW_Geo_Tumbling/BODY.png Graphic file (type png)
 <use figures/BW_Geo_Tumbling/BODY.png>
 Package pdftex.def Info: figures/BW_Geo_Tumbling/BODY.png  used on input line 2
-50.
-(pdftex.def)             Requested size: 142.26378pt x 113.91254pt.
-<figures/BW_Geo_Tumbling/CURVE.png, id=563, 415.5525pt x 326.9013pt>
+66.
+(pdftex.def)             Requested size: 184.9429pt x 148.0818pt.
+<figures/BW_Geo_Tumbling/CURVE.png, id=631, 415.5525pt x 326.9013pt>
 File: figures/BW_Geo_Tumbling/CURVE.png Graphic file (type png)
 <use figures/BW_Geo_Tumbling/CURVE.png>
 Package pdftex.def Info: figures/BW_Geo_Tumbling/CURVE.png  used on input line 
-251.
-(pdftex.def)             Requested size: 142.26378pt x 111.91313pt.
-<figures/BW_Geo_Tumbling/INERTIA.png, id=564, 397.12366pt x 314.01315pt>
+267.
+(pdftex.def)             Requested size: 184.9429pt x 145.48807pt.
+<figures/BW_Geo_Tumbling/INERTIA.png, id=632, 397.12366pt x 314.01315pt>
 File: figures/BW_Geo_Tumbling/INERTIA.png Graphic file (type png)
 <use figures/BW_Geo_Tumbling/INERTIA.png>
 Package pdftex.def Info: figures/BW_Geo_Tumbling/INERTIA.png  used on input lin
-e 253.
-(pdftex.def)             Requested size: 142.26378pt x 112.49362pt.
- [33 <./figures/BW_Geo/BODY.png> <./figures/BW_Geo/CURVE.png> <./figures/BW_Geo
-/OBS.png> <./figures/BW_Geo/MRP.png>]
-[34 <./figures/Cylinder_Meo_Tumbling/BODY.png> <./figures/Cylinder_Meo_Tumbling
-/CURVE.png> <./figures/Cylinder_Meo_Tumbling/INERTIA.png> <./figures/Rect_Meo_T
-umbling/BODY.png> <./figures/Rect_Meo_Tumbling/CURVE.png> <./figures/Rect_Meo_T
-umbling/INERTIA.png>]
-<figures/flips/R_OBS.png, id=584, 419.52734pt x 328.1058pt>
+e 269.
+(pdftex.def)             Requested size: 184.9429pt x 146.23979pt.
+ [35 <./Figures/OBS_Errorbars.png>] [36 <./figures/Cylinder_Meo_Tumbling/BODY.p
+ng> <./figures/Cylinder_Meo_Tumbling/CURVE.png> <./figures/Cylinder_Meo_Tumblin
+g/INERTIA.png>] [37 <./figures/Rect_Meo_Tumbling/BODY.png> <./figures/Rect_Meo_
+Tumbling/CURVE.png> <./figures/Rect_Meo_Tumbling/INERTIA.png>] [38 <./figures/B
+W_Geo_Tumbling/BODY.png> <./figures/BW_Geo_Tumbling/CURVE.png> <./figures/BW_Ge
+o_Tumbling/INERTIA.png>]
+<figures/flips/R_OBS.png, id=659, 419.52734pt x 328.1058pt>
 File: figures/flips/R_OBS.png Graphic file (type png)
 <use figures/flips/R_OBS.png>
-Package pdftex.def Info: figures/flips/R_OBS.png  used on input line 266.
+Package pdftex.def Info: figures/flips/R_OBS.png  used on input line 290.
 (pdftex.def)             Requested size: 184.9429pt x 144.64235pt.
-<figures/flips/R_CURVE.png, id=585, 429.2838pt x 326.9013pt>
+<figures/flips/R_CURVE.png, id=660, 429.2838pt x 326.9013pt>
 File: figures/flips/R_CURVE.png Graphic file (type png)
 <use figures/flips/R_CURVE.png>
-Package pdftex.def Info: figures/flips/R_CURVE.png  used on input line 267.
+Package pdftex.def Info: figures/flips/R_CURVE.png  used on input line 291.
 (pdftex.def)             Requested size: 184.9429pt x 140.83417pt.
-<figures/flips/R_FRAMES.png, id=586, 1204.5pt x 240.9pt>
+<figures/flips/R_FRAMES.png, id=661, 1204.5pt x 240.9pt>
 File: figures/flips/R_FRAMES.png Graphic file (type png)
 <use figures/flips/R_FRAMES.png>
-Package pdftex.def Info: figures/flips/R_FRAMES.png  used on input line 275.
+Package pdftex.def Info: figures/flips/R_FRAMES.png  used on input line 299.
 (pdftex.def)             Requested size: 398.33858pt x 79.66632pt.
- [35 <./figures/BW_Geo_Tumbling/BODY.png> <./figures/BW_Geo_Tumbling/CURVE.png>
- <./figures/BW_Geo_Tumbling/INERTIA.png>]
-<figures/sert-2.jpg, id=596, 401.5pt x 231.86626pt>
+ [39] [40 <./figures/flips/R_OBS.png> <./figures/flips/R_CURVE.png> <./figures/
+flips/R_FRAMES.png>]
+<figures/sert-2.jpg, id=678, 401.5pt x 231.86626pt>
 File: figures/sert-2.jpg Graphic file (type jpg)
 <use figures/sert-2.jpg>
-Package pdftex.def Info: figures/sert-2.jpg  used on input line 292.
+Package pdftex.def Info: figures/sert-2.jpg  used on input line 324.
 (pdftex.def)             Requested size: 227.62204pt x 131.454pt.
-<figures/SERT2_Axes.png, id=597, 467.49657pt x 359.09157pt>
+<figures/SERT2_Axes.png, id=679, 467.49657pt x 359.09157pt>
 File: figures/SERT2_Axes.png Graphic file (type png)
 <use figures/SERT2_Axes.png>
-Package pdftex.def Info: figures/SERT2_Axes.png  used on input line 292.
+Package pdftex.def Info: figures/SERT2_Axes.png  used on input line 324.
 (pdftex.def)             Requested size: 170.71652pt x 131.13034pt.
-<figures/Sert_Success/BODY.png, id=598, 411.2163pt x 328.1058pt>
+<figures/Sert_Success/BODY.png, id=680, 411.2163pt x 328.1058pt>
 File: figures/Sert_Success/BODY.png Graphic file (type png)
 <use figures/Sert_Success/BODY.png>
-Package pdftex.def Info: figures/Sert_Success/BODY.png  used on input line 301.
+Package pdftex.def Info: figures/Sert_Success/BODY.png  used on input line 333.
 
 (pdftex.def)             Requested size: 142.26378pt x 113.51202pt.
-<figures/Sert_Success/CURVE.png, id=599, 422.7795pt x 328.1058pt>
+<figures/Sert_Success/CURVE.png, id=681, 422.7795pt x 328.1058pt>
 File: figures/Sert_Success/CURVE.png Graphic file (type png)
 <use figures/Sert_Success/CURVE.png>
-Package pdftex.def Info: figures/Sert_Success/CURVE.png  used on input line 302
+Package pdftex.def Info: figures/Sert_Success/CURVE.png  used on input line 334
 .
 (pdftex.def)             Requested size: 142.26378pt x 110.408pt.
-<figures/Sert_Success/ECI.png, id=600, 426.03165pt x 328.1058pt>
+<figures/Sert_Success/ECI.png, id=682, 426.03165pt x 328.1058pt>
 File: figures/Sert_Success/ECI.png Graphic file (type png)
 <use figures/Sert_Success/ECI.png>
-Package pdftex.def Info: figures/Sert_Success/ECI.png  used on input line 304.
+Package pdftex.def Info: figures/Sert_Success/ECI.png  used on input line 336.
 (pdftex.def)             Requested size: 142.26378pt x 109.56691pt.
-<figures/Sert_Success/MRP.png, id=601, 419.52734pt x 328.1058pt>
+<figures/Sert_Success/MRP.png, id=683, 419.52734pt x 328.1058pt>
 File: figures/Sert_Success/MRP.png Graphic file (type png)
 <use figures/Sert_Success/MRP.png>
-Package pdftex.def Info: figures/Sert_Success/MRP.png  used on input line 305.
+Package pdftex.def Info: figures/Sert_Success/MRP.png  used on input line 337.
 (pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
- [36 <./figures/flips/R_OBS.png> <./figures/flips/R_CURVE.png> <./figures/flips
-/R_FRAMES.png>]
-<figures/ajisai.jpg, id=612, 481.8pt x 321.2pt>
+ [41] [42 <./figures/sert-2.jpg> <./figures/SERT2_Axes.png> <./figures/Sert_Suc
+cess/BODY.png> <./figures/Sert_Success/CURVE.png> <./figures/Sert_Success/ECI.p
+ng> <./figures/Sert_Success/MRP.png>]
+Overfull \hbox (17.06934pt too wide) in paragraph at lines 353--365
+ [][] 
+ []
+
+<figures/ajisai.jpg, id=705, 481.8pt x 321.2pt>
 File: figures/ajisai.jpg Graphic file (type jpg)
 <use figures/ajisai.jpg>
-Package pdftex.def Info: figures/ajisai.jpg  used on input line 340.
+Package pdftex.def Info: figures/ajisai.jpg  used on input line 378.
 (pdftex.def)             Requested size: 256.0748pt x 170.7204pt.
-<figures/AJISAI_Axes.png, id=613, 72.27pt x 72.27pt>
+<figures/AJISAI_Axes.png, id=706, 72.27pt x 72.27pt>
 File: figures/AJISAI_Axes.png Graphic file (type png)
 <use figures/AJISAI_Axes.png>
-Package pdftex.def Info: figures/AJISAI_Axes.png  used on input line 340.
+Package pdftex.def Info: figures/AJISAI_Axes.png  used on input line 378.
 (pdftex.def)             Requested size: 170.71652pt x 170.7255pt.
 
-Overfull \hbox (17.17134pt too wide) in paragraph at lines 339--343
+Overfull \hbox (17.17134pt too wide) in paragraph at lines 377--381
 [][] 
  []
 
-[37 <./figures/sert-2.jpg> <./figures/SERT2_Axes.png>] [38 <./figures/Sert_Succ
-ess/BODY.png> <./figures/Sert_Success/CURVE.png> <./figures/Sert_Success/ECI.pn
-g> <./figures/Sert_Success/MRP.png> <./figures/ajisai.jpg> <./figures/AJISAI_Ax
-es.png>]
-<figures/ajisai_panels.jpg, id=629, 642.4pt x 268.00125pt>
+[43]
+<figures/ajisai_panels.jpg, id=712, 642.4pt x 268.00125pt>
 File: figures/ajisai_panels.jpg Graphic file (type jpg)
 <use figures/ajisai_panels.jpg>
-Package pdftex.def Info: figures/ajisai_panels.jpg  used on input line 352.
+Package pdftex.def Info: figures/ajisai_panels.jpg  used on input line 390.
 (pdftex.def)             Requested size: 426.79134pt x 178.05501pt.
-<figures/Ajisai_Fail/BODY.png, id=632, 413.02306pt x 328.1058pt>
+<figures/Ajisai_Fail/BODY.png, id=715, 413.02306pt x 328.1058pt>
 File: figures/Ajisai_Fail/BODY.png Graphic file (type png)
 <use figures/Ajisai_Fail/BODY.png>
-Package pdftex.def Info: figures/Ajisai_Fail/BODY.png  used on input line 358.
+Package pdftex.def Info: figures/Ajisai_Fail/BODY.png  used on input line 396.
 (pdftex.def)             Requested size: 142.26378pt x 113.01138pt.
-<figures/Ajisai_Fail/CURVE.png, id=633, 432.1746pt x 328.1058pt>
+<figures/Ajisai_Fail/CURVE.png, id=716, 432.1746pt x 328.1058pt>
 File: figures/Ajisai_Fail/CURVE.png Graphic file (type png)
 <use figures/Ajisai_Fail/CURVE.png>
-Package pdftex.def Info: figures/Ajisai_Fail/CURVE.png  used on input line 359.
+Package pdftex.def Info: figures/Ajisai_Fail/CURVE.png  used on input line 397.
 
 (pdftex.def)             Requested size: 142.26378pt x 108.0049pt.
-<figures/Ajisai_Fail/ECI.png, id=634, 413.02306pt x 328.1058pt>
+<figures/Ajisai_Fail/ECI.png, id=717, 413.02306pt x 328.1058pt>
 File: figures/Ajisai_Fail/ECI.png Graphic file (type png)
 <use figures/Ajisai_Fail/ECI.png>
-Package pdftex.def Info: figures/Ajisai_Fail/ECI.png  used on input line 361.
+Package pdftex.def Info: figures/Ajisai_Fail/ECI.png  used on input line 399.
 (pdftex.def)             Requested size: 142.26378pt x 113.01138pt.
-<figures/Ajisai_Fail/MRP.png, id=635, 413.02306pt x 328.1058pt>
+<figures/Ajisai_Fail/MRP.png, id=718, 413.02306pt x 328.1058pt>
 File: figures/Ajisai_Fail/MRP.png Graphic file (type png)
 <use figures/Ajisai_Fail/MRP.png>
-Package pdftex.def Info: figures/Ajisai_Fail/MRP.png  used on input line 362.
+Package pdftex.def Info: figures/Ajisai_Fail/MRP.png  used on input line 400.
 (pdftex.def)             Requested size: 142.26378pt x 113.01138pt.
-<figures/ARIANE_Axes.png, id=636, 156.585pt x 156.585pt>
+ [44 <./figures/ajisai.jpg> <./figures/AJISAI_Axes.png>] [45 <./figures/ajisai_
+panels.jpg> <./figures/Ajisai_Fail/BODY.png> <./figures/Ajisai_Fail/CURVE.png> 
+<./figures/Ajisai_Fail/ECI.png> <./figures/Ajisai_Fail/MRP.png>]
+<figures/ARIANE_Axes.png, id=734, 156.585pt x 156.585pt>
 File: figures/ARIANE_Axes.png Graphic file (type png)
 <use figures/ARIANE_Axes.png>
-Package pdftex.def Info: figures/ARIANE_Axes.png  used on input line 371.
+Package pdftex.def Info: figures/ARIANE_Axes.png  used on input line 417.
 (pdftex.def)             Requested size: 170.71652pt x 170.72205pt.
-<figures/Ariane_Success/BODY.png, id=637, 419.52734pt x 328.1058pt>
+<figures/Ariane_Success/BODY.png, id=735, 419.52734pt x 328.1058pt>
 File: figures/Ariane_Success/BODY.png Graphic file (type png)
 <use figures/Ariane_Success/BODY.png>
-Package pdftex.def Info: figures/Ariane_Success/BODY.png  used on input line 37
-7.
+Package pdftex.def Info: figures/Ariane_Success/BODY.png  used on input line 42
+4.
 (pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
-<figures/Ariane_Success/CURVE.png, id=638, 435.42674pt x 328.1058pt>
+<figures/Ariane_Success/CURVE.png, id=736, 435.42674pt x 328.1058pt>
 File: figures/Ariane_Success/CURVE.png Graphic file (type png)
 <use figures/Ariane_Success/CURVE.png>
-Package pdftex.def Info: figures/Ariane_Success/CURVE.png  used on input line 3
-78.
+Package pdftex.def Info: figures/Ariane_Success/CURVE.png  used on input line 4
+25.
 (pdftex.def)             Requested size: 142.26378pt x 107.19885pt.
-<figures/Ariane_Success/ECI.png, id=639, 419.52734pt x 328.1058pt>
+<figures/Ariane_Success/ECI.png, id=737, 419.52734pt x 328.1058pt>
 File: figures/Ariane_Success/ECI.png Graphic file (type png)
 <use figures/Ariane_Success/ECI.png>
-Package pdftex.def Info: figures/Ariane_Success/ECI.png  used on input line 380
+Package pdftex.def Info: figures/Ariane_Success/ECI.png  used on input line 427
 .
 (pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
-<figures/Ariane_Success/MRP.png, id=640, 419.52734pt x 328.1058pt>
+<figures/Ariane_Success/MRP.png, id=738, 419.52734pt x 328.1058pt>
 File: figures/Ariane_Success/MRP.png Graphic file (type png)
 <use figures/Ariane_Success/MRP.png>
-Package pdftex.def Info: figures/Ariane_Success/MRP.png  used on input line 381
+Package pdftex.def Info: figures/Ariane_Success/MRP.png  used on input line 428
 .
 (pdftex.def)             Requested size: 142.26378pt x 111.26411pt.
-)) (main.bbl [39 <./figures/ajisai_panels.jpg>] [40 <./figures/Ajisai_Fail/BODY
-.png> <./figures/Ajisai_Fail/CURVE.png> <./figures/Ajisai_Fail/ECI.png> <./figu
-res/Ajisai_Fail/MRP.png> <./figures/ARIANE_Axes.png>] [41 <./figures/Ariane_Suc
-cess/BODY.png> <./figures/Ariane_Success/CURVE.png> <./figures/Ariane_Success/E
-CI.png> <./figures/Ariane_Success/MRP.png>] [42
 
-] [43] [44])
-(appendix-outline.tex)
+Overfull \hbox (17.06934pt too wide) in paragraph at lines 442--452
+ [][] 
+ []
+
+) (chapters/Conclusion.tex [46 <./figures/ARIANE_Axes.png>] [47 <./figures/Aria
+ne_Success/BODY.png> <./figures/Ariane_Success/CURVE.png> <./figures/Ariane_Suc
+cess/ECI.png> <./figures/Ariane_Success/MRP.png>]
+\uppercase {Chapter} 6.
+[48
+
+] [49]
+\uppercase {Chapter} 7.
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 18.
+
+[50
+
+])) (main.bbl [51] [52
+
+] [53] [54]) (appendix-outline.tex [55]
+\openout2 = `appendices/ray_tracing_algorythm.aux'.
+
+
+No file appendices/ray_tracing_algorythm.tex.
+)
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 170.
-[45]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 170.
- (main.aux)
+(main.aux (appendices/ray_tracing_algorythm.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 170.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 170.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 02914358D63E98778A556724090388E0;2081.
+(rerunfilecheck)             Checksum: 76646D57912A34A1E7D32F891AAD2CFA;2511.
  ) 
 Here is how much of TeX's memory you used:
- 16898 strings out of 492946
- 273159 string characters out of 3126388
- 450284 words of memory out of 3000000
- 20191 multiletter control sequences out of 15000+200000
+ 16967 strings out of 492946
+ 274510 string characters out of 3126388
+ 451284 words of memory out of 3000000
+ 20219 multiletter control sequences out of 15000+200000
  12614 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 136i,17n,131p,1325b,842s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 136i,14n,131p,1325b,852s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmbx12.pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/f
@@ -1380,9 +1392,9 @@ Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Use
 rs/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8
 .pfb><C:/Users/theha/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti12.pfb>
-Output written on main.pdf (55 pages, 5492375 bytes).
+Output written on main.pdf (65 pages, 5534806 bytes).
 PDF statistics:
- 797 PDF objects out of 1000 (max. 8388607)
- 221 named destinations out of 1000 (max. 500000)
- 498 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 905 PDF objects out of 1000 (max. 8388607)
+ 251 named destinations out of 1000 (max. 500000)
+ 551 words of extra memory for PDF output out of 10000 (max. 10000000)
 

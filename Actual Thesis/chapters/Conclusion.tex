@@ -1,0 +1,31 @@
+\chapter{Conclusions}
+
+Two UKF formulations were derived to estimate the angular velocity of spacecraft using only light curve data. One formulation focused on the case in which the object is expected to be spinning about a constant axis, while the other accounted for the potential of the spacecraft to be tumbling. Both formulations were assessed using simulated light curves and the former was applied to real data collected and provided by Lockheed-Martin. 
+
+On the simulated data it was shown that in the case of the object spinning about a fixed axis, solutions were converged upon for a reasonable fraction of the trials conducted with most scenarios showing a convergence rate of > 50\%. For the trials in which the spacecraft was tumbling the success rates were significantly lower and varied significantly with respect to the objects geometry and orbit. 
+
+Overall it was noticed that both formulations performed significantly better when the object being analyzed was in a geostationary orbit where the amplitude of the light curve varied little. It was also noticed that the precision of the angular velocity estimates were significantly higher about the axis normal to the plane defined by the sun and observation vectors.
+
+A novel result of this thesis is the existence of a second group of solutions. It was found that for some angular velocity solutions, there is another solution which is simply the reflection of the first solution about the plane defined by the observation and sun vectors. This is interesting as it adds another element of uncertainty for any solution which is verified by simply comparing the produced light curve. It also allows for a single any single solution to potentially represent a family of solutions which can be easily checked without using brute force methods.
+
+Solutions were converged upon when real data was analyzed, however it is unlikely that these solutions are correct and they cannot be verified. It was also discovered that there was a significant discrepancy between the light reflectance model used by the UKF and the real data collected. One result of this was that unrealistically low reflectance properties had to be assigned to each modeled spacecraft geometry in order to match the magnitude of the real data.
+
+This thesis attempted to create the simplest possible UKF formulations which would produce meaningful results. The belief was that by minimizing the number of parameters estimated, the fewer data would be required to converge on a solution as high quality data is usually scarce. This was accomplished, however the performance in the case of tumbling objects was very poor and the process of manually selecting the reflectance properties of the spacecraft were coarse and left much to be desired. When the off-diagonal elements were removed from the truth model, the tumbling UKF formulation improved significantly although too few trials were conducted without them to say so definitively. It is likely worth the 3 extra state estimates to be able to fully estimate the off-diagonal inertia elements.
+
+
+\chapter{Future Work}
+
+\subsection{Reflectance Simulation}
+The largest area for improvement is the light reflectance model. Ideally, a model would be developed that is able to produce simulated light curve data which is very similar to real data. This would likely involve more accurate modeling of the telescope used to capture the data including its noise processes. More accurate modeling of atmospheric effects as well as any post processing applied to the data. 
+
+With ray tracing included in the reflectance model, the speed of the significantly increased which significantly detracts from development time. A large area of improvement would be to implement the light curve model in a more efficient language such as C or C++. Potentially, the development of a single, robust, and fast light curve model could be a single thesis project which would enable for higher fidelity analysis to be performed by future students.
+
+\subsection{UKF Improvements}
+
+This thesis attempted to create the simplest formulations which would produce meaningful results, however it was realized that in the tumbling case, simulated results were lacking. Additionally, the reflectance properties of each panel of the modeled geometry had to be manually selected when it would likely be more effective to add them to the state estimate. 
+
+A potentially significant improvement to the UKF worth exploring would be to add an estimate of the off-diagonal elements of the inertia matrix to the state estimate as well as the optical properties of the panels in geometry model.
+
+The off-diagonal inertia terms could be either directly estimated or the Modified Rordiguez Parameters which describe the alignment between the geometry and principal inertia frame could be estimated. Both would require the addition of 3 additional state elements.
+
+In order to estimate the optical properties of each panel, a value for the specular and diffuse reflectance would need to be added to the state for each panel in the geometry model. This is potentially an enormous number of parameters and so an effective way of reducing this complexity would be a worthwhile area of research.

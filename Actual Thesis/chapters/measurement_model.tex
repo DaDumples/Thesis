@@ -28,7 +28,7 @@ One feature of the BRDF used in this thesis is the ability to model anisotropic 
 \end{equation}
 Where $n$ is the specular distribution term and $F_{reflect_i}$ is:
 \begin{equation}
-F_{reflect_i} = R_{spec_i} = (1 - R_{spec_i})(1 - \bm{\mathrm{u}}_{sun}\cdotp \bm{\mathrm{u}}_h)^5.
+F_{reflect_i} = R_{spec_i}*(1 - R_{spec_i})(1 - \bm{\mathrm{u}}_{sun}\cdotp \bm{\mathrm{u}}_h)^5.
 \end{equation}
 Where $R_{spec_i}$ is the specular coefficient for facet $i$.
 
@@ -121,11 +121,13 @@ The full algorithm for determining the visibility and illumination of a point is
 			\STATE $d_{sun}$ = Distance from point to facet along $\bm{\mathrm{u}}_{sun}$ from eq. \ref{eq:ray_distance}
 			\STATE $\bm{p}_{\mathrm{x}, obs}$ = Intersection along $\bm{\mathrm{u}}_{obs}$ from eq. \ref{eq:intersection_pt} 
 			\STATE $\bm{p}_{\mathrm{x}, sun}$ = Intersection along $\bm{\mathrm{u}}_{sun}$ from eq. \ref{eq:intersection_pt}
-			\STATE $\bm{p}_0$ = Center of facet
-			\STATE $w$ = facet width
-			\STATE $l$ = facet length
+			\STATE $\bm{p}_0$ = Center of the intersected facet
 			%\linebreak
 			\IF {$d_{obs} > 0$}
+			\STATE $\bm{\mathrm{u}}_{x}$ = X axis of intersected panel frame
+			\STATE $\bm{\mathrm{u}}_{y}$ = Y axis of intersected panel frame
+			\STATE $w$ = width of intersected facet
+			\STATE $l$ = length of intersected facet
 			\IF{$|(\bm{p}_{\mathrm{x}, obs} - \bm{p}_0)\cdotp \bm{\mathrm{u}}_{x}| < w$ AND
 				$|(\bm{p}_{\mathrm{x}, obs} - \bm{p}_0)\cdotp \bm{\mathrm{u}}_{y}| < l$}
 				\RETURN FALSE \COMMENT {Point is hidden from the observer}
@@ -133,6 +135,10 @@ The full algorithm for determining the visibility and illumination of a point is
 			\ENDIF
 			%\linebreak
 			\IF {$d_{sun} > 0$}
+			\STATE $\bm{\mathrm{u}}_{x}$ = X axis of intersected panel frame
+			\STATE $\bm{\mathrm{u}}_{y}$ = Y axis of intersected panel frame
+			\STATE $w$ = width of intersected facet
+			\STATE $l$ = length of intersected facet
 			\IF{$|(\bm{p}_{\mathrm{x}, sun} - \bm{p}_0)\cdotp \bm{\mathrm{u}}_{x}| < w$ AND
 				$|(\bm{p}_{\mathrm{x}, sun} - \bm{p}_0)\cdotp \bm{\mathrm{u}}_{y}| < l$}
 				\RETURN FALSE \COMMENT {Point is in shadow}

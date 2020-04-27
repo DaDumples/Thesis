@@ -66,24 +66,20 @@ P_{x_k} = (I - K_kH)P^-_{x_k}
 \end{align} 
 The final process can be summarized in the following table.
 
+\begin{figure}
 \begin{center}
-\begin{tabular}{ | m{5em} | m{1cm}| } 
+\begin{tabular}{ | c | c | } 
 	\hline
-	Predict & 
-	\begin{align*} 
-	x^-_{k} = Fx_{k-1} \\ 
-	P^-_{k} = FP_{x_{k-1}}F + Q 
-	\end{align*}\\ 
-	\hline
-	Update & 
-	\begin{align*} 
-	K_{k} = P^-_{x^-_k}H^T(HP^-_{x^-_k}H^T + R)^{-1} \\
-	x_{k} = x^-_{k} + K_k(z_k - Hx^-_k) \\ 
-	P_{x_k} = (I - K_kH)P^-_{x_k} 
-	\end{align*}\\ 
+	Predict & $x^-_{k} = Fx_{k-1}$ \\
+	\space	& $P^-_{k} = FP_{x_{k-1}}F + Q $ \\ 
+	\hline \space & $K_{k} = P^-_{x^-_k}H^T(HP^-_{x^-_k}H^T + R)^{-1}$ \\
+	Update & $x_{k} = x^-_{k} + K_k(z_k - Hx^-_k)$ \\ 
+	\space & $P_{x_k} = (I - K_kH)P^-_{x_k}$ \\ 
 	\hline
 \end{tabular}
 \end{center}
+\caption{Kalman Filter Process}
+\end{figure}
 
 
 \section{The Unscented Kalman Filter}
@@ -95,13 +91,13 @@ The UKF works by sampling a small set of points around the current state estimat
 % Put a graphic here
 
 
-The equation for selecting the sample points are the following \cite{ukf_merwe}:
+The equation for selecting the sample points are the following \cite{Julier_sigma}:
 \begin{align}
 \mathcal{X}_0 = x \\
-\mathcal{X}_i = x + (\sqrt{(L + \lambda)P_x})_i && i = 1,...,L \\
-\mathcal{X}_i = x - (\sqrt{(L + \lambda)P_x})_{i-L} && i = L+1,...,2L
+\mathcal{X}_i = x + (\sqrt{(L + \kappa)P_x})_i && i = 1,...,L \\
+\mathcal{X}_i = x - (\sqrt{(L + \kappa)P_x})_{i-L} && i = L+1,...,2L
 \end{align}
-Here $L$ is the number elements in the state $x$. $P_x$ is the state covariance error, the same as in the standard Kalman Filter. $\lambda = \alpha^2(L + \kappa) - L$ with $\alpha$ and $\kappa$ being tunable parameters to place the sigma points. Notice that within the square root there is a matrix. The square root of a matrix is not uniquely defined. This thesis uses the Cholesky decomposition.
+Here $L$ is the number elements in the state $x$. $P_x$ is the state covariance error, the same as in the standard Kalman Filter. $\kappa$ is an arbitrary constant used to tune the sigma points. The notation $(\sqrt{(L + \kappa)P_x})_i$ represents the $i$th column of the matrix $\sqrt{(L + \kappa)P_x}$. Since, the square root of a matrix is not uniquely defined. This thesis uses the Cholesky decomposition.
 
 In the formulation of the UKF, the equation for the Kalman gain at each time step becomes \cite{ukf_merwe}
 
@@ -122,37 +118,33 @@ P_{yy} = \sum_{i=0}^{2L}W_i(\mathcal{Y}_i - y)(\mathcal{Y}_i - y)^T \\
 P_{xy} = \sum_{i=0}^{2L}W_i(\chi_i - x^-)(\mathcal{Y}_i - y)
 \end{align}
 
-Here $W$ represent a set of weights for each sample point. The equation to calculate the weights is \cite{ukf_merwe}
+Here $W$ represent a set of weights for each sample point. The equation to calculate the weights is \cite{Julier_sigma}
 \begin{align}
-W_0 = \lambda/(L + \lambda) \\
-W_i = 1/2(L + \lambda) && i = 1,...,2L
+W_i = 1/2L && i = 1,...,2L
 \end{align}
 
 Now that the sample points and covariances can be calculated, the full procedure for the UKF becomes:
 
+\begin{figure}
 \begin{center}
-	\begin{tabular}{ | m{5em} | m{1cm}| } 
+	\begin{tabular}{| c | c|} 
 		\hline
-		Predict & 
-		\begin{align*}
-		\chi = [f(\mathcal{X}_0),...,f(\mathcal{X}_{2L})]\\
-		\mathcal{Y} = [h(\chi_0),...,h(\chi_{2L})]\\
-		x^-_k = \sum_{i=0}^{2L}W_{i_k}\chi_{i_k}\\
-		y_k = \sum_{i=0}^{2L}W_{i_k}\mathcal{Y}_{i_k}\\
-		P^-_{x_k} = \sum_{i=0}^{2L}W_{i_k}(\chi_{i_k} - x^-_k)(\chi_{i_k} - x^-_k)^T
-		\end{align*}\\ 
+		\space & $\chi = [f(\mathcal{X}_0),...,f(\mathcal{X}_{2L})]$\\
+		\space & $\mathcal{Y} = [h(\chi_0),...,h(\chi_{2L})]$\\
+		Predict & $x^-_k = \sum_{i=0}^{2L}W_{i_k}\chi_{i_k}$\\
+		\space & $y_k = \sum_{i=0}^{2L}W_{i_k}\mathcal{Y}_{i_k}$\\
+		\space & $P^-_{x_k} = \sum_{i=0}^{2L}W_{i_k}(\chi_{i_k} - x^-_k)(\chi_{i_k} - x^-_k)^T$\\ 
 		\hline
-		Update & 
-		\begin{align*}
-		P_{y_ky_k} = \sum_{i=0}^{2L}W_{i_k}(\mathcal{Y}_{i_k} - y_k)(\mathcal{Y}_{i_k} - y_k)^T \\
-		P_{x_ky_k} = \sum_{i=0}^{2L}W_i(\chi_{i_k} - x^-_k)(\mathcal{Y}_{i_k} - y_k)\\
-		K_{k} = P_{x_ky_k}P^{-1}_{y_ky_k} \\
-		x_{k} = x^-_{k} + K_k(z_k - y_k) \\
-		P_{x_k} = P^-_k - K_kP_{y_ky_k}K^T
-		\end{align*}\\ 
+		\space & $P_{y_ky_k} = \sum_{i=0}^{2L}W_{i_k}(\mathcal{Y}_{i_k} - y_k)(\mathcal{Y}_{i_k} - y_k)^T$ \\
+		\space & $P_{x_ky_k} = \sum_{i=0}^{2L}W_i(\chi_{i_k} - x^-_k)(\mathcal{Y}_{i_k} - y_k)$\\
+		Update & $K_{k} = P_{x_ky_k}P^{-1}_{y_ky_k}$ \\
+		\space & $x_{k} = x^-_{k} + K_k(z_k - y_k)$ \\
+		\space & $P_{x_k} = P^-_k - K_kP_{y_ky_k}K^T$\\
 		\hline
 	\end{tabular}
 \end{center}
+\caption{Unscented Kalman Filter Process}
+\end{figure}
 
 \section{Light Curves}
 

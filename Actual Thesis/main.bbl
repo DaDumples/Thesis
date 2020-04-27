@@ -17,13 +17,19 @@ B.~{Calef}, J.~{Africano}, B.~{Birge}, D.~{Hall}, and P.~{Kervin}.
 \newblock In {\em Society of Photo-Optical Instrumentation Engineers (SPIE)
   Conference Series}, volume 6307, page 63070E, Aug. 2006.
 
+\bibitem{Crassidis_MRPs}
+J.~Crassidis and L.~Markley.
+\newblock Attitude estimation using modified rodrigues parameters.
+\newblock {\em Proceedings of the Flight Mechanics/Estimation Theory
+  Symposium}, pages 71--83, 01 1996.
+
 \bibitem{Fulcoly}
 D.~O. Fulcoly, K.~I. Kalamaroff, and F.~Chun.
 \newblock Determining basic satellite shape from photometric light curves.
 \newblock {\em Journal of Spacecraft and Rockets}, 49(1):76--82, 2012.
 
 \bibitem{Separating}
-C.~B. K. K. B.~M. Hall, D. and P.~Kervin.
+C.-B. K. K. B.~M. Hall, D. and P.~Kervin.
 \newblock Separating attitude and shape effects for non-resolved objects.
 \newblock 2007.
 
@@ -55,6 +61,11 @@ M.~{Jah} and R.~{Madler}.
 \bibitem{ajisai_jaxa}
 JAXA.
 \newblock About experimental geodetic satellite "ajisai" (egs).
+
+\bibitem{Julier_sigma}
+S.~J. {Julier} and J.~K. {Uhlmann}.
+\newblock Unscented filtering and nonlinear estimation.
+\newblock {\em Proceedings of the IEEE}, 92(3):401--422, 2004.
 
 \bibitem{kaasalainen_LCI}
 M.~Kaasalainen and J.~Torppa.
@@ -118,6 +129,11 @@ H.~Minkowski.
 \newblock {\em Volumen und Oberfl{\"a}che}, pages 146--192.
 \newblock Springer Vienna, Vienna, 1989.
 
+\bibitem{global_albedo}
+M.~Mulrooney, M.~Matney, M.~Hejduk, and E.~Barker.
+\newblock An investigation of global albedo values.
+\newblock 01 2008.
+
 \bibitem{Nishimoto}
 D.~Nishimoto, D.~Archambeault, D.~Gerwe, and P.~Kervin.
 \newblock Satellite attitude from a raven class telescope.
@@ -133,6 +149,12 @@ R.~Tagliaferri, A.~Ciaramella, L.~Milano, F.~Barone, and G.~Longo.
 \newblock Spectral analysis of stellar light curves by means of neural
   networks.
 \newblock {\em Astronomy and Astrophysics Supplement Series}, 137, 06 1999.
+
+\bibitem{MRPs}
+G.~Terzakis, M.~I.~A. Lourakis, and D.~Ait-Boudaoud.
+\newblock Modified rodrigues parameters: An efficient representation of
+  orientation in 3d vision and graphics.
+\newblock {\em Journal of Mathematical Imaging and Vision}, 60:422--442, 2017.
 
 \bibitem{Wallace}
 B.~Wallace, P.~Somers, and R.~Scott.

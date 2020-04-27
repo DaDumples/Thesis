@@ -1,5 +1,6 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
 The style file: abbrv.bst
+A level-1 auxiliary file: appendices/ray_tracing_algorythm.aux
 Database file #1: bibliography.bib
 Warning--entry type for "ajisai_jaxa" isn't style-file defined
 --line 8 of file bibliography.bib
@@ -43,6 +44,7 @@ Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager,
 while executing---line 1090 of file abbrv.bst
 Warning--empty booktitle in Linder
 Warning--empty booktitle in Magnusson1989DeterminationOP
+Warning--empty journal in global_albedo
 Warning--empty journal in Nishimoto
 Warning--empty booktitle in Ojakangas2012ProbableRS
 Warning--empty journal in Wallace
