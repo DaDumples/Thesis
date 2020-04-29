@@ -8,32 +8,40 @@
 \contentsline {section}{\numberline {2.2}The Unscented Kalman Filter}{6}{section.2.2}% 
 \contentsline {section}{\numberline {2.3}Light Curves}{8}{section.2.3}% 
 \contentsline {chapter}{\numberline {3}Unscented Kalman Filter Formulation}{10}{chapter.3}% 
-\contentsline {section}{\numberline {3.1}Non-Tumbling Formulation}{10}{section.3.1}% 
-\contentsline {section}{\numberline {3.2}Tumbling Object Formulation}{12}{section.3.2}% 
-\contentsline {section}{\numberline {3.3}Modifications}{13}{section.3.3}% 
-\contentsline {chapter}{\numberline {4}Measurement Model}{14}{chapter.4}% 
-\contentsline {section}{\numberline {4.1}Observation Model}{15}{section.4.1}% 
-\contentsline {section}{\numberline {4.2}Ray Tracing Model}{17}{section.4.2}% 
-\contentsline {chapter}{\numberline {5}Results and Analysis}{22}{chapter.5}% 
-\contentsline {section}{\numberline {5.1}Simulated Data}{22}{section.5.1}% 
-\contentsline {subsection}{\numberline {5.1.1}Test Cases}{22}{subsection.5.1.1}% 
-\contentsline {subsection}{\numberline {5.1.2}Simulation Methodology}{22}{subsection.5.1.2}% 
-\contentsline {subsection}{\numberline {5.1.3}Simulation Results}{26}{subsection.5.1.3}% 
-\contentsline {subsubsection}{\numberline {5.1.3.1}Existence of Multiple Solutions}{26}{subsubsection.5.1.3.1}% 
-\contentsline {subsubsection}{\numberline {5.1.3.2}Convergence Criteria}{26}{subsubsection.5.1.3.2}% 
-\contentsline {subsubsection}{\numberline {5.1.3.3}Methodology}{27}{subsubsection.5.1.3.3}% 
-\contentsline {subsubsection}{\numberline {5.1.3.4}Hypothesis}{29}{subsubsection.5.1.3.4}% 
-\contentsline {subsubsection}{\numberline {5.1.3.5}Case: Fixed Axis of Rotation}{29}{subsubsection.5.1.3.5}% 
-\contentsline {subsubsection}{\numberline {5.1.3.6}Case: Tumbling Spacecraft}{35}{subsubsection.5.1.3.6}% 
-\contentsline {subsubsection}{\numberline {5.1.3.7}Hypothesis Results}{39}{subsubsection.5.1.3.7}% 
-\contentsline {section}{\numberline {5.2}Real Data}{41}{section.5.2}% 
-\contentsline {subsection}{\numberline {5.2.1}SERT-2}{41}{subsection.5.2.1}% 
-\contentsline {subsection}{\numberline {5.2.2}Ajisai (EGS)}{43}{subsection.5.2.2}% 
-\contentsline {subsection}{\numberline {5.2.3}Second Stage Ariane-40 R/B}{46}{subsection.5.2.3}% 
-\contentsline {chapter}{\numberline {6}Conclusions}{48}{chapter.6}% 
-\contentsline {chapter}{\numberline {7}Future Work}{50}{chapter.7}% 
-\contentsline {subsection}{\numberline {7.0.1}Reflectance Simulation}{50}{subsection.7.0.1}% 
-\contentsline {subsection}{\numberline {7.0.2}UKF Improvements}{50}{subsection.7.0.2}% 
-\contentsline {chapter}{BIBLIOGRAPHY}{52}{chapter*.4}% 
+\contentsline {section}{\numberline {3.1}assumptions}{10}{section.3.1}% 
+\contentsline {section}{\numberline {3.2}Non-Tumbling Formulation}{10}{section.3.2}% 
+\contentsline {section}{\numberline {3.3}Tumbling Object Formulation}{12}{section.3.3}% 
+\contentsline {section}{\numberline {3.4}Modifications}{13}{section.3.4}% 
+\contentsline {chapter}{\numberline {4}Measurement Model}{15}{chapter.4}% 
+\contentsline {section}{\numberline {4.1}Observation Model}{16}{section.4.1}% 
+\contentsline {section}{\numberline {4.2}Ray Tracing Model}{18}{section.4.2}% 
+\contentsline {chapter}{\numberline {5}Results and Analysis}{23}{chapter.5}% 
+\contentsline {section}{\numberline {5.1}Simulated Data}{23}{section.5.1}% 
+\contentsline {subsection}{\numberline {5.1.1}Test Cases}{23}{subsection.5.1.1}% 
+\contentsline {subsection}{\numberline {5.1.2}Methodology}{23}{subsection.5.1.2}% 
+\contentsline {subsubsection}{\numberline {5.1.2.1}Simulation Methodology}{23}{subsubsection.5.1.2.1}% 
+\contentsline {subsubsection}{\numberline {5.1.2.2}Convergence Criteria}{27}{subsubsection.5.1.2.2}% 
+\contentsline {subsubsection}{\numberline {5.1.2.3}Analysis Methodology}{27}{subsubsection.5.1.2.3}% 
+\contentsline {subsection}{\numberline {5.1.3}Simulation Results}{30}{subsection.5.1.3}% 
+\contentsline {subsubsection}{\numberline {5.1.3.1}Existence of Multiple Solutions}{30}{subsubsection.5.1.3.1}% 
+\contentsline {subsubsection}{\numberline {5.1.3.2}Hypothesis}{31}{subsubsection.5.1.3.2}% 
+\contentsline {subsubsection}{\numberline {5.1.3.3}Case: Fixed Axis of Rotation}{32}{subsubsection.5.1.3.3}% 
+\contentsline {subsubsection}{\numberline {5.1.3.4}Case: Tumbling Spacecraft}{38}{subsubsection.5.1.3.4}% 
+\contentsline {subsubsection}{\numberline {5.1.3.5}Hypothesis Results}{41}{subsubsection.5.1.3.5}% 
+\contentsline {section}{\numberline {5.2}Real Data}{43}{section.5.2}% 
+\contentsline {subsection}{\numberline {5.2.1}Real vs Simulated Data}{43}{subsection.5.2.1}% 
+\contentsline {subsection}{\numberline {5.2.2}SERT-2}{43}{subsection.5.2.2}% 
+\contentsline {subsection}{\numberline {5.2.3}Ajisai (EGS)}{45}{subsection.5.2.3}% 
+\contentsline {subsection}{\numberline {5.2.4}Second Stage Ariane-40 R/B}{48}{subsection.5.2.4}% 
+\contentsline {chapter}{\numberline {6}Conclusions}{50}{chapter.6}% 
+\contentsline {chapter}{\numberline {7}Future Work}{52}{chapter.7}% 
+\contentsline {subsection}{\numberline {7.0.1}Reflectance Simulation}{52}{subsection.7.0.1}% 
+\contentsline {subsection}{\numberline {7.0.2}UKF Improvements}{52}{subsection.7.0.2}% 
+\contentsline {chapter}{BIBLIOGRAPHY}{54}{chapter*.4}% 
 \let \l@chapter \l@section 
 \noindent APPENDICES 
+\contentsline {chapter}{\numberline {A}Software Used}{56}{appendix.a.A}% 
+\contentsline {chapter}{\numberline {B}Light Curve Data}{57}{appendix.a.B}% 
+\contentsline {section}{\numberline {B.1}SERT-2}{57}{section.a.B.1}% 
+\contentsline {section}{\numberline {B.2}AJISAI}{60}{section.a.B.2}% 
+\contentsline {section}{\numberline {B.3}Ariane-40}{61}{section.a.B.3}% 

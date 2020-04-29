@@ -1,5 +1,11 @@
 \chapter{Unscented Kalman Filter Formulation}
 
+\section{assumptions}
+
+This thesis assumes knowledge of the spacecraft geometry. This thesis attempted to derive a UKF which required data that could be plausibly acquired in an analysis of real data. Unfortunately, this problem requires either the geometry or the angular velocity to be known as one cannot be determined without the other. This thesis assumes that the geometry is accessible, either from photographs, access to design drawings or other means.
+
+This thesis does not assume any prior knowledge of attitude, angular velocity, or inertia of the object. The first formulation described is for the case in which the inertia does not need to be known which occurs when the object is spinning about its major axis. The second includes the inertia in the state estimate to enable attitude estimation in the case of a tumbling object.
+
 \section{Non-Tumbling Formulation}
 This thesis actually utilizes two formulations of the UKF. The defines the state vector is composed of the modified Rodriguez parameters and angular velocity and is in the form:
 \begin{equation}

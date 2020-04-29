@@ -1,52 +1,14 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
 The style file: abbrv.bst
-A level-1 auxiliary file: appendices/ray_tracing_algorythm.aux
+A level-1 auxiliary file: appendices/Software_Used.aux
+A level-1 auxiliary file: appendices/Light_Curve_Data.aux
 Database file #1: bibliography.bib
 Warning--entry type for "ajisai_jaxa" isn't style-file defined
---line 8 of file bibliography.bib
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1049 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1049 of file abbrv.bst
-Warning--empty booktitle in Bradley2014LIGHTCURVEIF
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Hall, D., Calef, B., Knox, K., Bolden, M. and Kervin, P." for entry Separating
-while executing---line 1090 of file abbrv.bst
-Warning--empty booktitle in Separating
-Warning--empty journal in AMOS
+--line 148 of file bibliography.bib
 Warning--empty booktitle in Holzinger2012AttitudeEF
 Warning--empty booktitle in sert2
 Warning--empty booktitle in kf_derivation
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1090 of file abbrv.bst
-Too many commas in name 1 of "Linder, E., Silha, J., Schildknecht, T. and Hager, M." for entry Linder
-while executing---line 1090 of file abbrv.bst
-Warning--empty booktitle in Linder
-Warning--empty booktitle in Magnusson1989DeterminationOP
+Warning--empty booktitle in Spin_Direction
 Warning--empty journal in global_albedo
-Warning--empty journal in Nishimoto
-Warning--empty booktitle in Ojakangas2012ProbableRS
-Warning--empty journal in Wallace
 Warning--empty booktitle in ukf_merwe
-(There were 16 error messages)
+(There were 7 warnings)

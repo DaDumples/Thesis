@@ -35,8 +35,9 @@ The geometries used in this analysis were a rectangular prism, a cylinder, and a
 	\caption{Three Simulated Orbits.}
 \end{figure}
 
-\subsection{Simulation Methodology}
+\subsection{Methodology}
 
+\subsubsection{Simulation Methodology}
 First, a LEO, MEO, and GEO orbit were selected. Passes were calculated by brute force sampling a spacecrafts location and checking for necessary conditions. These conditions were obviously that the spacecraft must be above the horizon of the observation site and that the spacecraft be illuminated. Passes lower than 20 degrees elevation were discarded. Additionally, in preliminary experiments it was noticed that the UKF often failed to converge to a solution when the angle between the observation and sun vector was greater than 90 degrees. Therefore passes whose observation and sun vectors were speparated by more than 90 degrees were also discarded. Passes were also limited to only 5 minutes of data collection as MEO spacecraft passes can be hours long and geostationary passes are perpetual.
 
 Once a pass was identified, the spacecraft was given three initial attitudes and angular velocities between 0.1 and 0.3 radians per second. These were then propagated and used to calculate three different light curves per pass. Before entering the Kalman Filter, Gaussian noise was added to the light curve whose distribution was similar to that of the real data collected. The standard deviation seen in the real data varied typically between 1-30 counts, and so this range of values was used to generate the gaussian noise.
@@ -57,42 +58,67 @@ Both UKFs were initalized with an angular velocity of $[0.01, 0.01, 0.01]$ and a
 
 No differences were added to the geometric models between the data simulation and UKF analysis.
 
-\subsection{Simulation Results}
-
-\subsubsection{Existence of Multiple Solutions}
-The simulation results reveal that the problem of uniquely identifying an attitude profile from a light curve is an indeterminate problem. The data shows that for any light curve, there are multiple combinations of attitude profiles and angular velocities that can produce it. Many of these solutions are a result of the symmetry of the spacecraft. For example, a rectangular prism rotated by 180 degrees about any axis will appear indistinguishable from its original orientation assuming that each face has identical reflectance properties.
-
-Another source of indeterminacy comes from the truth that it is impossible to distinguish between an object rotating about an axis clockwise or counterclockwise. Therefore, in this thesis, only the axis of rotation is examined. What this means is that, during analysis, the estimated angular velocity was multiplied by 1 or -1 to minimize the dot product between the true angular velocity and estimated angular velocity. This simply serves to make valid results more apparent.
-
-
 \subsubsection{Convergence Criteria}
- 
-Convergence was determined by examining the magnitude of the update to the angular velocity. If it was seen that the angular velocity was changed less than $1\times 10^{-4}$ radians/second in each axis the UKF was said to converge.
+
+Convergence was determined by examining the magnitude of the update to the angular velocity. If it was seen that the angular velocity was updated on average less than 1e-4 radians/second then it was said to have converged. For the real data the threshold of 2e-3 was applied to determine convergence.
 
 For the cases where angular velocity was held constant, this resulted in very satisfactory results. However, in the cases where the angular velocity was not constant, the UKF would meet the convergence criteria without producing a realistic solution. The successful runs of the UKF for these cases were then hand selected using the criteria that a valid solution for angular velocity should appear sinusoidal and not change dramatically in amplitude or period.
 
 This is likely due to the UKF's forumation as it is unable to completely estimate the inertia matrix. Therefore even when it converges to the correct angular velocity it deviates from this over time requiring relatively large update steps.
 
-\subsubsection{Methodology}
+\subsubsection{Data Filtering}
 
-One challenge to analyzing this data occurs because of the multiple solutions which appear. In these cases, there is no ground truth to compare performance against. This would not be an issue if these alternate solutions were the minority of solutions found as they could simply be discarded. However, these alternative solutions are by far the majority.
+When analyzing the data it is important to keep in mind that this problem is indeterminate and that multiple solutions are possible which are all equally plausible when the objects true attitude is not known. This poses a challenge in quantifying the performance of the UKF as the result can only be directly compared to the simulated truth when the UKF happens to converge to it rather than another equally plausible solution. When the UKF produces one of these alternate solutions, it cannot be compared to the simulated truth to measure accuracy. This would not be an issue if these alternate solutions were the minority of solutions found as they could simply be discarded. However, these alternative solutions are by far the majority.
 
-In order to yield meaningful results without reducing the sample size to only a handful of cases, the following methodology was applied to the data. If any component of the angular velocity fell within 10\% of the ground truth, it was considered to be converging towards it and its error would be added to the statistics. This runs the risk of sample bias as this guarantees that the performance will be better than 10\% for every axis. However, the results show that the actual performance was significantly better than 10\% which implies that the majority of the data was correctly accounted for.
+A known example of a solution which can never be discarded is the angular velocity corresponding to the negative of the truth. It is not possible to know whether an object spins clockwise or counterclockwise about any given axis using only light curve data \cite{Spin_Direction}. Therefore, in this thesis, only the axis of rotation is examined. What this means is that, during analysis, the estimated angular velocity was multiplied by 1 or -1 to minimize the dot product between the true angular velocity and estimated angular velocity. This simply serves to make valid results more apparent.
+
+\begin{figure}[ht]\label{awful_errors}
+	\begin{center}
+		\includegraphics[width = 85mm]{figures/ECI_percent_errors}
+		\caption{Relative Error in the ECI Frame When Directly Comparing to Simulated Truth}
+	\end{center}
+\end{figure}
+
+As can be seen in figure \ref{awful_errors} by simply comparing the converged solution with the truth model the performance appears to be lousy. This does not make sense, as every converged solution successfully recreated the simulated lightcurve, meaning that it is a completely plausible solution.
+
+What was assumed is that for any given simulted trial, for every axis there are multiple valid solutions and that if the data were filtered many times these solutions would each appear as a group of solutions centered on a mean with similar variances. A hypothetical example of this is shown in figure \ref{distributions}. This assumptions may not be valid. It may me that the solutions overlap significantly and it is not possible to separate them. However, in genal once the UKF settled on a solution it showed a very small variance, making it likely that this assumption is true.
+
+\begin{figure}[ht]\label{distributions}
+	\begin{center}
+		\includegraphics[width = 85mm]{figures/Assumptions_Example}
+		\caption{Hypothetical Results for Multiple Trials}
+	\end{center}
+\end{figure}
+
+In order to yield meaningful results without reducing the sample size to only a handful of cases, the following methodology was applied to the data. \textbf{If any component of the angular velocity fell within 3 standard deviations of the ground truth, it was considered to be converging towards it and its error would be added to the statistics. This allows for an analysis to be conducted but does reduce the strength of the results.}
+
+\subsubsection{The Observation Frame}
 
 Angular velocities were analyzed in two frames: The body frame and the observation frame. The body frame is the reference frame fixed to the spacecraft body. In this frame, direct comparisons can be made to the ground truth and deductions can be made about performance with respect to the spacecraft geometry. As it can be shown that multiple attitudes can result in the same light curve, the body frame serves as a poor frame to analyze angular velocities which may appear wildly different in body frame but which closely mirror the ground truth when the spacecraft attitude is accounted for. The best frame to analyze this is the Observation frame.
 
-\begin{figure}[ht]
+\begin{figure}[ht] \label{body errors}
 	\begin{center}
-		\includegraphics[width = 85mm]{figures/Observation_Frame.png}
+		\includegraphics[width = 65mm]{figures/Observation_Frame.png}
 		\caption{Definition of the Observation Frame With Respect to the Sun and Observation Vectors.}
 	\end{center}
 \end{figure}
 
 The observation frame is defined to have its origin at the center of the spacecraft, its X axis along the observation vector, the Z axis being the cross of the sun and observation vector, and the Y axis completing the frame. This frame enabled comparisons between the estimated and true angular velocities in a frame which is irrespective of the spacecrafts attitude. Additionally, this frame allows for the error analysis with respect to the geometry of the situation. E.g, the direction of observation and illumination with respect to the spacecraft.
 
+\subsection{Simulation Results}
+
+\subsubsection{Existence of Multiple Solutions}
+The simulation results reveal that the problem of uniquely identifying an attitude profile from a light curve is an indeterminate problem. The data shows that for any light curve, there are multiple combinations of attitude profiles and angular velocities that can produce it. Many of these solutions are a result of the symmetry of the spacecraft. 
+
+The number of indistinguishable solutions could be reduced if the observed object has a highly asymmetric geometry or if its reflectance properties vary between panels. These two quantities both depend on the object and can be conveniently selected in simulations, however in reality many objects are highly symmetrical and the reflectance properties across the geometry would be unknown.
+
+After seeing these results, one final run was conducted using the rectangular prism geometry in a geostationary orbit with each face having different reflactance properties. What was found was that the convergence success rate increased to 83\%, however only 1 solution in 36 converged exactly to the simulated truth.
+
+It should be carefully considered when selecting the reflectance properties of the spacecraft without complete knowledge. Any light curve can be recreated using any combination of geometry and reflectance properties \cite{Spin_Direction}. Attempting to reduce the number of solutions in this way without knowledge of the true properties may result in the exclusion of correct solutions.
+
 \subsubsection{Hypothesis}
 
-This thesis hypothesizes that a second, predicable set of solutions exists which can recreate a given lightcurve. This second set of solutions is characterized by an angular velocity vector whose magnitude and direction are directly mirrored across the plane of the observation.
+This thesis hypothesizes that a predicable set of solutions exists which can recreate a given lightcurve. This second set of solutions is characterized by an angular velocity vector whose magnitude and direction are directly mirrored across the XY plane of the observation frame.
 
 It can be noticed in the formulation of the measurement model that measured light intensity is a function of the relative directions of the facet normals, observation, and velocity vectors. If sufficient symmetry exists within the spacecraft geometry such that it is possible to create what appears to be a reflection of the spacecraft geometry though only rotation, then this second set of solutions is expected to exist. This is because a mirroring of the spacecraft geometry about the XY plane of the observation frame preserves the angles between the sun, observation, and each facet normal vector.
 
@@ -117,7 +143,7 @@ This is only possible when the observational plane remains relatively constant h
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width = 85mm]{Body_Errorbars}
-		\caption{Body Rate Error}
+		\caption{Angular Velocity Error by Body Axis and Geometry With Data Filtering}
 	\end{center}
 \end{figure}
 
@@ -162,62 +188,18 @@ The first result is that the UKF performs significantly better in the Geostation
 
 This is likely due to the fact that in both MEO and LEO, the amplitude of the light curve can vary dramatically across the pass as the objects distance from the observer changes. This means that small errors in the state estimate correspond to different magnitude errors depending on when they occur during the pass. This is to say that the model uncertainty changes throughout the pass while the UKF assumes it is constant. The reason MEO performs better than LEO is because a MEO object near apogee has a very constant amplitude. In GEO, the spacecraft effectively do not change their distance from the observer and so their model uncertainty remains extremely constant.
 
-\begin{table}[ht]
-	\begin{center}
-		\begin{tabular}{| c | c | c | c |}
-			\hline Geometry & X & Y & Z\\ 
-			\hline Cylinder & $4.26E-3 \pm 2.08E-3$ &
-							 $7.12E-3 \pm 3.32E-3$ &
-							 $9.04E-4 \pm 3.05E-4$ \\
-			\hline Rectangular & $2.64E-3 \pm 7.94E-4$ &
-								 $2.64E-3 \pm 8.64E-4$ &
-								 $1.84E-3 \pm 6.21E-4$ \\
-			\hline Box-Wing & $1.52E-3 \pm 3.39E-3$ &
-							  $5.25E-3 \pm 2.55E-3$ &
-							  $5.70E-3 \pm 1.14E-3$ \\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Error Bounds for Various Geometries in Body Frame}
-\end{table}
+It can be see that in the body frame, the cylinder geometry had significantly better performance about its Z-axis which corresponds to its length. In figure \ref{simulated_geometries} it can be seen that the cylinder is modeled as a set of flat facets. It is likely that as the number of facets increases that the error along the Z axis also increases. This is because as the cylinder rotates each facet brightens and then dims, creating bumps in the intensity signal that would not be caused by a true cylinder. These bumps very likely make it easier for the UKF to converge on the Z axis angular velocity. As the number of facets increases, the effect of these bumps is expected to vanish.
 
-It can be see that in the body frame, the cylinder geometry had significantly less uncertainty about its Z-axis which corresponds to its length. In figure \ref{simulated_geometries} it can be seen that the cylinder is modeled as a set of flat facets. It is likely that as the number of facets increases that the error along the Z axis also increases. This is because as the cylinder rotates each facet brightens and then dims, creating bumps in the intensity signal that would not be caused by a true cylinder. These bumps very likely make it easier for the UKF to converge on the Z axis angular velocity. As the number of facets increases, the effect of these bumps is expected to vanish.
+In general the box-wing geometry has large error compared two the other two. It is likely that the significantly reduced error about the Y axis has to do with the placement of the panels. The Y axis of this geometry corresponds to the axis normal to the "wings". The box-wing geometry was also the smallest geometry and so the modeled noise affected the signal proportionately more, which would explain the overall higher uncertainty for this geometry.
 
-In general the box wing geometry has large error compared two the other two. It should be noted that the mean \% error about the Z axis of the box-wing geometry was 8.64\%, which means that this number is probably largely affected by the 10\% filter applied to the data. If however this trend is real, it likely due to the fact that this axis was the one along which the wings were placed. Error about the other axes would affect the location of the wings and therefore the overall brightness much more than error along the X-axis. 
-
-This geometry was also the smallest geometry and so the modeled noise affected the signal proportionately more, which would explain the overall higher uncertainty for this geometry.
-
-\begin{table}[ht]
-	\begin{center}
-		\begin{tabular}{| c | c | c | c |}
-			\hline Geometry & \multicolumn{3}{c}{Angular Velocity Error - Observation Frame} \\ 
-			\hline Cylinder & 
-			$3.03E-3\pm 1.23E-3$ &
-			$1.38E-3 \pm 7.21E-4$ &
-			$5.53E-4 \pm 7.97E-5$ \\
-			\hline Rectangular &
-			$4.96E-3 \pm 1.66E-3$ &
-			$3.80E-3 \pm 1.45E-4$ &
-			$1.42E-3 \pm 4.35E-4$ \\
-			\hline Box-Wing &
-			$2.50E-3 \pm 8.57E-4$ &
-			$2.11E-3 \pm 2.19E-4$ &
-			$5.71E-3 \pm 2.37E-3$ \\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Error Bounds for Various Geometries in Observation Frame}
-\end{table}
-
-\begin{figure}[ht]
+\begin{figure}[ht] \label{obs errors}
 	\begin{center}
 		\includegraphics[width = 85mm]{OBS_Errorbars}
-		\caption{Observation Frame Rate Error}
+		\caption{Angular Velocity Error by Observation Frame Axis and Geometry With Data Filtering}
 	\end{center}
 \end{figure}
 
-
-Looking that the error in the Observation Frame, both the cylinder and rectangular prism geometries showed significantly reduced error along the Z axis. By looking at equations \ref{Phong_Specular} and \ref{Phong_Diffuse}, it can be seen that the amount of power reflected is a function of the sun and observation vectors which lie along the XY plane of the Observation frame. It can be intuited that any error in the component of angular velocity normal to both the observation and sun vector would would have the largest effect on the predicted measurement. Therefore the angular velocity along the Z component of the Observation Frame is the most likely to be corrected by the UKF.
+Looking that the error in the Observation Frame performance in figure \ref{obs errors}, the cylinder geometry performed significantly better than the other two. Potentially this is due to the fact to make large changes in the attitude without affecting the performance by changing its rotation about its Z body axis. This decoupling between atitude and lightcurve may decrease the potential for this geometry to become stuck in a local minimum.
 
 
 
@@ -310,6 +292,12 @@ Additionally, it can be seen in figure \ref{flipped_frames} that the light curve
 This result is important because as there are so many ways in which this attitude estimation problem are indeterminate. Any way in which a result can be predictably associated with a set of other potential solutions significantly increases the utility of the analysis. Knowing that this additional solution is possible allows for any single solution to now represent at least 4 alternative solutions which are simple transformations of each other. These 4 solutions are then the true angular velocity, its reflections, and their negatives.
 
 \section{Real Data}
+
+\subsection{Real vs Simulated Data}
+
+It is noted that the real data looks significantly different than the simulated data. The simulated data has clearly defined, macroscopic, periodic variations which can clearly be attributed to a rotating, reflecting surface. The real data, which can be seen in Appendix B., is much more ambiguous. It is unknown if the high frequency variations in the data are noise or signal. A Fourier transform of the data did not show any frequency begin significantly dominant.
+
+The UKF largely ignored this high frequency variation and instead appeared to track the mean.
 
 \subsection{SERT-2}
 

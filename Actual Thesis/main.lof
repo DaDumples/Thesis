@@ -5,29 +5,32 @@
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Unscented Kalman Filter Process}}{9}{figure.2.2}% 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Definition of vectors with respect to a facet.}}{16}{figure.4.1}% 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Visualizaion of an occluding facet.}}{18}{figure.4.2}% 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces A sample point that is visible but not illuminated}}{21}{figure.4.3}% 
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Definition of vectors with respect to a facet.}}{17}{figure.4.1}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Visualizaion of an occluding facet.}}{19}{figure.4.2}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces A sample point that is visible but not illuminated}}{22}{figure.4.3}% 
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Three Simulated Geometries.}}{23}{figure.5.1}% 
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Three Simulated Orbits.}}{24}{figure.5.2}% 
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Definition of the Observation Frame With Respect to the Sun and Observation Vectors.}}{28}{figure.5.3}% 
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Body Rate Error}}{30}{figure.5.4}% 
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Converged Solution of a Rectangular Prism in LEO spinning About a Fixed Axis.}}{31}{figure.5.5}% 
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Converged Solution of a Cylinder in LEO Spinning About a Fixed Axis.}}{32}{figure.5.6}% 
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{33}{figure.5.7}% 
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Observation Frame Rate Error}}{35}{figure.5.8}% 
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Converged Solution of a Cylinder in MEO Tumbling.}}{36}{figure.5.9}% 
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Converged Solution of a Rectangular Prism in MEO Tumbling.}}{37}{figure.5.10}% 
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Converged Solution of a Box-Wing in GEO Tumbling.}}{38}{figure.5.11}% 
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Example of a solution which is flipped across the observation plane.}}{40}{figure.5.12}% 
-\contentsline {figure}{\numberline {5.13}{\ignorespaces Consecutive Images from the observers perspective of truth [TOP] and estimate [BOTTOM] showing a mirror image solution.}}{40}{figure.5.13}% 
-\contentsline {figure}{\numberline {5.14}{\ignorespaces SERT-2 vs Reflectance Model}}{42}{figure.5.14}% 
-\contentsline {figure}{\numberline {5.15}{\ignorespaces Convergence of a solution using real data of SERT-2.}}{42}{figure.5.15}% 
-\contentsline {figure}{\numberline {5.16}{\ignorespaces AJISAI vs Reflectance Model}}{44}{figure.5.16}% 
-\contentsline {figure}{\numberline {5.17}{\ignorespaces AJISAI with Engineer [Left]. Corner Cube Reflector Locations [Right] \cite {ajisai}}}{45}{figure.5.17}% 
-\contentsline {figure}{\numberline {5.18}{\ignorespaces Measurement model mismatch with real data from AJISAI.}}{45}{figure.5.18}% 
-\contentsline {figure}{\numberline {5.19}{\ignorespaces Ariane-40 R/B Reflectance Model}}{46}{figure.5.19}% 
-\contentsline {figure}{\numberline {5.20}{\ignorespaces Convergence of a solution using real data of Ariane-40 R/B.}}{47}{figure.5.20}% 
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Three Simulated Geometries.}}{24}{figure.5.1}% 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Three Simulated Orbits.}}{25}{figure.5.2}% 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Relative Error in the ECI Frame When Directly Comparing to Simulated Truth}}{28}{figure.5.3}% 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Definition of the Observation Frame With Respect to the Sun and Observation Vectors.}}{30}{figure.5.4}% 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Angular Velocity Error by Body Axis and Geometry With Data Filtering}}{32}{figure.5.5}% 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Converged Solution of a Rectangular Prism in LEO spinning About a Fixed Axis.}}{33}{figure.5.6}% 
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Converged Solution of a Cylinder in LEO Spinning About a Fixed Axis.}}{34}{figure.5.7}% 
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Converged Solution of a Box-Wing in GEO Spinning About a Fixed Axis}}{35}{figure.5.8}% 
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Angular Velocity Error by Observation Frame Axis and Geometry With Data Filtering}}{37}{figure.5.9}% 
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Converged Solution of a Cylinder in MEO Tumbling.}}{38}{figure.5.10}% 
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Converged Solution of a Rectangular Prism in MEO Tumbling.}}{39}{figure.5.11}% 
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Converged Solution of a Box-Wing in GEO Tumbling.}}{40}{figure.5.12}% 
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Example of a solution which is flipped across the observation plane.}}{42}{figure.5.13}% 
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Consecutive Images from the observers perspective of truth [TOP] and estimate [BOTTOM] showing a mirror image solution.}}{42}{figure.5.14}% 
+\contentsline {figure}{\numberline {5.15}{\ignorespaces SERT-2 vs Reflectance Model}}{44}{figure.5.15}% 
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Convergence of a solution using real data of SERT-2.}}{45}{figure.5.16}% 
+\contentsline {figure}{\numberline {5.17}{\ignorespaces AJISAI vs Reflectance Model}}{46}{figure.5.17}% 
+\contentsline {figure}{\numberline {5.18}{\ignorespaces AJISAI with Engineer [Left]. Corner Cube Reflector Locations [Right] \cite {ajisai}}}{47}{figure.5.18}% 
+\contentsline {figure}{\numberline {5.19}{\ignorespaces Measurement model mismatch with real data from AJISAI.}}{47}{figure.5.19}% 
+\contentsline {figure}{\numberline {5.20}{\ignorespaces Ariane-40 R/B Reflectance Model}}{48}{figure.5.20}% 
+\contentsline {figure}{\numberline {5.21}{\ignorespaces Convergence of a solution using real data of Ariane-40 R/B.}}{49}{figure.5.21}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
