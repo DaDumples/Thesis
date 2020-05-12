@@ -1,27 +1,52 @@
 \chapter{Background}
 
-\section{The Kalman Filter}
+\section{Previous Work Applying the Kalman Filter to Light Curve Data}
+
+Kalman Filters excel at estimating parameters when a model and data can be corroborated. Since the models for orbital dynamics, spacecraft rotation, and reflection are all well known, it is no surprise that the Kalman Filter has been applied extensively in this area.
+
+\subsection{Attitude Estimation}
+One of the most common applications of Kalman filtering when applied to light curve data is to estimate the attitude and rotation of a spacecraft given a known geometry \cite{wetterer_ukf} \cite{Linares_data_fusion} \cite{SpaceObjectCharacterization}. These filters work by guessing an initial attitude and angular velocity and generating a reflectance value based on the known obit and material properties of the spacecraft model. The Kalman filter performs this operation across the entire dataset, comparing the predicted reflectance intensities with the measured data and updating its estimate of the spacecraft's attitude and angular velocity. Eventually this method should converge to an state representation of the spacecraft that matches the measured data as closely as possible.
+
+Several formulations have been proposed, each estimating different quantities but all estimating attitude and angular velocity. In all three however, the angular velocity was assumed to be constant and about the major axis of their modelled geometries. \cite{wetterer_ukf} \cite{Linares_data_fusion} \cite{SpaceObjectCharacterization}.
+
+In order to account for a variable spin axis, information about the inertia of the spacecraft is required. This is difficult to know in advance, however if the geometry is known, it is possible to create a plausible estimate of the inertial properties assuming a constant density \cite{Linares_data_fusion}.
+
+It has been demonstrated through simulation that by using Kalman filters it is possible to converge on usefully accurate values for attitude and angular velocity as well as other parameters. However, only Wetterer et al. attempted to apply their techniques to real data. Their attempt proved unsuccessful and cited difficulties due to their simplified reflectance model and simplified geometric model of the rocket body \cite{wetterer_ukf}.
+
+
+\subsection{Shape Characterization}
+
+Using the same principles as above, it is possible to guess a geometry and see how well it is capable of fitting the data. Linares et al. demonstrated success in running multiple Kalman filters in parallel and applying a multiple-model adaptive estimation (MMAE) algorithm to select the geometry with the best fit \cite{SpaceObjectCharacterization}. Since many spacecraft have similar geometries, this method shows promise for determining a non-convex geometry for a completely unknown spacecraft. The downside is that there is no guarantee that the true geometry is within the set of hypothesized geometries. However, should the true geometry be in the set of hypothesized geometries, this process is expected to converge to it.
+
+\subsection{Angles and Light Curve Synthesis}
+
+Going one step beyond simply estimating the spacecraft attitude and angular velocity, it is possible to synthesize light curve data with additional data to estimate parameters that are not directly measurable such as the mass of a spacecraft.
+
+R. Linares et. al  and M. Jah. et. al. demonstrated that by using a Kalman filter to sythesize light curve data with angular observation measurement (angles) it is possible to estimate the mass, area, and albedo of a spacecraft as well as its orbital state vectors \cite{Linares_data_fusion} \cite{StateAndParameter}. Their method models the effects of solar radiation pressure (SRP) and aerodynamic drag on the orbit and compares the predicted changes to the perturbations measured by the angles data. 
+
+\section{Mathematical Definition of the Kalman Filter}
+
 The Kalman Filter is a statistical estimation technique derived with the intention of solving state estimation problems. \cite{ukf_merwe} The derivation for the Kalman filter assumes that the system is linear and for this case is shown to be optimal \cite{kf_kalman}. However, many estimation problems exist which are nonlinear in nature and for these cases modification to the original Kalman Filter have been made. These modifications are the Extended and Unscented formulations which approach the problem in different ways. In this thesis the Extended formulation will be mentioned but not explored in depth as it can quickly be shown to be unsuitable for the application of this thesis.
 
 In a sentence, the Kalman Filter combines a model of how a system is expected to behave and compares the predictions of this model with real world measurements of the system to discover what state of the system best corroborates the two. In other words, the Kalman Filter attempts to minimize the difference between measured data and predicted data by finding the state estimate that minimizes the difference \cite{kf_derivation}.
 
 Formulating a Kalman Filter begins by defining the model and measurements of a system to be the following:
 \begin{align}\label{system_functions}
-\dot{x} = f(x) + w_x \\
-z = h(x) + w_z
+\dot{x} = f(x) + w_x, \\
+z = h(x) + w_z,
 \end{align}
-Where $x$ is the state of the system, $z$ is the measurement, $w_x$ and $w_z$ are the noise for the system and measurement models respectively. $f(x)$ describes the dynamics of the system and $h(x)$ is the measurement function. $w_x$ and $w_z$ are assumed to be gaussian with a mean of zero \cite{kf_derivation}. 
+where $x$ is the state of the system, $z$ is the measurement, $w_x$ and $w_z$ are the noise for the system and measurement models respectively. $f(x)$ describes the dynamics of the system and $h(x)$ is the measurement function. $w_x$ and $w_z$ are assumed to be gaussian with a mean of zero \cite{kf_derivation}. 
 
 If the system is completely linear, as it is assumed to be in the standard Kalman Filter, these functions can be written in the following form:
 \begin{align}\label{linear_systems}
-\dot{x} = Ax + w_x \\
-z = Hx + w_z
+\dot{x} = Ax + w_x, \\
+z = Hx + w_z,
 \end{align}
-Where $A$ is now the system dynamics matrix and $H$ is the measurement matrix.
+where $A$ is now the system dynamics matrix and $H$ is the measurement matrix.
 
 Since $w_x$ is assumed to have a mean of zero, the differential equation for $x$ can be solved by the equation
 \begin{align}
-x(t) = x_0e^{At}
+x(t) = x_0e^{At},
 \end{align}
 and thus:
 \begin{align}
@@ -31,17 +56,17 @@ By plugging $A\delta t$ into the series expansion of the exponential function yo
 \begin{align}\label{predict_step}
 x_{k+1} = Fx_{k}.
 \end{align}
-Where $k$ denotes an discrete measurement time evenly spaced by $\delta t$.
+Here, $k$ denotes an discrete measurement time evenly spaced by $\delta t$.
 
 The matrices $F$ and $H$ are the crux of the Kalman Filter and can only truly be calculated when the system and measurement functions are linear. 
 
 The final major component of the Kalman Filter is the state error covariance matrix, $P_x$ which is defined to be \cite{kf_derivation}
 \begin{align}
-P_x = E[(\hat{x} - x)(\hat{x} - x)^T]
+P_x = E[(\hat{x} - x)(\hat{x} - x)^T],
 \end{align} 
 with $\hat{x}_k$ defined to be the true state, which can never truly be known. Because of this uncertainty, the covariance matrix must also be estimated and propagated with the state. The propagation equation for $P$ is the following:
 \begin{align}\label{predict_p}
-P^-_{k} = FP_{k-1}F + Q
+P^-_{k} = FP_{k-1}F + Q,
 \end{align} 
 where $Q$ describes the error covariance of the system model and is defined to be
 \begin{align}
@@ -50,7 +75,7 @@ Q = E[w_xw_x^T].
 
 At each timestep the state estimate, $x_k$, is updated using the following equation:
 \begin{align}
-x_{k} = x^-_{k} + K_k(z_k - Hx^-_k)
+x_{k} = x^-_{k} + K_k(z_k - Hx^-_k),
 \end{align} 
 where $x^-_k$ is the predicted state from equation \eqref{predict_step} and $K_k$ is called the Kalman gain and is calculated using
 \begin{align}
@@ -62,11 +87,11 @@ R = E[w_zw_z^T].
 \end{align} 
 Finally, the state error covariance matrix, $P$, is also updated using
 \begin{align}
-P_{x_k} = (I - K_kH)P^-_{x_k}
+P_{x_k} = (I - K_kH)P^-_{x_k}.
 \end{align} 
-The final process can be summarized in the following table.
+The final process can be summarized in figure \ref{KF Process}.
 
-\begin{figure}
+\begin{figure}[h]
 \begin{center}
 \begin{tabular}{ | c | c | } 
 	\hline
@@ -78,7 +103,8 @@ The final process can be summarized in the following table.
 	\hline
 \end{tabular}
 \end{center}
-\caption{Kalman Filter Process}
+\caption{Kalman Filter Process \cite{kf_derivation}}
+\label{KF Process}
 \end{figure}
 
 
@@ -105,10 +131,10 @@ In the formulation of the UKF, the equation for the Kalman gain at each time ste
 K = P_{xy}P^{-1}_{yy}.
 \end{align}
 
-Where $P_{xy}$ is the cross covariance of the sample points transformed by the nonlinear system dynamics and measurement function and $P_{yy}$ is the covariance of the sample points transformed by the measurement function.
+$P_{xy}$ is the cross covariance of the sample points transformed by the nonlinear system dynamics and measurement function and $P_{yy}$ is the covariance of the sample points transformed by the measurement function.
 
-The equations to calculate the covariances are as follows \cite{ukf_merwe}:
-\begin{align}
+The equations to calculate the covariances are as follows: \cite{ukf_merwe}:
+\begin{align} \label{covariance calcs}
 \chi = [f(\mathcal{X}_0),...,f(\mathcal{X}_{2L})]\\
 \mathcal{Y} = [h(\chi_0),...,h(\chi_{2L+1})]\\
 x^- = \sum_{i=0}^{2L}W_i\chi_i\\
@@ -120,12 +146,12 @@ P_{xy} = \sum_{i=0}^{2L}W_i(\chi_i - x^-)(\mathcal{Y}_i - y)
 
 Here $W$ represent a set of weights for each sample point. The equation to calculate the weights is \cite{Julier_sigma}
 \begin{align}
-W_i = 1/2L && i = 1,...,2L
+W_i = 1/2L && i = 1,...,2L.
 \end{align}
 
-Now that the sample points and covariances can be calculated, the full procedure for the UKF becomes:
+Now that the sample points and covariances can be calculated, the full procedure is shown in figure \ref{UKF Process}.
 
-\begin{figure}
+\begin{figure}[ht!]
 \begin{center}
 	\begin{tabular}{| c | c|} 
 		\hline
@@ -144,14 +170,23 @@ Now that the sample points and covariances can be calculated, the full procedure
 	\end{tabular}
 \end{center}
 \caption{Unscented Kalman Filter Process}
+\label{UKF Process}
 \end{figure}
 
 \section{Light Curves}
 
-Light curves are data that is collected from a telescope observing a spacecraft. The lightcurves for this thesis were helpfully provided by Lockheed-Martin and collected from their facility in the Santa Cruz mountains in California.
+Light curves are data that is collected from a telescope observing a spacecraft. The lightcurves for this thesis were helpfully provided by Lockheed Martin Space and collected from their facility in the Santa Cruz mountains in California.
 
-There are two methods to collecting light curve data, either take a long exposure photograph and record the spacecraft as a streak across the sensor or have the telescope track the spacecraft while taking images at intervals. Lockheed-Martin's facility performs the latter. 
+There are two methods to collecting light curve data, either take a long exposure photograph and record the spacecraft as a streak across the sensor or have the telescope track the spacecraft while taking images at intervals. Lockheed Martin Space's facility performs the latter \cite{lockheed_telescope}. 
 
-Once the raw data is collected, it is processed with the Python library SEP which is a wrapper around the Source Extractor command-line program (SEP) which analyses astronomical images. The data used in this thesis was returned using SEP's extract function which calculates the "flux" of an object at ever frame. "Flux" is simply the sum total of all the pixel values corresponding to that object.
+Once the raw data is collected, it is processed with the Python library SEP which is a wrapper around the Source Extractor command-line program (SEP) analyses astronomical images. The data used in this thesis was returned using SEP's extract function which calculates the "flux" of an object at ever frame. "Flux" is simply the sum total of all the pixel values corresponding to that object.
 
-The value of any given pixel in the data is determined by the CCD of the detector. The CCD used for this data was Basler avA2300-25gm. In astronomy, each increment that a CCD pixel reports is called a "count" and represents a threshold of photos hitting that pixel. The number of photos per count is given by the CCD's gain which in this case was 4.8. This means that the flux reported by SEP represents the total counts received from the spacecraft. By multiplying by the CCD gain the number of photos received can be calculated.
+The value of any given pixel in the data is determined by the CCD of the detector. The CCD used for this data was Basler avA2300-25gm \cite{baseler_ccd}. In astronomy, each increment that a CCD pixel reports is called a "count" and represents a threshold of photons hitting that pixel. The number of photos per count is given by the CCD's gain which in this case was 4.8. This means that the flux reported by SEP represents the total counts received from the spacecraft. By multiplying the counts recieved by the CCD gain, the number of photons received can be calculated.
+
+\section{Light Curve Modeling}
+
+An important aspect of parameter estimation using light curves comes from the ability to predict a measurement from those parameters. Other researchers have used several models of light reflectance. The most commonly used model is the Phong Bi-Directional Reflection Function developed by Ashikhmin et. al \cite{phong_brdf}. This model has been utilized by Linares et. al., and Jah et. al. among others because it obeys conservation of energy, and models the changes in specular and diffuse reflection as the angle of incidents increases. \cite{SpaceObjectCharacterization} \cite{StateAndParameter} \cite{Linares_data_fusion}.
+
+The Phong BDRF model only models how bright a surface is given that it is visible and illuminated. For convex geometries in which no surfaces occlude each other, this can be determined by checking the dot product between the illumination and surface normal vectors as well as the observation and surface normal vectors. If both are greater than zero then the entire surface is visible and illuminated.
+
+This does not work for non-convex geometries where surfaces may cast shadows on or partially occlude each other from the observer. A method for modeling this was proposed by Kaasalainen and Torppa in which each surface is broken up into sample points which are each checked for illumination and visibility using a ray tracing algorithm \cite{Kaasalainen_LCI}.

@@ -27,6 +27,8 @@
 \usepackage{bm}
 \usepackage{algorithmic}
 \usepackage{enumerate}
+\usepackage[section]{placeins}
+\usepackage{float}
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
@@ -58,7 +60,7 @@
 \titleformat*{\subparagraph}{\small\bfseries}
 
 \bibliographystyle{abbrv}
-
+%\bibliographystyle{unsrt}
 % Make \tindent indent pages if you have no paragraph indent
 \newlength\tindent
 \setlength{\tindent}{\parindent}
@@ -151,7 +153,7 @@
 
 \input{chapter-outline}
 
-\nocite{*}
+%\nocite{*}
 \bibliography{bibliography}
 
 % Indents Appendix in Table of Contents

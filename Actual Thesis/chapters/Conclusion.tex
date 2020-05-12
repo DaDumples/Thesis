@@ -1,6 +1,6 @@
 \chapter{Conclusions}
 
-Two UKF formulations were derived to estimate the angular velocity of spacecraft using only light curve data. One formulation focused on the case in which the object is expected to be spinning about a constant axis, while the other accounted for the potential of the spacecraft to be tumbling. Both formulations were assessed using simulated light curves and the former was applied to real data which was collected and provided by Lockheed-Martin. 
+Two UKF formulations were derived to estimate the angular velocity of spacecraft using only light curve data. One formulation focused on the case in which the object is expected to be spinning about a constant axis, while the other accounted for the potential of the spacecraft to be tumbling. Both formulations were assessed using simulated light curves and the former was applied to real data which was collected and provided by Lockheed Martin Space. 
 
 On the simulated data it was shown that in the case of the object spinning about a fixed axis, solutions were converged upon for a the majority of the trials. For the trials in which the spacecraft was tumbling the success rates were significantly lower and varied significantly with respect to the objects geometry and orbit. 
 
@@ -15,17 +15,27 @@ This thesis attempted to create the simplest possible UKF formulations which wou
 
 \chapter{Future Work}
 
-\subsection{Reflectance Simulation}
+\section{Reflectance Simulation}
 The largest area for improvement is the light reflectance model. Ideally, a model would be developed that is able to produce simulated light curve data which is very similar to real data. This would likely involve more accurate modeling of the telescope used to capture the data including its noise processes. More accurate modeling of atmospheric effects as well as any post processing applied to the data. 
 
 With ray tracing included in the reflectance model, the speed of the significantly increased which significantly detracts from development time. A large area of improvement would be to implement the light curve model in a more efficient language such as C or C++. Potentially, the development of a single, robust, and fast light curve model could be a single thesis project which would enable for higher fidelity analysis to be performed by future students.
 
-\subsection{UKF Improvements}
+\section{UKF Improvements}
 
 This thesis attempted to create the simplest formulations which would produce meaningful results, however it was realized that in the tumbling case, simulated results were lacking. Additionally, the reflectance properties of each panel of the modeled geometry had to be manually selected when it would likely be more effective to add them to the state estimate. 
 
 A potentially significant improvement to the UKF worth exploring would be to add an estimate of the off-diagonal elements of the inertia matrix to the state estimate as well as the optical properties of the panels in geometry model.
 
-The off-diagonal inertia terms could be either directly estimated or the Modified Rordiguez Parameters which describe the alignment between the geometry and principal inertia frame could be estimated. Both would require the addition of 3 additional state elements.
+The off-diagonal inertia terms could be either directly estimated or the Modified Rodriguez Parameters which describe the alignment between the geometry and principal inertia frame could be estimated. Both would require the addition of 3 additional state elements.
 
 In order to estimate the optical properties of each panel, a value for the specular and diffuse reflectance would need to be added to the state for each panel in the geometry model. This is potentially an enormous number of parameters and so an effective way of reducing this complexity would be a worthwhile area of research.
+
+\section{Orbit Estimation}
+
+While TLE's are fairly accurate and easily attainable, small positional and temporal errors can affect the ability of a UKF to converge to a solution. By estimating the orbit of the object using the angles measurements collected at the same time as the light curve, there may be a significant improvements in performance. This performance increase would be due to the increased accuracy of the position of the object in relation to the sun and observer.
+
+This orbit estimation could be integrated as part of the UKF state estimation or could be estimated using typical orbit estimation methods.
+
+\section{Improved Data Acquisition and Processing}
+
+Since there have been so few attempts made to apply light curve analyses to real data, and since there are such a variety in telescopes, it is not known what settings or parameters are crucial to acquiring the most meaningful data. The ability to clearly differentiate light curve variations due to reflection and noise would significantly increase the strength of results using this method.

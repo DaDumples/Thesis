@@ -1,4 +1,17 @@
-@inproceedings{ukf_merwe,
+@article{wetterer_ukf,
+	author = {Wetterer, Charles J. and Jah, Moriba K.},
+	title = {Attitude Estimation from Light Curves},
+	journal = {Journal of Guidance, Control, and Dynamics},
+	volume = {32},
+	number = {5},
+	pages = {1648-1651},
+	year = {2009},
+	doi = {10.2514/1.44254},
+	URL = {https://doi.org/10.2514/1.44254},
+	eprint = {https://doi.org/10.2514/1.44254}
+}
+
+@article{ukf_merwe,
 author = {Wan, Eric and Merwe, Ronell},
 year = {2000},
 month = {02},
@@ -6,9 +19,10 @@ pages = {153 - 158},
 title = {The Unscented Kalman Filter for Nonlinear Estimation},
 volume = {153-158},
 isbn = {0-7803-5800-7},
-journal = {The Unscented Kalman Filter for Nonlinear Estimation},
+journal = {Proceedings of the IEEE 2000 Adaptive Systems for Signal Processing, Communications, and Control Symposium},
 doi = {10.1109/ASSPCC.2000.882463}
 }
+
 
 @article{kf_kalman,
     Author = {Kalman, Rudolph Emil},
@@ -20,11 +34,20 @@ doi = {10.1109/ASSPCC.2000.882463}
     Year = {1960}
 }
 
-@inproceedings{kf_derivation,
-  title={Tutorial: the Kalman Filter 11.1 Introduction 11.2 Mean Squared Error},
-  author={T Lacey},
-  year={1998}
+@article{lockheed_telescope,
+    Author = {Yost, Morgan and Zizzi, Andrew},
+    Title = {Leo SSA at the SPOT Facility},
+    Journal = {Advances in the Astronautical Sciences Astrodynamics Conference},
+    Volume = {167},
+    Year = {2019}
 }
+
+@manual{baseler_ccd,
+organization = "Basler",
+title = "Basler avA2300-25gm Camera Specification",
+number = "BD000572"
+}
+
 
 
 @ARTICLE{Julier_sigma,
@@ -78,6 +101,31 @@ journal = {Proceedings of the Flight Mechanics/Estimation Theory Symposium}
 	doi = {10.1006/icar.2001.6673}
 }
 
+@article{Bradley2014LIGHTCURVEIF,
+author = {Linares, Richard and Jah, Moriba and Crassidis, John},
+year = {2012},
+month = {01},
+pages = {217-232},
+title = {Inactive space object shape estimation via astrometric and photometric data fusion},
+volume = {143},
+journal = {Advances in the Astronautical Sciences}
+}
+
+
+@article{Fulcoly,
+author = {Fulcoly, Daniel O. and Kalamaroff, Katharine I. and Chun, Francis},
+title = {Determining Basic Satellite Shape from Photometric Light Curves},
+journal = {Journal of Spacecraft and Rockets},
+volume = {49},
+number = {1},
+pages = {76-82},
+year = {2012},
+doi = {10.2514/1.A32002},
+URL = { https://doi.org/10.2514/1.A32002},
+eprint = { https://doi.org/10.2514/1.A32002}
+
+}
+
 @article{phong_brdf,
 	author = {Ashikhmin, Michael and Shirley, Peter},
 	title = {An Anisotropic Phong BRDF Model},
@@ -97,41 +145,82 @@ journal = {Proceedings of the Flight Mechanics/Estimation Theory Symposium}
 	address = {Natick, MA, USA},
 } 
 
-@article{wetterer_ukf,
-	author = {Wetterer, Charles J. and Jah, Moriba K.},
-	title = {Attitude Estimation from Light Curves},
-	journal = {Journal of Guidance, Control, and Dynamics},
-	volume = {32},
-	number = {5},
-	pages = {1648-1651},
-	year = {2009},
-	doi = {10.2514/1.44254},
-	URL = {https://doi.org/10.2514/1.44254},
-	eprint = {https://doi.org/10.2514/1.44254}
+@article{SpaceObjectCharacterization,
+author = {Linares, Richard and Jah, Moriba K. and Crassidis, John L. and Nebelecky, Christopher K.},
+title = {Space Object Shape Characterization and Tracking Using Light Curve and Angles Data},
+journal = {Journal of Guidance, Control, and Dynamics},
+volume = {37},
+number = {1},
+pages = {13-25},
+year = {2014},
+doi = {10.2514/1.62986},
+
+URL = { 
+        https://doi.org/10.2514/1.62986
+    
+},
+eprint = { 
+        https://doi.org/10.2514/1.62986
+    
+}
 }
 
-
-@inproceedings{Holzinger2012AttitudeEF,
-	title={Attitude Estimation for Unresolved Agile Space Objects with Shape Model Uncertainty},
-	author={Marcus J. Holzinger and Kyle Terry Alfriend and Charles J. Wetterer and Keith V K Luu and Chris A Sabol and Kris M. Hamada and Andrew Harms},
-	year={2012}
+@INPROCEEDINGS{StateAndParameter,
+   author = {{Jah}, M. and {Madler}, R.},
+    title = "{Satellite Characterization: Angles and Light Curve Data Fusion for Spacecraft State and Parameter Estimation}",
+booktitle = {Advanced Maui Optical and Space Surveillance Technologies Conference},
+     year = 2007,
+      eid = {E49},
+    pages = {E49},
+   adsurl = {https://ui.adsabs.harvard.edu/abs/2007amos.confE..49J},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
-@inproceedings{sert2,
+@INPROCEEDINGS{Holzinger2012AttitudeEF,
+       author = {{Holzinger}, M. and {Alfriend}, K.~T. and {Wetterer}, C.~J. and
+         {Luu}, K.~K. and {Sabol}, C. and {Hamada}, K. and {Harms}, A.},
+        title = "{Attitude Estimation for Unresolved Agile Space Objects with Shape Model Uncertainty}",
+    booktitle = {Advanced Maui Optical and Space Surveillance Technologies Conference},
+         year = 2012,
+        month = sep,
+          eid = {25},
+        pages = {25},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2012amos.confE..25H},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@article{sert2,
 author = {Kerslake, William R. and Ignaczak, Louis R.},
-year = {1992},
-month = {01},
-title = {Development and flight history of SERT 2 spacecraft}
+title = {Development and flight history of the SERT II spacecraft},
+journal = {Journal of Spacecraft and Rockets},
+volume = {30},
+number = {3},
+pages = {258-290},
+year = {1993},
+doi = {10.2514/3.25512},
+
+URL = { 
+        https://doi.org/10.2514/3.25512
+    
+},
+eprint = { 
+        https://doi.org/10.2514/3.25512
+    
 }
 
-@article{global_albedo,
-author = {Mulrooney, M. and Matney, M. and Hejduk, M. and Barker, Edwin},
-year = {2008},
-month = {01},
-pages = {},
-title = {An Investigation of Global Albedo Values}
 }
 
+@INPROCEEDINGS{global_albedo,
+       author = {{Mulrooney}, M. and {Matney}, M. and {Hejduk}, M. and {Barker}, E.},
+        title = "{An Investigation of Global Albedo Values}",
+    booktitle = {Advanced Maui Optical and Space Surveillance Technologies Conference},
+         year = 2008,
+        month = jan,
+          eid = {E65},
+        pages = {E65},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2008amos.confE..65M},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
 
 
 @article{ajisai,
@@ -148,15 +237,33 @@ doi = {10.1186/s40623-015-0204-4}
 @online{ajisai_jaxa,
   author = {JAXA},
   title = {About Experimental Geodetic Satellite "AJISAI" (EGS)},
-  url = {https://global.jaxa.jp/projects/sat/egs/},
+  url = {\url{https://global.jaxa.jp/projects/sat/egs/}},
   urldate = {2020-04-14}
 }
 
-@inproceedings{Spin_Direction,
-  title={Determination of pole orientations and shapes of asteroids.},
-  author={Per Magnusson and M A Barucci and J D Drummond and Kari Lumme and Steven Jeffrey Ostro and Jean Surdej and Ronald Charles Taylor and Vincenzo Zappal{\`a}},
-  year={1989}
+@INPROCEEDINGS{Spin_Direction,
+       author = {{Magnusson}, Per and {Barucci}, M. Antonietta and {Drummond}, Jack D. and
+         {Lumme}, Kari and {Ostro}, Steven J.},
+        title = "{Determination of pole orientations and shapes of asteroids}",
+     keywords = {Asteroids, Light Curve, Planetary Evolution, Planetary Rotation, Poles, Astronomical Photometry, Axes Of Rotation, Physical Properties, Radar Astronomy, Solar System, Astronomy},
+    booktitle = {Asteroids II},
+         year = 1989,
+       editor = {{Binzel}, Richard P. and {Gehrels}, Tom and {Matthews}, Mildred Shapley},
+        month = jan,
+        pages = {67-97},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/1989aste.conf...67M},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
+@misc{Ariane_Date,
+  title = {ARIANE 40 R/B Tracking},
+  howpublished = {\url{https://www.n2yo.com/satellite/?s=22830}},
+  note = {Accessed: 2020-04-27}
+}
 
-
+@inproceedings{kf_derivation,
+  title={Tutorial: The Kalman Filter},
+  author={T Lacey},
+  year={1998},
+  note={http://web.mit.edu/kirtley/kirtley/binlustuff/literature/control/Kalman%20filter.pdf}
+}

@@ -1,9 +1,18 @@
 \begin{thebibliography}{10}
 
+\bibitem{Ariane_Date}
+Ariane 40 r/b tracking.
+\newblock \url{https://www.n2yo.com/satellite/?s=22830}.
+\newblock Accessed: 2020-04-27.
+
 \bibitem{phong_brdf}
 M.~Ashikhmin and P.~Shirley.
 \newblock An anisotropic phong brdf model.
 \newblock {\em J. Graph. Tools}, 5(2):25--32, Feb. 2000.
+
+\bibitem{baseler_ccd}
+Basler.
+\newblock {\em Basler avA2300-25gm Camera Specification}.
 
 \bibitem{Crassidis_MRPs}
 J.~Crassidis and L.~Markley.
@@ -11,12 +20,25 @@ J.~Crassidis and L.~Markley.
 \newblock {\em Proceedings of the Flight Mechanics/Estimation Theory
   Symposium}, pages 71--83, 01 1996.
 
+\bibitem{Fulcoly}
+D.~O. Fulcoly, K.~I. Kalamaroff, and F.~Chun.
+\newblock Determining basic satellite shape from photometric light curves.
+\newblock {\em Journal of Spacecraft and Rockets}, 49(1):76--82, 2012.
+
 \bibitem{Holzinger2012AttitudeEF}
-M.~J. Holzinger, K.~T. Alfriend, C.~J. Wetterer, K.~V.~K. Luu, C.~A. Sabol,
-  K.~M. Hamada, and A.~Harms.
-\newblock Attitude estimation for unresolved agile space objects with shape
-  model uncertainty.
-\newblock 2012.
+M.~{Holzinger}, K.~T. {Alfriend}, C.~J. {Wetterer}, K.~K. {Luu}, C.~{Sabol},
+  K.~{Hamada}, and A.~{Harms}.
+\newblock {Attitude Estimation for Unresolved Agile Space Objects with Shape
+  Model Uncertainty}.
+\newblock In {\em Advanced Maui Optical and Space Surveillance Technologies
+  Conference}, page~25, Sept. 2012.
+
+\bibitem{StateAndParameter}
+M.~{Jah} and R.~{Madler}.
+\newblock {Satellite Characterization: Angles and Light Curve Data Fusion for
+  Spacecraft State and Parameter Estimation}.
+\newblock In {\em Advanced Maui Optical and Space Surveillance Technologies
+  Conference}, page E49, 2007.
 
 \bibitem{ajisai_jaxa}
 JAXA.
@@ -27,7 +49,7 @@ S.~J. {Julier} and J.~K. {Uhlmann}.
 \newblock Unscented filtering and nonlinear estimation.
 \newblock {\em Proceedings of the IEEE}, 92(3):401--422, 2004.
 
-\bibitem{kaasalainen_LCI}
+\bibitem{Kaasalainen_LCI}
 M.~Kaasalainen and J.~Torppa.
 \newblock Optimization methods for asteroid lightcurve inversion: I. shape
   determination.
@@ -41,8 +63,8 @@ R.~E. Kalman.
 
 \bibitem{sert2}
 W.~R. Kerslake and L.~R. Ignaczak.
-\newblock Development and flight history of sert 2 spacecraft.
-\newblock 01 1992.
+\newblock Development and flight history of the sert ii spacecraft.
+\newblock {\em Journal of Spacecraft and Rockets}, 30(3):258--290, 1993.
 
 \bibitem{ajisai}
 D.~Kucharski, G.~Kirchner, T.~Otsubo, and F.~Koidl.
@@ -52,9 +74,16 @@ D.~Kucharski, G.~Kirchner, T.~Otsubo, and F.~Koidl.
 
 \bibitem{kf_derivation}
 T.~Lacey.
-\newblock Tutorial: the kalman filter 11.1 introduction 11.2 mean squared
-  error.
+\newblock Tutorial: The kalman filter.
 \newblock 1998.
+\newblock
+  http://web.mit.edu/kirtley/kirtley/binlustuff/literature/control/Kalman%20filter.pdf.
+
+\bibitem{Bradley2014LIGHTCURVEIF}
+R.~Linares, M.~Jah, and J.~Crassidis.
+\newblock Inactive space object shape estimation via astrometric and
+  photometric data fusion.
+\newblock {\em Advances in the Astronautical Sciences}, 143:217--232, 01 2012.
 
 \bibitem{Linares_data_fusion}
 R.~Linares, M.~K. Jah, J.~L. Crassidis, F.~A. Leve, and T.~Kelecy.
@@ -62,16 +91,18 @@ R.~Linares, M.~K. Jah, J.~L. Crassidis, F.~A. Leve, and T.~Kelecy.
   mass and area estimation.
 \newblock {\em Acta Astronautica}, 99:1 -- 15, 2014.
 
-\bibitem{Spin_Direction}
-P.~Magnusson, M.~A. Barucci, J.~D. Drummond, K.~Lumme, S.~J. Ostro, J.~Surdej,
-  R.~C. Taylor, and V.~Zappal{\`a}.
-\newblock Determination of pole orientations and shapes of asteroids.
-\newblock 1989.
+\bibitem{SpaceObjectCharacterization}
+R.~Linares, M.~K. Jah, J.~L. Crassidis, and C.~K. Nebelecky.
+\newblock Space object shape characterization and tracking using light curve
+  and angles data.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 37(1):13--25, 2014.
 
-\bibitem{global_albedo}
-M.~Mulrooney, M.~Matney, M.~Hejduk, and E.~Barker.
-\newblock An investigation of global albedo values.
-\newblock 01 2008.
+\bibitem{Spin_Direction}
+P.~{Magnusson}, M.~A. {Barucci}, J.~D. {Drummond}, K.~{Lumme}, and S.~J.
+  {Ostro}.
+\newblock {Determination of pole orientations and shapes of asteroids}.
+\newblock In R.~P. {Binzel}, T.~{Gehrels}, and M.~S. {Matthews}, editors, {\em
+  Asteroids II}, pages 67--97, Jan. 1989.
 
 \bibitem{MRPs}
 G.~Terzakis, M.~I.~A. Lourakis, and D.~Ait-Boudaoud.
@@ -82,12 +113,20 @@ G.~Terzakis, M.~I.~A. Lourakis, and D.~Ait-Boudaoud.
 \bibitem{ukf_merwe}
 E.~Wan and R.~Merwe.
 \newblock The unscented kalman filter for nonlinear estimation.
-\newblock volume 153-158, pages 153 -- 158, 02 2000.
+\newblock {\em Proceedings of the IEEE 2000 Adaptive Systems for Signal
+  Processing, Communications, and Control Symposium}, 153-158:153 -- 158, 02
+  2000.
 
 \bibitem{wetterer_ukf}
 C.~J. Wetterer and M.~K. Jah.
 \newblock Attitude estimation from light curves.
 \newblock {\em Journal of Guidance, Control, and Dynamics}, 32(5):1648--1651,
   2009.
+
+\bibitem{lockheed_telescope}
+M.~Yost and A.~Zizzi.
+\newblock Leo ssa at the spot facility.
+\newblock {\em Advances in the Astronautical Sciences Astrodynamics
+  Conference}, 167, 2019.
 
 \end{thebibliography}

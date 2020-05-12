@@ -1,39 +1,47 @@
 \chapter{Unscented Kalman Filter Formulation}
 
-\section{assumptions}
+\section{Assumptions}
 
-This thesis assumes knowledge of the spacecraft geometry. This thesis attempted to derive a UKF which required data that could be plausibly acquired in an analysis of real data. Unfortunately, this problem requires either the geometry or the angular velocity to be known as one cannot be determined without the other. This thesis assumes that the geometry is accessible, either from photographs, access to design drawings or other means.
+This thesis assumes knowledge of the spacecraft geometry. This assumption is used by Wetterer et. al., Holzinger et. al, to name a few \cite{wetterer_ukf} \cite{Holzinger2012AttitudeEF}. Alternative analyses have made attempts to estimate the geometry but have assumed knowledge of angular velocity \cite{Kaasalainen_LCI} \cite{SpaceObjectCharacterization} \cite{Bradley2014LIGHTCURVEIF} \cite{Fulcoly} .
+
+This thesis attempted to derive a UKF which required data that could be plausibly acquired in an analysis of real data. Unfortunately, this problem requires either the geometry or the angular velocity to be known as one cannot be determined without the other. This thesis assumes that the geometry is accessible, either from photographs, access to design drawings or other means.
 
 This thesis does not assume any prior knowledge of attitude, angular velocity, or inertia of the object. The first formulation described is for the case in which the inertia does not need to be known which occurs when the object is spinning about its major axis. The second includes the inertia in the state estimate to enable attitude estimation in the case of a tumbling object.
 
 \section{Non-Tumbling Formulation}
 This thesis actually utilizes two formulations of the UKF. The defines the state vector is composed of the modified Rodriguez parameters and angular velocity and is in the form:
 \begin{equation}
-\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \end{bmatrix}
+\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \end{bmatrix},
 \end{equation}
 where $\bm{p}$ are the Modified Roriguez Parameters (MRPs) and  $\boldmath{w}$ is the angular velocity vector. This formulation is utilized in this thesis to filter data for objects that are assumed to be spinning about a constant axis or whose inertial properties are known. In either of these cases inertial properties do not need to be estimated.
 
-The Modified Rodriguez Parameters were selected as the attitude representation of choice for this thesis. The use of quaternions and Euler Angles were investigated but were not used for various reasons. Quaternions suffer from the issue that because they over define an attitude, singularities arise in the UKF covariance matrix unless complex additional measures are taken \cite{Linares_data_fusion}. Additionally, values cannot be added to a quaternion as it is unit norm constrained which poses an extra challenge during the update step of the UKF.
+The Modified Rodriguez Parameters were selected as the attitude representation of choice for this thesis. The use of quaternions and Euler Angles were investigated but were not used for various reasons. Quaternions suffer from the issue that they are redundant (They constitute of four elements rather than the minimum of three) and are constrained to unit length \cite{MRPs}. This means that at all time only three of the quaternion elements can change freely while allowing for a total magnitude of one. This causes singularities arise in the UKF covariance matrix unless complex additional measures are taken \cite{MRPs} \cite{Linares_data_fusion}. Additionally, values cannot be added to a quaternion as it is unit norm constrained which poses an extra challenge during the update step of the UKF.
 
 Euler angles do not suffer from the singular covariance issue as they are a minimal attitude representation and are not unit norm constrained, however they do suffer from another form of singularity where in certain orientation two of the angles become indeterminate and can vary wildly with only small changes in attitude. This makes it very difficult for the UKF to converge on a solution.
 
-Modified Rodriguez Parameters are related to the quaternion, but they represent the attitude in a minimal form using only three elements. This means that they do not result in a singular covariance matrix. Additionally, they are not unit norm constrained and only have a single singularity near the attitude represented by the quaternion as $-1 + 0i + 0j + 0k$ where the MRP elements tend towards infinity. This requires a fix, but one which requires no conditions. Fortunately, for each MRP there is an equivalent, known as a shadow parameter, which has represents the same attitude but whose magnitude is inverted \cite{MRPs}. This allows you to swap between the MRP and its "shadow parameter" whenever its magnitude gets too large. This maintains a consistent attitude parametrization without ever getting near the singularuty. The equation for converting between an MRP and its shadow parameter and vice verse is the following:
+Modified Rodriguez Parameters are related to the quaternion, but they represent the attitude in a minimal form using only three elements. This means that they do not result in a singular covariance matrix. Additionally, they are not unit norm constrained and only have a single singularity near the attitude represented by the quaternion as $-1 + 0i + 0j + 0k$ where the MRP elements tend towards infinity. This requires a fix, but one which requires no conditions. Fortunately, for each MRP there is an equivalent, known as a shadow parameter, which has represents the same attitude but whose magnitude is inverted \cite{MRPs}. This allows you to swap between the MRP and its "shadow parameter" whenever its magnitude gets too large. This maintains a consistent attitude parametrization without ever getting near the singularity. The equation for converting between an MRP and its shadow parameter and vice verse is the following:
 
-\begin{equation}
-\bm{p}_{shadow} = -\frac{\bm{p}}{||\bm{p}||^2}
+\begin{equation}\label{shadow_parameters}
+\bm{p}_{shadow} = -\frac{\bm{p}}{||\bm{p}||^2}.
 \end{equation}
 
 The kinetmatic equations of motion for the Modified Rodriguez Parameters are as follows \cite{Crassidis_MRPs}:
 
 \begin{equation}
-	\dot{\bm{p}} = \frac{1}{2} \left ( \frac{1}{2} (1 - \bm{p}^T\bm{p})I + \bm{p}^{\times} + \bm{p}\bm{p}^T \right )\bm{\omega}
+	\dot{\bm{p}} = \frac{1}{2} \left ( \frac{1}{2} (1 - \bm{p}^T\bm{p})I + \bm{p}^{\times} + \bm{p}\bm{p}^T \right )\bm{\omega}.
 \end{equation}
+
+This flipping between can be seen in the MRP plots in figures \ref{converge1} to \ref{converge3} and \ref{converge4} to \ref{converge6} as sudden jump discontinuities.
 
 \section{Tumbling Object Formulation}
 
 In the case that the object is tumbling, that is to say that the angular velocity is not constant in the ECI frame, inertial properties need to be either known or estimated. If these properties are known then the state definition above suffices and only the forward propagation model must be changed. This is unlikely however as it is often difficult even for operators to accurately measure a spacecrafts inertial properties. This leads to the necessity to estimate the inertial properties.
 
-The simplest approach to estimating the inertial properties is to take advantage of the symmetric properties of the inertia matrix and add the matrices diagonal and either its upper or lower triangular. This adds six elements to the state that add computational complexity and increase the difficulty for the UKF to converge on accurate values. This thesis makes the following two assumptions to reduce the number of elements that are required to define the inertial properties.
+\subsection{Reducing the Statespace}
+
+This thesis estimates the inertial properties by adding them to the state estimate of the UKF. This typically requires nine elements to fully define, which adds significantly more computational complexity to estimate. The ability to effectively represent the inertia of the object in the fewest number of parameters significantly reduces the number of calculations required.
+
+It is possible to take advantage of the symmetric properties of the inertia matrix and add the matrices diagonal and only estimate the diagonal and either the upper or lower triangular. This only adds six elements to the state as opposed to nine, however this is still a significant jump in computational complexity and increases the difficulty for the UKF to converge on accurate values. This thesis makes the following two assumptions to reduce the number of elements even further.
 \begin{enumerate}
 \item The principal inertial frame is sufficiently aligned to the frame in which the geometry is defined such that the off-diagonal elements are negligible. This allows for the off-diagonal elements to be assumed to be zero, reducing the elements required to be estimated to only the diagonal.
 
@@ -41,10 +49,14 @@ The simplest approach to estimating the inertial properties is to take advantage
 \end{enumerate}
 The combination of these two assumptions reduces the number of elements that needed to be estimated to two: the second and third diagonal elements. Given these assumptions, the state vector becomes:
 \begin{equation}
-\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \\ \bm{\Xi} \end{bmatrix}
+\bm{x} = \begin{bmatrix} \bm{p} \\ \bm{\omega} \\ \bm{\Xi} \end{bmatrix},
 \end{equation}
-Where $\bm{\Xi}$ is defined to be a 2x1 vector containing two of the diagonal elements of the objects principal inertia matrix.
+where $\bm{\Xi}$ is defined to be a 2x1 vector containing two of the diagonal elements of the objects principal inertia matrix.
 
 \section{Modifications}
 
 The only midification from the standard UKF implementation used in this thesis was to bound the angular velocity and inertia estimates between reasonable values. In preliminary simulations it was found that the UKF would initially deviate significantly before settling on a value. This large deviation both slowed down computation significantly and resulted in the UKF settling on unrealistically high angular velocities.
+
+These can be changed to best fit the circumstance. This thesis did not simulate an object rotating faster than 0.3 radians per second and did not expect the real data to produce results higher than 1 radian/second which is what this thesis set as its limit for angular velocity.
+
+For the inertia limits, the limit was set to 5 $kg*m/s^2$. Because the inertia was defined in relative terms, the full range of inertial ratios can still be reached by the UKF as the values are allowed to go infinitely near zero.

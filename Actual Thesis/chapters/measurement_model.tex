@@ -4,13 +4,11 @@
 %An Anisotropic Phong BRDF Model [phong]
 %Attitude Estimation from Light Curves [wetterer_ukf]
 
-Light curves are the data collected by observing a satellite with a telescope and measuring the amount of light collected from it. In order to predict how much light a spacecraft is reflecting as a function of its attitude a reflection model is needed. This thesis implements a modified version of the Phong Bi-Direction Reflection Distribution Function (BRDF) as used by Linares et. al \cite{Linares_data_fusion} as well as a ray tracing algorithm that was proposed by Kaasalainen and Torppa \cite{kaasalainen_LCI}.
+Light curves are the data collected by observing a satellite with a telescope and measuring the amount of light collected from it. In order to predict how much light a spacecraft is reflecting as a function of its attitude a reflection model is needed. This thesis implements a modified version of the Phong Bi-Direction Reflection Distribution Function (BRDF) as used by Linares et. al \cite{Linares_data_fusion} as well as a ray tracing algorithm that was proposed by Kaasalainen and Torppa \cite{Kaasalainen_LCI}.
 
 An overview of the process is that there is a spacecraft geometry defined by a set of flat facets and at every measurement the facets that are both illuminated and visible by the observation site are evaluated by a BRDF. This BRDF takes into account the direction of the illumination source and observation as well as the illuminated area of the facet which is calculated using a ray tracing algorithm. The individual contributions of each facet are then summed to return the total reflected by the spacecraft.
 
-All math in this section can be calculated in any frame, however this thesis decided to work entirely within the spacecrafts body frame as this minimizes the number of rotations that need to be performed. Using the spacecraft body frame only requires that the observation and sun vectors be rotated rather than the spacecraft geometry.
-
-The code implemented in this thesis will be available on GitHub.
+All math for the measurement model can be calculated in any frame, however the author decided to work entirely within the spacecrafts body frame as this minimizes the number of rotations that need to be performed. Using the spacecraft body frame only requires that the observation and sun vectors be rotated rather than the entire spacecraft geometry.
 
 \section{Observation Model}
 
@@ -18,18 +16,23 @@ According to Ashikhmin and Shirley, reflections can be modelled as the sum of th
 \begin{equation}\label{PHONG1}
 \rho_{total} = \rho_s + \rho_d
 \end{equation}
-Conveniently, metallic surfaces have the property of being purely specular, allowing for the diffuse term to be ignored in many cases\cite{phong_brdf}. All vectors in the following equations are used in the spacecraft body frame.
 
-One feature of the BRDF used in this thesis is the ability to model anisotropic reflection, meaning that it can model the "streakyness" of surfaces like brushed metal. However, this requires additional information to describe the distribution of this reflection. This thesis assumes that the specular reflection is evenly distributed along all directions which allows the equation of specular reflection used by Linares et. al. to be simplifed to the following form \cite{Linares_data_fusion}:
+All vectors in the following equations are used in the spacecraft body frame.
+
+One feature of the BRDF used in this thesis is the ability to model anisotropic reflection, meaning that it can model the "streakyness" of surfaces like brushed metal. However, this requires additional information to describe the distribution of this reflection. This thesis assumes that the specular reflection is evenly distributed along all directions which allows the equation of specular reflection to be was follows \cite{phong_brdf} \cite{SpaceObjectCharacterization}:
+
 \begin{equation}\label{Phong_Specular}
 \rho_{s_i} = \frac{n + 1}{8\pi}
 \frac{(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_h)^n}
-{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun} + \bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs} - (\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})}F_{reflect_i}
+{\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun} + \bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs} - (\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})}F_{reflect_i},
 \end{equation}
-Where $n$ is the specular distribution term and $F_{reflect_i}$ is:
+where $n$ is the specular distribution parameter, which this thesis assumes has a value of 1. A realistic value for real materials is not specified in the origninal publication of the Phong model, nor in similar research applying it \cite{phong_brdf} \cite{SpaceObjectCharacterization} \cite{StateAndParameter} \cite{Kaasalainen_LCI}.
+
+The equation for $F_{reflect_i}$ is \cite{phong_brdf}:
 \begin{equation}
 F_{reflect_i} = R_{spec_i}*(1 - R_{spec_i})(1 - \bm{\mathrm{u}}_{sun}\cdotp \bm{\mathrm{u}}_h)^5.
 \end{equation}
+
 Where $R_{spec_i}$ is the specular coefficient for facet $i$.
 
 \begin{figure}[h!]
@@ -39,7 +42,7 @@ Where $R_{spec_i}$ is the specular coefficient for facet $i$.
 	\label{facet}
 \end{figure}
 
-If the facet is metallic, the diffuse component is simply zero, otherwise it is the following:
+For surfaces which reflect diffusely, the formula for the diffuse component is as follows \cite{phong_brdf} \cite{SpaceObjectCharacterization}:
 \begin{equation}\label{Phong_Diffuse}
 \rho_{d_i} = \left(\frac{28R_{diff_i}}{23\pi}\right)
 (1 - R_{spec_i})
@@ -48,29 +51,32 @@ If the facet is metallic, the diffuse component is simply zero, otherwise it is 
 \end{equation}
 Where $R_{diff_i}$ is the diffuse coefficient for the facet $i$.
 
+This thesis implements a geometric model which enables each surface of the object to be assigned a unique specular and diffuse coefficient. This enables the modeling of variegated surface coatings and varying materials.
+
 The equation for the total visible power reflected by the spacecraft then becomes:
 \begin{equation}
 F_{obs} = \frac{C_{sun,vis}}{{d^2}}\sum_{i=0}^N A_i\rho_{total_i}(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{sun})(\bm{\mathrm{u}}_{n_i}\cdotp \bm{\mathrm{u}}_{obs})
 \end{equation}
-Where $C_{sun,vis}$ is the power flux output from the sun in the visible spectrum [455W/m$^2$], $d$ is the distance from the observer to the spacecraft in meters, $A_i$ is the illuminated area of facet (calculated by a ray tracing algorithm), and $N$ is the number of facets.
+Where $C_{sun,vis}$ is the power flux output from the sun in the visible spectrum [455W/m$^2$] \cite{Linares_data_fusion}. $d$ is the distance from the observer to the spacecraft in meters, $A_i$ is the illuminated area of facet (calculated by a ray tracing algorithm), and $N$ is the number of facets.
 
-This quantity is the basis for all observations, however data from collected in telescopes is rarely reported in Watts, but in either counts or intensity. Intensity is defined to be a logarithmic scaling of power, while counts is a linear scaling of the number of photons received by the CCD sensor during a single measurement. The conversion from Watts to intensity magnitude used in this thesis is as follows:
-\begin{equation}
-m = -2.5\log_{10}(F_{obs})
+This quantity is the basis for all observations, however data from collected in telescopes is rarely reported in Watts, but in either counts or intensity. Intensity is defined to be a logarithmic scaling of power, while counts is a linear scaling of the number of photons received by the CCD sensor during a single measurement. The conversion from Watts to intensity magnitude used in this thesis is as follows \cite{SpaceObjectCharacterization}:
+\begin{equation} \label{Watts2Intensity}
+m = -26 -2.5\log_{10}(F_{obs}/C_{sun,vis})
 \end{equation}
 and the conversion from Watts to counts used in this thesis is:
-\begin{equation}
+\begin{equation}\label{Watts2Counts}
 counts = \frac{F_{obs}\alpha \Delta t}{E_{e^-} K}
 \end{equation}
-Where $\alpha$ represents the area of the telescope, $\Delta t$ is the exposure time, $E_{e^-}$ is the energy of a visible wavelength photon in Joules, and $K$ is the CCD gain of the sensor [$\frac{e^-}{count}$]. One of these equations should be used depending on the data.
+Where $\alpha$ represents the area of the telescope, $\Delta t$ is the exposure time, $E_{e^-}$ is the energy of a visible wavelength photon in Joules, and $K$ is the CCD gain of the sensor [$\frac{e^-}{count}$]. Either eq. \ref{Watts2Intensity} or eq. \ref{Watts2Counts} should be used depending on the data.
 
 \section{Ray Tracing Model}
 
-As mentioned previously, the ray tracing algorithm is based on a description in Kaasalainen and Torppa \cite{kaasalainen_LCI}. This algorithm works by dividing each facet into sample grids, where the center of each grid is checked both for visibility by the observer and illumination from the sun. If either of these conditions is false then the area of the grid is not included in the total illuminated area. It is important to distinguish between body mounted facets and exposed facets (such as solar panels) as the backsides of body mounted facets are assumed to never be illuminated while exposed facets could be illuminated from either side.
+As mentioned previously, the ray tracing algorithm is based on a description in Kaasalainen and Torppa \cite{Kaasalainen_LCI}. This algorithm works by dividing each facet into sample grids, where the center of each grid is checked both for visibility by the observer and illumination from the sun. If either of these conditions is false then the area of the grid is not included in the total illuminated area. It is important to distinguish between body mounted facets and exposed facets (such as solar panels) as the backsides of body mounted facets are assumed to never be illuminated while exposed facets could be illuminated from either side. The backside of a face of a cube, for instance, is geometrically impossible to be illuminated form behind as its backside is completely hidden from the light source.
 
-The first step is to iterate through each facet and precompute a list of other facets that could cast a shadow on them. When only rectangles are used, this implies checking the vertices of any potential occluding facets. If any vertex of facet B rises above the plane of facet A, then facet B is in the list of facets that could ever occlude A. This algorithm significantly reduces the number of facets that need to be checked, but it should be noted that it does not reduce it to the maximum extent. For example, this algorithm will include facets that may be separated by the body and in reality could never cast a shadow on one another. In the case of exposed panels, this thesis assumed that all other facets could cast shadows. The algorithm for determining shadowing is as follows: 
-\begin{algorithm}\label{alg:calc_obscuring}
+The first step is to iterate through each facet and precompute a list of other facets that could cast a shadow on them. When only rectangles are used, this implies checking the vertices of any potential occluding facets. If any vertex of facet B rises above the plane of facet A, then facet B is in the list of facets that could ever occlude A. This algorithm significantly reduces the number of facets that need to be checked, but it should be noted that it does not reduce it to the maximum extent. For example, this algorithm will include facets that may be separated by the body and in reality could never cast a shadow on one another. In the case of exposed panels, this thesis assumed that all other facets could cast shadows. This algorithm is described with pseudocode in Algorithm \ref{alg:calc_obscuring}.
+\begin{algorithm}
 	\caption{Determine if Facet A occludes B}
+	\label{alg:calc_obscuring}
 	\begin{algorithmic}
 		\STATE $U_n$ = unit normal of B
 		\STATE $B_c$ = center of B
@@ -111,9 +117,11 @@ As long as $l$ is not perpendicular to $n$ there always exists a distance $d$. T
 \end{equation}
 This point of intersection is then recalculated from the center of the occluding facet and its projection along $\bm{\mathrm{u}}_x$ and $\bm{\mathrm{u}}_y$ are compared to the facets dimensions to determine if it hit within the edges of the facet.
 
-The full algorithm for determining the visibility and illumination of a point is the following:
+The full algorithm derived by the author is shown in algorithm \ref{vis_and_illum}.
+
 \begin{algorithm}
 	\caption{Determine if a point is visible and illuminated}
+	\label{vis_and_illum}
 	\begin{algorithmic}
 		
 		\FOR {facet in set of facets from Alg. \ref{alg:calc_obscuring}}
