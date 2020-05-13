@@ -45,14 +45,16 @@
 \contentsline {chapter}{\numberline {7}Future Work}{64}{chapter.7}% 
 \contentsline {section}{\numberline {7.1}Reflectance Simulation}{64}{section.7.1}% 
 \contentsline {section}{\numberline {7.2}UKF Improvements}{64}{section.7.2}% 
-\contentsline {chapter}{BIBLIOGRAPHY}{66}{chapter*.4}% 
+\contentsline {section}{\numberline {7.3}Orbit Estimation}{65}{section.7.3}% 
+\contentsline {section}{\numberline {7.4}Improved Data Acquisition and Processing}{66}{section.7.4}% 
+\contentsline {chapter}{BIBLIOGRAPHY}{67}{chapter*.4}% 
 \let \l@chapter \l@section 
 \noindent APPENDICES 
-\contentsline {chapter}{\numberline {A}Software Used}{69}{appendix.a.A}% 
-\contentsline {chapter}{\numberline {B}Light Curve Data}{70}{appendix.a.B}% 
-\contentsline {section}{\numberline {B.1}SERT-2}{70}{section.a.B.1}% 
-\contentsline {section}{\numberline {B.2}AJISAI}{73}{section.a.B.2}% 
-\contentsline {section}{\numberline {B.3}Ariane-40}{74}{section.a.B.3}% 
-\contentsline {chapter}{\numberline {C}Intensity Data}{78}{appendix.a.C}% 
-\contentsline {section}{\numberline {C.1}Simulated Data}{78}{section.a.C.1}% 
-\contentsline {section}{\numberline {C.2}Real Data}{79}{section.a.C.2}% 
+\contentsline {chapter}{\numberline {A}Software Used}{70}{appendix.a.A}% 
+\contentsline {chapter}{\numberline {B}Light Curve Data}{71}{appendix.a.B}% 
+\contentsline {section}{\numberline {B.1}SERT-2}{71}{section.a.B.1}% 
+\contentsline {section}{\numberline {B.2}AJISAI}{74}{section.a.B.2}% 
+\contentsline {section}{\numberline {B.3}Ariane-40}{75}{section.a.B.3}% 
+\contentsline {chapter}{\numberline {C}Intensity Data}{79}{appendix.a.C}% 
+\contentsline {section}{\numberline {C.1}Simulated Data}{79}{section.a.C.1}% 
+\contentsline {section}{\numberline {C.2}Real Data}{80}{section.a.C.2}% 

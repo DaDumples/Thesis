@@ -43,12 +43,14 @@
 \BOOKMARK [0][-]{chapter.7}{7 Future Work}{}% 43
 \BOOKMARK [1][-]{section.7.1}{7.1 Reflectance Simulation}{chapter.7}% 44
 \BOOKMARK [1][-]{section.7.2}{7.2 UKF Improvements}{chapter.7}% 45
-\BOOKMARK [0][-]{chapter*.4}{BIBLIOGRAPHY}{}% 46
-\BOOKMARK [0][-]{appendix.a.A}{A Software Used}{}% 47
-\BOOKMARK [0][-]{appendix.a.B}{B Light Curve Data}{}% 48
-\BOOKMARK [1][-]{section.a.B.1}{B.1 SERT-2}{appendix.a.B}% 49
-\BOOKMARK [1][-]{section.a.B.2}{B.2 AJISAI}{appendix.a.B}% 50
-\BOOKMARK [1][-]{section.a.B.3}{B.3 Ariane-40}{appendix.a.B}% 51
-\BOOKMARK [0][-]{appendix.a.C}{C Intensity Data}{}% 52
-\BOOKMARK [1][-]{section.a.C.1}{C.1 Simulated Data}{appendix.a.C}% 53
-\BOOKMARK [1][-]{section.a.C.2}{C.2 Real Data}{appendix.a.C}% 54
+\BOOKMARK [1][-]{section.7.3}{7.3 Orbit Estimation}{chapter.7}% 46
+\BOOKMARK [1][-]{section.7.4}{7.4 Improved Data Acquisition and Processing}{chapter.7}% 47
+\BOOKMARK [0][-]{chapter*.4}{BIBLIOGRAPHY}{}% 48
+\BOOKMARK [0][-]{appendix.a.A}{A Software Used}{}% 49
+\BOOKMARK [0][-]{appendix.a.B}{B Light Curve Data}{}% 50
+\BOOKMARK [1][-]{section.a.B.1}{B.1 SERT-2}{appendix.a.B}% 51
+\BOOKMARK [1][-]{section.a.B.2}{B.2 AJISAI}{appendix.a.B}% 52
+\BOOKMARK [1][-]{section.a.B.3}{B.3 Ariane-40}{appendix.a.B}% 53
+\BOOKMARK [0][-]{appendix.a.C}{C Intensity Data}{}% 54
+\BOOKMARK [1][-]{section.a.C.1}{C.1 Simulated Data}{appendix.a.C}% 55
+\BOOKMARK [1][-]{section.a.C.2}{C.2 Real Data}{appendix.a.C}% 56
